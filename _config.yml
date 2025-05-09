@@ -4,7 +4,12 @@ description:        Yunjin's Portfolio
 author:             Lee Yunjin 
 baseurl:            "/startbootstrap-clean-blog-jekyll"
 url:                "https://yoonjin67.github.io"
+hi
+markdown: kramdown
 highlighter: rouge
+kramdown:
+  input: GFM
+
 
 # Social Profiles
 twitter_username: 
