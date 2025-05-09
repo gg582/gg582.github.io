@@ -1,14 +1,14 @@
-title:              Clean Blog
-email:              your-email@example.com
-description:        A Blog Theme by Start Bootstrap
-author:             Start Bootstrap
+title:              Lee Yunjin's Blog
+email:              gg582@naver.com
+description:        Yunjin's Portfolio 
+author:             Lee Yunjin 
 baseurl:            "/startbootstrap-clean-blog-jekyll"
-url:                "https://startbootstrap.github.io"
+url:                "https://yoonjin67.github.io"
 
 # Social Profiles
-twitter_username:   SBootstrap
-github_username:    StartBootstrap
-facebook_username:  StartBootstrap
+twitter_username: 
+github_username: yoonjin67
+facebook_username:  
 instagram_username:  
 linkedin_username:
 
