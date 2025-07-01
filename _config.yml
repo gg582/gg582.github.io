@@ -24,6 +24,9 @@ collections:
   tutorials:
     output: true
     permalink: /tutorials/:path/
+  codingtest:
+    output: true
+    permalink: /codingtest/:path/
 
 # Build settings
 markdown:           kramdown
