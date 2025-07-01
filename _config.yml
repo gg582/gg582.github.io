@@ -3,7 +3,7 @@ email:              gg582@naver.com
 description:        Yunjin's Portfolio 
 author:             Lee Yunjin 
 baseurl:            "/startbootstrap-clean-blog-jekyll"
-url:                "https://yoonjin67.github.io"
+url:                "https://gg582.github.io"
 markdown: kramdown
 highlighter: rouge
 kramdown:
@@ -12,7 +12,7 @@ kramdown:
 
 # Social Profiles
 twitter_username: 
-github_username: yoonjin67
+github_username: gg582
 facebook_username:  
 instagram_username:  
 linkedin_username:
