@@ -27,6 +27,9 @@ collections:
   codingtest:
     output: true
     permalink: /codingtest/:path/
+  network:
+    output: true
+    permalink: /network/:path
 
 # Build settings
 markdown:           kramdown
