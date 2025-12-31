@@ -1,0 +1,198 @@
+---
+layout: post
+title: Easy Learning Series-SOCKMAP and Splicing
+date: 2025-12-31 11:00:00 +0900
+categories: [network]
+---
+
+# TCP Splicing: Gotcha, you reverse proxy!
+
+Reverse proxies like NGINX and HAProxy, which are commonly used from undergraduate labs to the field, are inherently L7 proxies. Because they involve frequent data transfer between the Kernel and Userland, they fundamentally cannot push performance to its absolute limit from the start.
+
+In other words, among various techniques to reduce copy costs, the most powerful one is simply handling as much as possible within the Kernel space. In this sense, the SOCKMAP infrastructure is mentioned as the "Holy Grail" on the Cloudflare blog. This API is highly reliable and can bring about a massive performance shift (the aforementioned blog even calls it a "seismic shift") in proxies for heavy applications.
+
+## What makes traditional optimization better than L7 proxies?
+
+I’d like to use a **solid metaphor** here.
+Imagine you are a **woodchopper** and you need to move as many logs as required. Your client wants you to move a massive amount of logs.
+
+Let's say there are two methods:
+
+1. Moving each log one by one into baskets, handing them to a packaging company, which then stacks them separately in a truck to send.
+2. Pre-tying the logs into **bundles**, putting them straight into a box of appropriate size, and using our own cooperative's truck.
+
+When there are 120 logs, in Case 1, you'd have to pack 120 boxes one by one, hand them to the packager, and transport them by truck.
+In Case 2, you pack 6 bundles (1 bundle = 20 logs) into the largest box and send them via our own truck.
+
+Even excluding the time saved by not transferring cargo to a packager, if we assume a box only fits 1 log-bundle, one bundle is treated like one log, making it 20 times faster. If the order volume is small enough to find a box that fits all 6 bundles, the time required is 1—meaning it's 120 times faster than Case 1.
+
+This alone shows it's a change worth calling a "seismic shift" in high-load environments. Even if we consider a median value between the worst case (all boxes fit only 1 bundle) and the best case (all bundles fit in one box), and exclude the shipping consignment, the speed is roughly `(6+1)/2 == 3.5; 120/3.5 == approx 34.28x`, which is sufficiently powerful.
+
+I can see why the Cloudflare blog called it a seismic shift. Now, let’s compare the functions usually used for this.
+
+## What kind of functions are available?
+
+This is a very interesting part. We can see the comparison of `sendfile` vs `splice` vs `vmsplice`.
+
+`sendfile` reads from a disk file to a socket. It’s not zero-copy, but it avoids User Space memory copying, focusing on Disk -> Socket transfer. To use the metaphor again, it’s like taking log bundles out of a cold storage warehouse, putting them in a box, and loading them onto the cooperative's truck.
+
+`splice` reads from a pipe to a socket and performs zero-copy for both network socket copying and its reverse. This is like taking logs from the employee at the warehouse and shoving them into the truck via a **high-speed conveyor belt with almost zero transit time** that shoves them into the truck. When returning, you take the cargo from the client and load the logs again. It’s clear why Linus didn't prefer `sendfile`. (Note: unless `SPLICE_F_MOVE` is used, copies are sometimes mixed in).
+
+`vmsplice` carries data from a memory area (especially a virtually continuous memory space) to a pipe. You can't avoid User Space memory, but it is zero-copy. This is like using a consignment delivery service, but the company's truck is right next door, so you plug it in with a high-speed belt.
+
+If you need to use a virtual continuous memory area, use `vmsplice`; otherwise, `splice` should do. If memory is scarce, `vmsplice` is good, but you must accept trade-offs in performance, such as page alignment issues, so you have to handle it.
+
+## Then what were NGINX, HAProxy doing?
+
+In fact, these two handle different parts and have different reasons for how they do things, so we can't say one is superior. However, a brief introduction will help you understand what they were thinking.
+
+**NGINX** can be summarized like this: If a certain place frequently takes Pine logs, remember what they take and immediately give them **"Company X's Pine logs."** This method is fast because it doesn't need to reload information every time, but there's a risk of giving Company X's logs even when they unexpectedly need Oak logs. If you’ve ever experienced a caching issue, it will be easier to feel how similar this situation is.
+
+**HAProxy** can be seen as using various routes. When you need large-scale transport, there are various routes between two points. Since some routes might require driving on narrow roads, HAProxy aims to deliver the logs on time by operating trucks through various pathways to avoid traffic jams.
+
+While these are excellent approaches in that they don't directly call Kernel APIs, it’s common sense that shortening the actual path makes the transport faster.
+
+## Naive vs Splice via Python Examples
+
+### Naive (Without Splice)
+
+```python
+while data:
+    data = read(sd, 4096)
+    writeall(sd, data)
+
+```
+
+### Splice
+
+```python
+pipe_rd, pipe_wr = pipe()
+fcntl(pipe_rd, F_SET_PIPE_SZ, 4096) # In our metaphor, 4096 logs make 1 bundle
+while n:
+    n = splice(sd, pipe_wr, 4096)
+    splice(pipe_rd, sd, n)
+
+```
+
+In this case, if a situation arises where several bundles can be sent at once, the `splice` function will bundle them together. Since the API is already well-made, you can implement this easily without destructive modifications.
+
+## SOCKMAP: eBPF is here? Terrifying performance!
+
+Now, for the main point. From here, the approach is completely different from Userland. First, let’s use a metaphor for SOCKMAP.
+This is truly a massive method. (Though it won't happen in reality) **SOCKMAP is a teleport machine**: You can think of it as building a high-speed train between the factory and the client, sending goods directly on the train without going through the slow medium of a truck entirely.
+
+In the Kernel, the default behavior is for data to be buffered through pipes, which inevitably slows down the speed. An eBPF program bypasses this process and handles it.
+
+In the SOCKMAP API, we will try using the `bpf_sk_redirect_map` part, but before that, let's look at what eBPF is.
+
+## What is eBPF?
+
+eBPF (Extended Berkeley Packet Filter) is a technology that allows you to intercept and insert packet filters between system calls and sockets without adding kernel source code or additional modules. It basically runs in the Kernel area and has **low CPU and memory consumption**.
+According to a Netflix blog, it showed CPU and memory usage within 1% on most instances. While minimizing additional resource consumption, you simply inject the program you want to use into the Kernel without needing to exchange excessive information between User space and the Kernel.
+Then, you just need to let the lightweight eBPF module **skip the entire process** of sockets and pipes moving back and forth within the Kernel. It acts like a **direct hotline**.
+
+## What is SOCKMAP?
+
+This is a modern API designed for direct communication between sockets within the Kernel area. The method of mapping each socket with this is simple, unlike conventional wisdom in Kernel development, and if you narrow it down to communication for a specific purpose, the code can be finished very briefly. We will find functions here. Please follow along carefully.
+
+[eBPF Documentation](https://docs.ebpf.io/linux/helper-function/)
+We will follow the "Redirect helpers" in "Network helpers," refer to the documentation, and write code to open a network socket at `127.0.0.1:8080`. What we want is to redirect messages coming from `127.0.0.1:8080` to a **socket**.
+Then the candidates we need to look at are narrowed down.
+
+We will focus on those that look like basic forms for our purpose, those with the `sk_` tag, and especially those **without exceptions** (such as "overriding general behavior"). When filtered, the list looks like this:
+
+```c
+bpf_clone_redirect
+bpf_sk_redirect_map
+bpf_redirect
+bpf_redirect_map
+bpf_sk_redirect_hash
+bpf_msg_redirect_map
+...
+
+```
+
+Overall, these are useful for tasks like immediately "plugging in" messages coming into a specific socket—for example, in a server that receives specific control packets from the outside. If you wonder, "Can I use eBPF for other purposes?", you can simply check the docs.
+
+Let's pick a few and see how to read the docs.
+
+## bpf_redirect_map
+
+There's an explanation in the Definition section. The description of this function contains information that it redirects packets to an endpoint referenced by the index key of a specific map. It **specifies the purpose**, stating that this map includes network devices or CPUs. It also provides **flags for specific actions** like `BPF_F_BROADCAST`, and informs that `bpf_redirect` is a **function that operates under fewer conditions**, needing only `ifindex` instead of a map index. This Definition alone compresses everything from an Overview to Further Links.
+
+The Returns part is clearly explained even for beginners.
+
+```c
+// XDP_REDIRECT on success, or the value of the two lower bits of the flags argument on error.
+static long (* const bpf_redirect_map)(void *map, __u64 key, __u64 flags) = (void *) 51;
+
+```
+
+When there is no error: `XDP_REDIRECT`. On error, you can see it gives a copy of the lower 2 bits. Therefore, the code pattern becomes as follows:
+
+```c
+// bpf_printk is for debugging; replace with ring buffer for production.
+long ret = bpf_redirect_map(&tx_port, key, 0);
+if(ret != XDP_REDIRECT) {
+    bpf_printk("[Warn] error on bpf_redirect_map: return value is not XDP_REDIRECT. tracing...");
+    switch(ret) {
+        case 0x????:
+            // do something;
+            break;
+        ...
+        default:
+            bpf_printk("[Error] Unknown error code from bpf_redirect_map: Aborting...");
+    }
+}
+
+```
+
+As such, just by reading the API well, you can grasp how to write the code pattern and what role it plays.
+
+### Looking at Abbreviations
+
+Abbreviations are common: `sk` is used for **socket**, `msg` is used for **message**, etc.
+
+### bpf_sk_redirect_map
+
+Let's translate this into plain English.
+
+* This BPF function does something.
+* This is doing something for a socket.
+* This is redirecting ??? by a map.
+
+
+"???" can be naturally inferred as "the packet referenced" if you're in a related field. Combining it again: "This BPF function redirects the socket referenced by the map."
+
+Here too, it guides you through flags for selecting specific ingress paths like `BPF_F_INGRESS`, just like high-level languages. The docs list `Program types` and `Map types` so you won't get lost.
+
+## Benchmark Results
+
+```bash
+yjlee@yjlee-linuxonmac:~/cloudflare-study/ebpf-sockmap$ sudo ./echo-sockmap 127.0.0.1:8080
+[+] Accepting on 127.0.0.1:8080 busy_poll=0
+[+] rx=102400001 tx=0
+^C
+yjlee@yjlee-linuxonmac:~/cloudflare-study/ebpf-sockmap$ sudo ./echo-naive 127.0.0.1:8080
+[+] Accepting on 127.0.0.1:8080 busy_poll=0
+[-] edge side EOF
+[+] Read 97.7MiB in 1075.9ms
+^C
+yjlee@yjlee-linuxonmac:~/cloudflare-study/ebpf-sockmap$ sudo ./echo-splice 127.0.0.1:8080
+[+] Accepting on 127.0.0.1:8080 busy_poll=0
+[-] edge side EOF
+[+] Read 97.7MiB in 1064.3ms
+^C
+
+```
+
+`Sockmap` is so fast that it has reached a level where you can only see it by expressing it as `tx/rx`. Meanwhile, `splice` only shaved off about 11ms at best. This is exactly like hiring the best truck driver—no matter how good they are, they can't hit 300km/h like a Bullet Train. This insane performance is attractive for high-performance proxies, and naturally, it's a technology that ISPs are drooling over.
+
+To try it yourself, check out this example which is assembly-optimized for ARM64 machines and improved to specify the attach type when attaching to the kernel:
+[Benchmark Source](https://github.com/gg582/cloudflare-study/tree/main/ebpf-sockmap)
+
+It's a valuable resource to glimpse the code conventions and quality of a large corporation. Read it thoroughly and look for further improvements; it will be a good study.
+
+## Closing
+
+Using a **log-bundle** metaphor made the differences much easier to understand, and it turned out to be a **solid** study. Even for a beginner like me, who doesn't know much about networks, this kind of study is a blast. I'll keep posting on the network board, so stay tuned!
