@@ -7,7 +7,7 @@ categories: [network]
 
 # TCP Splicing: Gotcha, you reverse proxy!
 
-Reverse proxies like NGINX and HAProxy, which are commonly used from undergraduate labs to the field, are inherently L7 proxies. Because they involve frequent data transfer between the Kernel and Userland, they fundamentally cannot push performance to its absolute limit from the start.
+Reverse proxies like NGINX and HAProxy, which are commonly used from undergraduate labs to the field, are inherently L7 proxies. Because they involve frequent data transfer between the kernel and user space, they fundamentally cannot push performance to its absolute limit from the start.
 
 In other words, among various techniques to reduce copy costs, the most powerful one is to keep as much work as possible in kernel space. Cloudflare describes SOCKMAP as a "holy grail" for performance in certain proxy workloads, and even calls it a "tectonic shift".
 
@@ -34,13 +34,13 @@ I can see why the Cloudflare blog called it a seismic shift. Now, let’s compar
 
 ## What kind of functions are available?
 
-This is a very interesting part. We can see the comparison of `sendfile` vs `splice` vs `vmsplice`.
+This is where things get interesting as we can see the comparison of `sendfile` vs `splice` vs `vmsplice`.
 
-`sendfile` reads from a disk file to a socket. It’s not zero-copy, but it avoids User Space memory copying, focusing on Disk -> Socket transfer. To use the metaphor again, it’s like taking log bundles out of a cold storage warehouse, putting them in a box, and loading them onto the cooperative's truck.
+`sendfile` reads from a disk file to a socket. It’s not zero-copy, but it avoids user space memory copying, focusing on Disk -> Socket transfer. To use the metaphor again, it’s like taking log bundles out of a cold storage warehouse, putting them in a box, and loading them onto the cooperative's truck.
 
 `splice` reads from a pipe to a socket and performs zero-copy for both network socket copying and its reverse. This is like taking logs from the employee at the warehouse and shoving them into the truck via a **high-speed conveyor belt with almost zero transit time** that shoves them into the truck. When returning, you take the cargo from the client and load the logs again. It’s clear why Linus didn't prefer `sendfile`. (Note: unless `SPLICE_F_MOVE` is used, copies are sometimes mixed in).
 
-`vmsplice` carries data from a memory area (especially a virtually continuous memory space) to a pipe. You can't avoid User Space memory, but it is zero-copy. This is like using a consignment delivery service, but the company's truck is right next door, so you plug it in with a high-speed belt.
+`vmsplice` carries data from a memory area (especially a virtually continuous memory space) to a pipe. You can't avoid user space memory, but it is zero-copy. This is like using a consignment delivery service, but the company's truck is right next door, so you plug it in with a high-speed belt.
 
 If you need to use a virtual continuous memory area, use `vmsplice`; otherwise, `splice` should do. If memory is scarce, `vmsplice` is good, but you must accept trade-offs in performance, such as page alignment issues, so you have to handle it.
 
@@ -52,7 +52,7 @@ In fact, these two handle different parts and have different reasons for how the
 
 **HAProxy** can be seen as using various routes. When you need large-scale transport, there are various routes between two points. Since some routes might require driving on narrow roads, HAProxy aims to deliver the logs on time by operating trucks through various pathways to avoid traffic jams.
 
-While these are excellent approaches in that they don't directly call Kernel APIs, it’s common sense that shortening the actual path makes the transport faster.
+While these are excellent approaches in that they don't directly call kernel APIs, it’s common sense that shortening the actual path makes the transport faster.
 
 ## Naive vs Splice via Python Examples
 
@@ -98,7 +98,7 @@ According to a Netflix post, in their production use case the overhead was typic
 
 ## What is SOCKMAP?
 
-This is a modern API designed for direct communication between sockets within the Kernel area. The method of mapping each socket with this is simple, unlike conventional wisdom in Kernel development, and if you narrow it down to communication for a specific purpose, the code can be finished very briefly. We will find functions here. Please follow the lines and catch the structure.
+This is a modern API designed for direct communication between sockets within the kernel space. The method of mapping each socket with this is simple, unlike conventional wisdom in kernel development, and if you narrow it down to communication for a specific purpose, the code can be finished very briefly. We will find functions here. Please follow the lines and catch the structure.
 
 [eBPF Documentation](https://docs.ebpf.io/linux/helper-function/)
 We will follow the "Redirect helpers" in "Network helpers," refer to the documentation, and write code to open a network socket at `127.0.0.1:8080`. What we want is to redirect messages coming from `127.0.0.1:8080` to a **socket**.
@@ -117,7 +117,7 @@ bpf_msg_redirect_map
 
 ```
 
-Overall, these are useful for tasks like immediately "plugging in" messages coming into a specific socket—for example, in a server that receives specific control packets from the outside. If you are intersted in using eBPF for other purposes, you can simply check the docs.
+Overall, these are useful for tasks like immediately "plugging in" messages coming into a specific socket—for example, in a server that receives specific control packets from the outside. If you are interested in using eBPF for other purposes, you can simply check the docs.
 
 Let's cherry-pick a few and see how to read the docs.
 
@@ -184,7 +184,7 @@ yjlee@yjlee-linuxonmac:~/cloudflare-study/ebpf-sockmap$ sudo ./echo-splice 127.0
 
 ```
 
-Sockmap is fast enough that it’s easier to express throughput using `tx/rx` counters. In this run, `splice` improved only slightly (~11ms best-case). This matches the intuition: if you can build a true in-kernel fast path, the difference can be much larger than what you get from “better user-space piping.”
+SOCKMAP is fast enough that it’s easier to express throughput using `tx/rx` counters. In this run, `splice` improved only slightly (~11ms best-case). This matches the intuition: if you can build a true in-kernel fast path, the difference can be much larger than what you get from “better user-space piping.”
 
 This can be attractive for high-throughput proxies and service networks.
 
