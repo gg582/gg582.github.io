@@ -9,7 +9,9 @@ categories: [network]
 
 Reverse proxies like NGINX and HAProxy, which are commonly used from undergraduate labs to the field, are inherently L7 proxies. Because they involve frequent data transfer between the Kernel and Userland, they fundamentally cannot push performance to its absolute limit from the start.
 
-In other words, among various techniques to reduce copy costs, the most powerful one is simply handling as much as possible within the Kernel space. In this sense, the SOCKMAP infrastructure is mentioned as the "Holy Grail" on the Cloudflare blog. This API is highly reliable and can bring about a massive performance shift (the aforementioned blog even calls it a "seismic shift") in proxies for heavy applications.
+In other words, among various techniques to reduce copy costs, the most powerful one is to keep as much work as possible in kernel space. Cloudflare describes SOCKMAP as a "holy grail" for performance in certain proxy workloads, and even calls it a "tectonic shift".
+
+Before getting to SOCKMAP, I’ll start with splice-style approaches to see how far you can push more traditional user-space designs.
 
 ## What makes traditional optimization better than L7 proxies?
 
@@ -76,24 +78,27 @@ while n:
 
 In this case, if a situation arises where several bundles can be sent at once, the `splice` function will bundle them together. Since the API is already well-made, you can implement this easily without destructive modifications.
 
-## SOCKMAP: eBPF is here? Terrifying performance!
+## SOCKMAP: eBPF rules all.
 
-Now, for the main point. From here, the approach is completely different from Userland. First, let’s use a metaphor for SOCKMAP.
-This is truly a massive method. (Though it won't happen in reality) **SOCKMAP is a teleport machine**: You can think of it as building a high-speed train between the factory and the client, sending goods directly on the train without going through the slow medium of a truck entirely.
+Now we are focusing on the main point. From here, the approach is completely different from user-space proxying. First, let’s use a metaphor for SOCKMAP.
 
-In the Kernel, the default behavior is for data to be buffered through pipes, which inevitably slows down the speed. An eBPF program bypasses this process and handles it.
+This is truly an elegant method. (The metaphor is exaggerated, of course.) **SOCKMAP can feel like a teleport fast path**: imagine building a high-speed train between the factory and the client, moving data without relying on the slow truck route.
+
+In a typical user-space proxy, data often bounces between user space and the kernel and goes through buffering paths. With eBPF + SOCKMAP, you can build a much shorter in-kernel forwarding path.
 
 In the SOCKMAP API, we will try using the `bpf_sk_redirect_map` part, but before that, let's look at what eBPF is.
 
 ## What is eBPF?
 
-eBPF (Extended Berkeley Packet Filter) is a technology that allows you to intercept and insert packet filters between system calls and sockets without adding kernel source code or additional modules. It basically runs in the Kernel area and has **low CPU and memory consumption**.
-According to a Netflix blog, it showed CPU and memory usage within 1% on most instances. While minimizing additional resource consumption, you simply inject the program you want to use into the Kernel without needing to exchange excessive information between User space and the Kernel.
-Then, you just need to let the lightweight eBPF module **skip the entire process** of sockets and pipes moving back and forth within the Kernel. It acts like a **direct hotline**.
+eBPF (Extended Berkeley Packet Filter) lets you run verified programs inside the Linux kernel at various hook points (e.g., XDP, tc, cgroup, tracing, and socket-related hooks) without rebuilding the kernel.
+
+In practice, it enables packet processing, observability, and socket I/O redirection while avoiding a lot of user↔kernel context switching and copying.
+
+According to a Netflix post, in their production use case the overhead was typically under ~1% on most instances. With that kind of cost profile, you can add functionality in the kernel without constantly shuttling data through user space.
 
 ## What is SOCKMAP?
 
-This is a modern API designed for direct communication between sockets within the Kernel area. The method of mapping each socket with this is simple, unlike conventional wisdom in Kernel development, and if you narrow it down to communication for a specific purpose, the code can be finished very briefly. We will find functions here. Please follow along carefully.
+This is a modern API designed for direct communication between sockets within the Kernel area. The method of mapping each socket with this is simple, unlike conventional wisdom in Kernel development, and if you narrow it down to communication for a specific purpose, the code can be finished very briefly. We will find functions here. Please follow the lines and catch the structure.
 
 [eBPF Documentation](https://docs.ebpf.io/linux/helper-function/)
 We will follow the "Redirect helpers" in "Network helpers," refer to the documentation, and write code to open a network socket at `127.0.0.1:8080`. What we want is to redirect messages coming from `127.0.0.1:8080` to a **socket**.
@@ -112,9 +117,9 @@ bpf_msg_redirect_map
 
 ```
 
-Overall, these are useful for tasks like immediately "plugging in" messages coming into a specific socket—for example, in a server that receives specific control packets from the outside. If you wonder, "Can I use eBPF for other purposes?", you can simply check the docs.
+Overall, these are useful for tasks like immediately "plugging in" messages coming into a specific socket—for example, in a server that receives specific control packets from the outside. If you are intersted in using eBPF for other purposes, you can simply check the docs.
 
-Let's pick a few and see how to read the docs.
+Let's cherry-pick a few and see how to read the docs.
 
 ## bpf_redirect_map
 
@@ -133,16 +138,9 @@ When there is no error: `XDP_REDIRECT`. On error, you can see it gives a copy of
 ```c
 // bpf_printk is for debugging; replace with ring buffer for production.
 long ret = bpf_redirect_map(&tx_port, key, 0);
-if(ret != XDP_REDIRECT) {
-    bpf_printk("[Warn] error on bpf_redirect_map: return value is not XDP_REDIRECT. tracing...");
-    switch(ret) {
-        case 0x????:
-            // do something;
-            break;
-        ...
-        default:
-            bpf_printk("[Error] Unknown error code from bpf_redirect_map: Aborting...");
-    }
+if (ret != XDP_REDIRECT) {
+    bpf_printk("bpf_redirect_map failed: ret=%ld", ret);
+    return XDP_ABORTED;
 }
 
 ```
@@ -159,12 +157,12 @@ Let's translate this into plain English.
 
 * This BPF function does something.
 * This is doing something for a socket.
-* This is redirecting ??? by a map.
+* This is redirecting ___ by a map.
 
 
-"???" can be naturally inferred as "the packet referenced" if you're in a related field. Combining it again: "This BPF function redirects the socket referenced by the map."
+"___" can be naturally inferred as "the packet referenced" if you're in a related field. Combining it again: "This BPF function redirects the socket referenced by the map."
 
-Here too, it guides you through flags for selecting specific ingress paths like `BPF_F_INGRESS`, just like high-level languages. The docs list `Program types` and `Map types` so you won't get lost.
+Also, it guides you through flags for selecting specific ingress paths like `BPF_F_INGRESS`, just like high-level languages. The docs list `Program types` and `Map types` so you won't get lost.
 
 ## Benchmark Results
 
@@ -186,7 +184,9 @@ yjlee@yjlee-linuxonmac:~/cloudflare-study/ebpf-sockmap$ sudo ./echo-splice 127.0
 
 ```
 
-`Sockmap` is so fast that it has reached a level where you can only see it by expressing it as `tx/rx`. Meanwhile, `splice` only shaved off about 11ms at best. This is exactly like hiring the best truck driver—no matter how good they are, they can't hit 300km/h like a Bullet Train. This insane performance is attractive for high-performance proxies, and naturally, it's a technology that ISPs are drooling over.
+Sockmap is fast enough that it’s easier to express throughput using `tx/rx` counters. In this run, `splice` improved only slightly (~11ms best-case). This matches the intuition: if you can build a true in-kernel fast path, the difference can be much larger than what you get from “better user-space piping.”
+
+This can be attractive for high-throughput proxies and service networks.
 
 To try it yourself, check out this example which is assembly-optimized for ARM64 machines and improved to specify the attach type when attaching to the kernel:
 [Benchmark Source](https://github.com/gg582/cloudflare-study/tree/main/ebpf-sockmap)
@@ -195,4 +195,4 @@ It's a valuable resource to glimpse the code conventions and quality of a large 
 
 ## Closing
 
-Using a **log-bundle** metaphor made the differences much easier to understand, and it turned out to be a **solid** study. Even for a beginner like me, who doesn't know much about networks, this kind of study is a blast. I'll keep posting on the network board, so stay tuned!
+The log-bundle metaphor helped me understand why splice and SOCKMAP feel fundamentally different. I’ll keep posting notes as I explore more eBPF networking topics.
