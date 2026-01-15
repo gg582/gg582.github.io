@@ -76,9 +76,7 @@ When looking at the bit-field, there are unused bits.
 If we are planning to reduce CWND, we need a switch bit to trigger it.
 So, we can use an additional 1 bit to mark this information.
 
--------------------------------------------------------------
 | <font color="#ff3200">reduce_cwnd</font> | .. | .. | .. | .. |
--------------------------------------------------------------
 
 Also, we must store a pacing-gain ratio to remember *how much we should reduce pacing*.
 As a result, we need a new member in `struct bbr`.
