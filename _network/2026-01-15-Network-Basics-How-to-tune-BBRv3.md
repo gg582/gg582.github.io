@@ -769,6 +769,42 @@ In that previous post, I only attached a ping test, but now I am sharing an iPer
 
 ## IPerf3 Test
 ### Raw
+<style>
+  .bbr-comparison-box, .bbr-results {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 25px 0;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    font-size: 0.9em;
+  }
+
+  .bbr-comparison-box th, .bbr-results th {
+    background-color: #1a202c;
+    color: #ffffff;
+    padding: 12px 8px;
+    text-align: center;
+    border: 1px solid #2d3748;
+  }
+
+  .bbr-comparison-box td, .bbr-results td {
+    padding: 10px 8px;
+    border: 1px solid #e2e8f0;
+    text-align: center;
+  }
+
+  .bbr-comparison-box .metric-label, .bbr-results .case-label {
+    background-color: #f7fafc;
+    font-weight: 600;
+    text-align: left;
+    color: #2d3748;
+  }
+
+  .highlight-positive {
+    color: #38a169;
+    font-weight: bold;
+  }
+</style>
 <table class="bbr-results">
   <thead>
     <tr>
