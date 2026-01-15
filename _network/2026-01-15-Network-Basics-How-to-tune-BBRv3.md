@@ -37,7 +37,7 @@ This means it is good enough to hold wine and bread.
 Simply, BBRv3 aims for **harmony**.
 This means it will not aggressively scale its transmission rate only for itself.
 
-<img src="assets/BBRv3_Overview.jpg" style="width: 70%; height: auto;" alt="BBRv3's big picture">
+<img src="assets/images/BBRv3_Overview.jpg" style="width: 70%; height: auto;" alt="BBRv3's big picture">
 
 ### Balance
 
