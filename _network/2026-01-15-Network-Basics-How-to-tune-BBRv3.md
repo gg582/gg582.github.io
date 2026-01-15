@@ -769,6 +769,8 @@ In that previous post, I only attached a ping test, but now I am sharing an iPer
 
 ## IPerf3 Test
 ### Raw
+When running test 112620, public IPerf3's response was broken for 4 attempts.
+This shows a behavior when network quality is poor.
 <style>
   .bbr-comparison-box, .bbr-results {
     width: 100%;
@@ -822,7 +824,7 @@ In that previous post, I only attached a ping test, but now I am sharing an iPer
   </thead>
   <tbody>
     <tr>
-      <td>results_bbr_fixed_session/20260115-112401_6.18.0-mountain+/bbr3_112401</td>
+      <td>20260115-112401_6.18.0-mountain+/bbr3_112401</td>
       <td>84.99</td>
       <td>87.31</td>
       <td>342</td>
@@ -834,7 +836,7 @@ In that previous post, I only attached a ping test, but now I am sharing an iPer
       <td></td>
     </tr>
     <tr>
-      <td>results_bbr_fixed_session/20260115-112401_6.18.0-mountain+/bbr3_112620</td>
+      <td>20260115-112401_6.18.0-mountain+/bbr3_112620(worst case)</td>
       <td>84.01</td>
       <td>87.90</td>
       <td>671</td>
@@ -846,7 +848,7 @@ In that previous post, I only attached a ping test, but now I am sharing an iPer
       <td></td>
     </tr>
     <tr>
-      <td>results_bbr_fixed_session/20260115-112401_6.18.0-mountain+/bbr3vanilla_112511</td>
+      <td>20260115-112401_6.18.0-mountain+/bbr3vanilla_112511</td>
       <td>81.23</td>
       <td>87.80</td>
       <td>580</td>
