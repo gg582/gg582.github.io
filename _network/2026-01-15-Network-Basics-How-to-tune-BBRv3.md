@@ -76,7 +76,26 @@ When looking at the bit-field, there are unused bits.
 If we are planning to reduce CWND, we need a switch bit to trigger it.
 So, we can use an additional 1 bit to mark this information.
 
-| <font color="#ff3200">reduce_cwnd</font> | .. | .. | .. | .. |
+<table style="border-collapse: collapse; width: 100%; font-family: sans-serif; border: 1px solid #ddd;">
+  <thead>
+    <tr style="background-color: #f2f2f2; text-align: center;">
+      <th style="padding: 12px; border: 1px solid #ddd; color: #ff3200;">reduce_cwnd</th>
+      <th style="padding: 12px; border: 1px solid #ddd;">..</th>
+      <th style="padding: 12px; border: 1px solid #ddd;">..</th>
+      <th style="padding: 12px; border: 1px solid #ddd;">..</th>
+      <th style="padding: 12px; border: 1px solid #ddd;">..</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr style="text-align: center;">
+      <td style="padding: 12px; border: 1px solid #ddd;">1 bit</td>
+      <td style="padding: 12px; border: 1px solid #ddd;">-</td>
+      <td style="padding: 12px; border: 1px solid #ddd;">-</td>
+      <td style="padding: 12px; border: 1px solid #ddd;">-</td>
+      <td style="padding: 12px; border: 1px solid #ddd;">-</td>
+    </tr>
+  </tbody>
+</table>
 
 Also, we must store a pacing-gain ratio to remember *how much we should reduce pacing*.
 As a result, we need a new member in `struct bbr`.
