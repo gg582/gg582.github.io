@@ -811,14 +811,14 @@ This shows a behavior when network quality is poor.
   <thead>
     <tr>
       <th>Case</th>
-      <th>Forward recv (Mbps)</th>
-      <th>Reverse recv (Mbps)</th>
-      <th>Forward retrans</th>
-      <th>Reverse retrans</th>
-      <th>Ping fwd avg (ms)</th>
-      <th>Ping fwd max (ms)</th>
-      <th>Ping rev avg (ms)</th>
-      <th>Ping rev max (ms)</th>
+      <th>Forward<br>recv (Mbps)</th>
+      <th>Reverse<br>recv (Mbps)</th>
+      <th>Forward<br>retrans</th>
+      <th>Reverse<br>retrans</th>
+      <th>Ping fwd<br>avg (ms)</th>
+      <th>Ping fwd<br>max (ms)</th>
+      <th>Ping rev<br>avg (ms)</th>
+      <th>Ping rev<br>max (ms)</th>
       <th>Notes</th>
     </tr>
   </thead>
@@ -836,7 +836,7 @@ This shows a behavior when network quality is poor.
       <td></td>
     </tr>
     <tr>
-      <td>bbr3_112620(worst case)</td>
+      <td>bbr3_112620<br>(worst case)</td>
       <td>84.01</td>
       <td>87.90</td>
       <td>671</td>
