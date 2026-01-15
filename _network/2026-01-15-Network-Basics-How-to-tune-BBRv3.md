@@ -191,6 +191,7 @@ Add this to `bbr_set_cwnd`:
 ```
 ## Materials
 
+A router is 100M full-duplex router (Ssamji Electronics, P405N).
 BBRv3 baseline commit hash is `90210de4b779d40496dee0b89081780eeddf2a60`.
 The modified algorithm was ported from the base commit to Linux 6.18(6.18.0 based, Released as Mountain Kernel v0.3) and published at `https://github.com/gg582/linux-mountain` commit `c62bcddd7a829dec76ae2ef52b540cb86073e9c5`. The relevant sources are `net/ipv4/tcp_bbr3.c` and `net/ipv4/tcp_bbr3vanilla.c`.
 QDisc was forced to fq.
