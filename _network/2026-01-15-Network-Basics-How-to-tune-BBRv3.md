@@ -824,7 +824,7 @@ This shows a behavior when network quality is poor.
   </thead>
   <tbody>
     <tr>
-      <td>20260115-112401_6.18.0-mountain+/bbr3_112401</td>
+      <td>bbr3_112401</td>
       <td>84.99</td>
       <td>87.31</td>
       <td>342</td>
@@ -836,7 +836,7 @@ This shows a behavior when network quality is poor.
       <td></td>
     </tr>
     <tr>
-      <td>20260115-112401_6.18.0-mountain+/bbr3_112620(worst case)</td>
+      <td>bbr3_112620(worst case)</td>
       <td>84.01</td>
       <td>87.90</td>
       <td>671</td>
@@ -848,7 +848,7 @@ This shows a behavior when network quality is poor.
       <td></td>
     </tr>
     <tr>
-      <td>20260115-112401_6.18.0-mountain+/bbr3vanilla_112511</td>
+      <td>bbr3vanilla_112511</td>
       <td>81.23</td>
       <td>87.80</td>
       <td>580</td>
