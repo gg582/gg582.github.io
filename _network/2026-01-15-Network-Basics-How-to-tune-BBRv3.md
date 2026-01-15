@@ -819,7 +819,6 @@ This shows a behavior when network quality is poor.
       <th>Ping fwd<br>max (ms)</th>
       <th>Ping rev<br>avg (ms)</th>
       <th>Ping rev<br>max (ms)</th>
-      <th>Notes</th>
     </tr>
   </thead>
   <tbody>
@@ -833,7 +832,6 @@ This shows a behavior when network quality is poor.
       <td>43.69</td>
       <td>27.49</td>
       <td>65.29</td>
-      <td></td>
     </tr>
     <tr>
       <td>bbr3_112620<br>(worst case)</td>
@@ -845,7 +843,6 @@ This shows a behavior when network quality is poor.
       <td>46.41</td>
       <td>26.82</td>
       <td>46.99</td>
-      <td></td>
     </tr>
     <tr>
       <td>bbr3vanilla_112511</td>
@@ -857,7 +854,6 @@ This shows a behavior when network quality is poor.
       <td>73.05</td>
       <td>29.17</td>
       <td>46.19</td>
-      <td></td>
     </tr>
   </tbody>
 </table>
