@@ -1,10 +1,10 @@
 ---
 layout: page
-title: Tutorials
-background: '/img/bg-tutorials.jpg'
+title: Embedded
+background: '/img/bg-embedded.jpg'
 ---
 
-{% for post in site.tutorials %}
+{% for post in site.embedded %}
 
 <article class="post-preview">
   <a href="{{ post.url | prepend: site.baseurl | replace: '//', '/' }}">
@@ -36,11 +36,11 @@ background: '/img/bg-tutorials.jpg'
 
   {% if paginator.previous_page %}
   <a class="btn btn-primary float-left" href="{{ paginator.previous_page_path | prepend: site.baseurl | replace: '//', '/' }}">&larr;
-    Newer<span class="d-none d-md-inline"> Tutorials</span></a>
+    Newer<span class="d-none d-md-inline"> Embedded</span></a>
   {% endif %}
 
   {% if paginator.next_page %}
-  <a class="btn btn-primary float-right" href="{{ paginator.next_page_path | prepend: site.baseurl | replace: '//', '/' }}">Older<span class="d-none d-md-inline"> Tutorials</span> &rarr;</a>
+  <a class="btn btn-primary float-right" href="{{ paginator.next_page_path | prepend: site.baseurl | replace: '//', '/' }}">Older<span class="d-none d-md-inline"> Embedded</span> &rarr;</a>
   {% endif %}
 
 </div>

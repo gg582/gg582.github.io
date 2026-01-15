@@ -21,9 +21,9 @@ linkedin_username:
 google_analytics:   UA-XXXXXXXXX-X # out your google-analytics code
 
 collections:
-  tutorials:
+  embedded:
     output: true
-    permalink: /tutorials/:path/
+    permalink: /embedded/:path/
   codingtest:
     output: true
     permalink: /codingtest/:path/
