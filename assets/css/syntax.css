@@ -15,12 +15,13 @@
 
 /* =============================================================================
  *  2. Metal Hierarchy (Structural White & Italics)
- *  Reflects: Types, Scopes, and Global Identifiers (g:, s:, self, this)
+ *  Reflects: Types, Scopes, and Identifiers
  *  ============================================================================= */
-/* .vg: global, .vi: instance, .bp: built-in, .nc: class, .kt: type */
+/* .vg: global, .vi: instance, .bp: built-in, .nc: class, .kt: type, .n: name */
 .highlight .kt, .highlight .kd, .highlight .nc, .highlight .no,
 .highlight .nn, .highlight .nt, .highlight .vg, .highlight .vi,
-.highlight .bp, .highlight .vc, .highlight .vg, .highlight .vi {
+.highlight .bp, .highlight .vc, .highlight .n, .highlight .nx,
+.highlight .nv {
     color: #efeeea !important; /* s:fg_i */
     font-style: italic !important;
 }
@@ -88,7 +89,6 @@
 /* =============================================================================
  *  8. Neutral & Diagnostics
  *  ============================================================================= */
-.highlight .n, .highlight .nx, .highlight .nv { color: #a6a598; }
 .highlight .err {
     color: #e77e79;
     background-color: #111116;
