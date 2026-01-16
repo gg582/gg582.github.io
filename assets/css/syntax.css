@@ -1,91 +1,108 @@
+/*
+ * Seoulism Syntax Theme (Official Port)
+ * Systemic dark theme based on cardinal color hierarchy.
+ * Optimized for Jekyll/Rouge - Completely replaces Monokai.
+ */
+
+/* =============================================================================
+ 1 . Base Container & UI                                                  *
+ ============================================================================= */
 .highlight table td { padding: 5px; }
 .highlight table pre { margin: 0; }
-.highlight, .highlight .w {
-  color: #f8f8f2;
-  background-color: #272822;
+.highlight {
+  background-color: #111116; /* s:p.bg: Deep Night */
+  color: #a6a598;            /* s:p.fg: Soft Wood */
 }
-.highlight .err {
-  color: #272822;
-  background-color: #f92672;
+
+/* =============================================================================
+ 2 . Core Logic & Control Flow (Fire / Vermilion)                         *
+ Reflects: Statement, Conditional, Repeat, Keyword
+ ============================================================================= */
+/* All major keywords and control flow operators */
+.highlight .k, .highlight .kn, .highlight .kp, .highlight .kr, .highlight .kv,
+.highlight .ow, .highlight .o {
+  color: #e05a55 !important;
+  font-weight: bold;
 }
-.highlight .c, .highlight .ch, .highlight .cd, .highlight .cm, .highlight .cpf, .highlight .c1, .highlight .cs {
-  color: #75715e;
+
+/* =============================================================================
+ 3 . Execution & Functions (Wood / Jade)                                  *
+ Reflects: s:ForceSeoulismJade logic & FuncKey group
+ ============================================================================= */
+/* Function names, Methods, and Attribute Names */
+.highlight .nf, .highlight .fm, .highlight .na {
+  color: #3aa39a !important;
+  font-weight: bold;
 }
-.highlight .cp {
-  color: #f4bf75;
+/* Built-in functions and Parameter-like built-ins */
+.highlight .nb, .highlight .bp {
+  color: #6bc0b6;
+  font-style: italic;
 }
-.highlight .nt {
-  color: #f4bf75;
+
+/* =============================================================================
+ 4 . Structures & Types (Metal / White)                                   *
+ Reflects: s:ForceSeoulismTypes (PascalCase & Typedefs)
+ ============================================================================= */
+/* Types, Classes, Namespaces, and Tags */
+.highlight .kt, .highlight .kd, .highlight .nc, .highlight .no,
+.highlight .nn, .highlight .nt {
+  color: #efeeea !important;
+  font-style: italic;
 }
-.highlight .o, .highlight .ow {
-  color: #f8f8f2;
+
+/* =============================================================================
+ 5 . Literals & Constants (Earth / Ochre & Gold)                          *
+ Reflects: String, Number, Constant, Boolean
+ ============================================================================= */
+/* Strings and regular numbers */
+.highlight .s, .highlight .sb, .highlight .sc, .highlight .dl,
+.highlight .sd, .highlight .s2, .highlight .sh, .highlight .sx,
+.highlight .s1, .highlight .m, .highlight .mb, .highlight .mf,
+.highlight .mh, .highlight .mi, .highlight .il, .highlight .mo, .highlight .mx {
+  color: #e5c15a !important;
 }
+/* Booleans, Special Constants, and Symbols */
+.highlight .kc, .highlight .ss {
+  color: #f0d487 !important;
+  font-weight: bold;
+}
+
+/* =============================================================================
+ 6 . Meta & Non-Executing (Water / Muted Blue & Sky)                      *
+ Reflects: Comment, PreProc, Include
+ ============================================================================= */
+/* Comments */
+.highlight .c, .highlight .ch, .highlight .cd, .highlight .cm,
+.highlight .c1, .highlight .cs {
+  color: #7f85ac !important;
+  font-style: italic;
+}
+/* Preprocessors, Macros, and Includes */
+.highlight .cp, .highlight .cpf, .highlight .ni {
+  color: #6f8ee6 !important;
+}
+
+/* =============================================================================
+ 7 . Identifiers & Delimiters                                             *
+ ============================================================================= */
+/* Generic identifiers and variables */
+.highlight .n, .highlight .nx, .highlight .nv, .highlight .vc, .highlight .vg, .highlight .vi {
+  color: #a6a598;
+}
+/* Punctuation and brackets (Charcoal) */
 .highlight .p, .highlight .pi {
-  color: #f8f8f2;
+  color: #5f6770;
 }
-.highlight .gi {
-  color: #a6e22e;
-}
-.highlight .gd {
-  color: #f92672;
-}
-.highlight .gh {
-  color: #66d9ef;
-  background-color: #272822;
+
+/* =============================================================================
+ 8 . Special States & Diff                                                *
+ ============================================================================= */
+.highlight .err {
+  color: #e77e79;
+  background-color: #111116;
   font-weight: bold;
 }
-.highlight .ge {
-  font-style: italic;
-}
-.highlight .ges {
-  font-weight: bold;
-  font-style: italic;
-}
-.highlight .gs {
-  font-weight: bold;
-}
-.highlight .k, .highlight .kn, .highlight .kp, .highlight .kr, .highlight .kv {
-  color: #ae81ff;
-}
-.highlight .kc {
-  color: #fd971f;
-}
-.highlight .kt {
-  color: #fd971f;
-}
-.highlight .kd {
-  color: #fd971f;
-}
-.highlight .s, .highlight .sb, .highlight .sc, .highlight .dl, .highlight .sd, .highlight .s2, .highlight .sh, .highlight .sx, .highlight .s1 {
-  color: #a6e22e;
-}
-.highlight .sa {
-  color: #ae81ff;
-}
-.highlight .sr {
-  color: #a1efe4;
-}
-.highlight .si {
-  color: #cc6633;
-}
-.highlight .se {
-  color: #cc6633;
-}
-.highlight .nn {
-  color: #f4bf75;
-}
-.highlight .nc {
-  color: #f4bf75;
-}
-.highlight .no {
-  color: #f4bf75;
-}
-.highlight .na {
-  color: #66d9ef;
-}
-.highlight .m, .highlight .mb, .highlight .mf, .highlight .mh, .highlight .mi, .highlight .il, .highlight .mo, .highlight .mx {
-  color: #a6e22e;
-}
-.highlight .ss {
-  color: #a6e22e;
-}
+.highlight .gi { color: #3abf86; } /* DiffAdd: Emerald */
+.highlight .gd { color: #e05a55; } /* DiffDelete: Vermilion */
+.highlight .gh { color: #6f8ee6; font-weight: bold; } /* DiffHeader: Sky */
