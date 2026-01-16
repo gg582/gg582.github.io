@@ -51,7 +51,8 @@
 .highlight .s, .highlight .sb, .highlight .sc, .highlight .dl,
 .highlight .sd, .highlight .s2, .highlight .sh, .highlight .sx,
 .highlight .s1, .highlight .m, .highlight .mb, .highlight .mf,
-.highlight .mh, .highlight .mi, .highlight .il, .highlight .mo, .highlight .mx {
+.highlight .mh, .highlight .mi, .highlight .il, .highlight .mo, .highlight .mx,
+.highlight .cpf {
     color: #e5c15a !important;
 }
 .highlight .kc, .highlight .ss {
@@ -80,7 +81,7 @@
     color: #7f85ac !important; /* s:p.muted_blue */
     font-style: italic !important;
 }
-.highlight .cp, .highlight .cpf, .highlight .ni {
+.highlight .cp, .highlight .ni {
     color: #6f8ee6 !important; /* s:p.sky */
 }
 
