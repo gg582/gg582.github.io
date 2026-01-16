@@ -21,7 +21,7 @@
 .highlight .kt, .highlight .kd, .highlight .nc, .highlight .no,
 .highlight .nn, .highlight .nt, .highlight .vg, .highlight .vi,
 .highlight .bp, .highlight .vc, .highlight .n, .highlight .nx,
-.highlight .nv {
+.highlight .nv, .highlight .ni, .highlight .nl {
     color: #efeeea !important; /* s:fg_i */
     font-style: italic !important;
 }
@@ -82,7 +82,7 @@
     color: #7f85ac !important; /* s:p.muted_blue */
     font-style: italic !important;
 }
-.highlight .cp, .highlight .ni {
+.highlight .cp {
     color: #6f8ee6 !important; /* s:p.sky */
 }
 
