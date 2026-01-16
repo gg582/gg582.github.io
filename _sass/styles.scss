@@ -67,3 +67,26 @@ b, strong {
         display: table !important;
     }
 }
+
+/*
+ * Custom Font Overrides
+ * UI Font: IBM Plex Sans KR
+ * Code Font: Inconsolata (with IBM Plex Sans KR fallback) - Limited to code blocks
+ */
+
+body, p, h1, h2, h3, h4, h5, h6, .section-heading, a, .caption, blockquote {
+    font-family: 'IBM Plex Sans KR', sans-serif !important;
+}
+
+/* Rounded Code Blocks & Font */
+pre, .highlight {
+    border-radius: 10px !important;
+    /* Ensure the background clipping respects the border radius if there's a background color */
+    overflow: hidden; 
+    font-family: 'Inconsolata', 'IBM Plex Sans KR', monospace !important;
+}
+
+/* Targeting code inside blocks to ensure they inherit or use the specific font */
+pre code, .highlight code, .highlight .w {
+    font-family: 'Inconsolata', 'IBM Plex Sans KR', monospace !important;
+}
