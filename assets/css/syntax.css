@@ -1,108 +1,98 @@
 /*
- * Seoulism Syntax Theme (Official Port)
+ * Seoulism Advanced Syntax Theme (Jekyll/Rouge)
  * Systemic dark theme based on cardinal color hierarchy.
- * Optimized for Jekyll/Rouge - Completely replaces Monokai.
+ * Integrating Structural Metal Logic & Shadow Control Characters.
  */
 
 /* =============================================================================
- 1 . Base Container & UI                                                  *
- ============================================================================= */
+   1. Base Container & UI
+   ============================================================================= */
 .highlight table td { padding: 5px; }
 .highlight table pre { margin: 0; }
 .highlight {
-  background-color: #111116; /* s:p.bg: Deep Night */
-  color: #a6a598;            /* s:p.fg: Soft Wood */
+    background-color: #111116; /* s:p.bg: Deep Night */
+    color: #a6a598;            /* s:p.fg: Soft Wood */
 }
 
 /* =============================================================================
- 2 . Core Logic & Control Flow (Fire / Vermilion)                         *
- Reflects: Statement, Conditional, Repeat, Keyword
- ============================================================================= */
-/* All major keywords and control flow operators */
+   2. Structural Metal Logic (Metal / Bright White)
+   Reflects: Type, Class, and Scope Indicators (g:, s:, self, this)
+   ============================================================================= */
+/* Structural Scopes & Type definitions */
+.highlight .kt, .highlight .kd, .highlight .nc, .highlight .no, 
+.highlight .nn, .highlight .nt, .highlight .vg, .highlight .vi, .highlight .bp {
+    color: #efeeea !important; /* s:p.fg_bright: Metal */
+    font-style: italic;
+}
+
+/* =============================================================================
+   3. Core Logic Flow (Fire / Vermilion)
+   Reflects: Statement, Conditional, Repeat, Keyword
+   ============================================================================= */
 .highlight .k, .highlight .kn, .highlight .kp, .highlight .kr, .highlight .kv,
 .highlight .ow, .highlight .o {
-  color: #e05a55 !important;
-  font-weight: bold;
+    color: #e05a55 !important;
+    font-weight: bold;
 }
 
 /* =============================================================================
- 3 . Execution & Functions (Wood / Jade)                                  *
- Reflects: s:ForceSeoulismJade logic & FuncKey group
- ============================================================================= */
-/* Function names, Methods, and Attribute Names */
+   4. Action & Execution (Wood / Jade)
+   Reflects: Function names and methods
+   ============================================================================= */
 .highlight .nf, .highlight .fm, .highlight .na {
-  color: #3aa39a !important;
-  font-weight: bold;
+    color: #3aa39a !important;
+    font-weight: bold;
 }
-/* Built-in functions and Parameter-like built-ins */
-.highlight .nb, .highlight .bp {
-  color: #6bc0b6;
-  font-style: italic;
-}
+.highlight .nb { color: #6bc0b6; } /* Built-in functions */
 
 /* =============================================================================
- 4 . Structures & Types (Metal / White)                                   *
- Reflects: s:ForceSeoulismTypes (PascalCase & Typedefs)
- ============================================================================= */
-/* Types, Classes, Namespaces, and Tags */
-.highlight .kt, .highlight .kd, .highlight .nc, .highlight .no,
-.highlight .nn, .highlight .nt {
-  color: #efeeea !important;
-  font-style: italic;
-}
-
-/* =============================================================================
- 5 . Literals & Constants (Earth / Ochre & Gold)                          *
- Reflects: String, Number, Constant, Boolean
- ============================================================================= */
-/* Strings and regular numbers */
-.highlight .s, .highlight .sb, .highlight .sc, .highlight .dl,
-.highlight .sd, .highlight .s2, .highlight .sh, .highlight .sx,
-.highlight .s1, .highlight .m, .highlight .mb, .highlight .mf,
+   5. Data & Literals (Earth / Ochre & Gold)
+   Reflects: String, Number, Constant
+   ============================================================================= */
+.highlight .s, .highlight .sb, .highlight .sc, .highlight .dl, 
+.highlight .sd, .highlight .s2, .highlight .sh, .highlight .sx, 
+.highlight .s1, .highlight .m, .highlight .mb, .highlight .mf, 
 .highlight .mh, .highlight .mi, .highlight .il, .highlight .mo, .highlight .mx {
-  color: #e5c15a !important;
+    color: #e5c15a !important;
 }
-/* Booleans, Special Constants, and Symbols */
 .highlight .kc, .highlight .ss {
-  color: #f0d487 !important;
-  font-weight: bold;
+    color: #f0d487 !important;
+    font-weight: bold;
 }
 
 /* =============================================================================
- 6 . Meta & Non-Executing (Water / Muted Blue & Sky)                      *
- Reflects: Comment, PreProc, Include
- ============================================================================= */
-/* Comments */
-.highlight .c, .highlight .ch, .highlight .cd, .highlight .cm,
+   6. Environment & Shadow Logic (Water / Muted Blue & Charcoal)
+   Reflects: Comments and Control Characters (^[ , ^@)
+   ============================================================================= */
+/* Comments: Muted Blue */
+.highlight .c, .highlight .ch, .highlight .cd, .highlight .cm, 
 .highlight .c1, .highlight .cs {
-  color: #7f85ac !important;
-  font-style: italic;
+    color: #7f85ac !important;
+    font-style: italic;
 }
-/* Preprocessors, Macros, and Includes */
+
+/* Control Characters & Special Keys: Shadowed */
+/* Using Rouge tokens for special/escape characters */
+.highlight .gs, .highlight .ge, .highlight .si, .highlight .se {
+    color: #5f6770; /* s:p.charcoal: Shadow Logic */
+}
+
+/* Preprocessors: Sky Blue */
 .highlight .cp, .highlight .cpf, .highlight .ni {
-  color: #6f8ee6 !important;
+    color: #6f8ee6 !important;
 }
 
 /* =============================================================================
- 7 . Identifiers & Delimiters                                             *
- ============================================================================= */
-/* Generic identifiers and variables */
-.highlight .n, .highlight .nx, .highlight .nv, .highlight .vc, .highlight .vg, .highlight .vi {
-  color: #a6a598;
-}
-/* Punctuation and brackets (Charcoal) */
-.highlight .p, .highlight .pi {
-  color: #5f6770;
-}
+   7. Identifiers & Delimiters
+   ============================================================================= */
+.highlight .n, .highlight .nx, .highlight .nv { color: #a6a598; }
+.highlight .p, .highlight .pi { color: #5f6770; } /* Punctuation */
 
 /* =============================================================================
- 8 . Special States & Diff                                                *
- ============================================================================= */
+   8. Diagnostics & Status
+   ============================================================================= */
 .highlight .err {
-  color: #e77e79;
-  background-color: #111116;
-  font-weight: bold;
+    color: #e77e79;
+    background-color: #111116;
+    font-weight: bold;
 }
-.highlight .gi { color: #3abf86; } /* DiffAdd: Emerald */
-.highlight .gd { color: #e05a55; } /* DiffDelete: Vermilion */
-.highlight .gh { color: #6f8ee6; font-weight: bold; } /* DiffHeader: Sky */
