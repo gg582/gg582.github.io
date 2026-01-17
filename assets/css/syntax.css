@@ -11,6 +11,9 @@
 .highlight {
     background-color: #111116; /* s:p.bg */
     color: #a6a598;            /* s:p.fg */
+    overflow-x: auto;
+    white-space: pre-wrap;
+    word-break: break-all;
 }
 
 /* =============================================================================
