@@ -2,7 +2,7 @@ title:              Lee Yunjin's Blog
 email:              gg582@naver.com
 description:        Yunjin's Portfolio 
 author:             Lee Yunjin 
-baseurl:            "/startbootstrap-clean-blog-jekyll"
+baseurl:            ""
 url:                "https://gg582.github.io"
 markdown: kramdown
 highlighter: rouge
