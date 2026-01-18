@@ -1,8 +1,26 @@
 ---
-layout: post
+layout: knowledge-base
 title: "[단조스택]-Remove K Digits-LeetCode"
+subtitle: "단조 스택을 활용한 숫자 최소화 문제"
 date: 2026-01-18 15:56 +0900
 categories: [codingtest]
+taxonomy:
+  category: codingtest
+  subcategory: algorithm-data-structure
+  order: 2
+difficulty: intermediate
+keywords:
+  - 단조스택
+  - 스택
+  - LeetCode
+  - 알고리즘
+  - 그리디
+relationships:
+  related: []
+  references: []
+  prerequisite: []
+  extends: []
+  comparison: []
 ---
 
 ---

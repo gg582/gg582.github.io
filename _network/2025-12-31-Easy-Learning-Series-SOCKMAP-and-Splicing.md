@@ -1,8 +1,27 @@
 ---
-layout: post
+layout: knowledge-base
 title: Easy Learning Series-SOCKMAP and Splicing
+subtitle: "Kernel-level Network Optimization Techniques"
 date: 2025-12-31 11:00:00 +0900
 categories: [network]
+taxonomy:
+  category: network
+  subcategory: network-kernel
+  order: 2
+difficulty: advanced
+keywords:
+  - SOCKMAP
+  - Splicing
+  - TCP
+  - Kernel Networking
+  - Zero-copy
+relationships:
+  related:
+    - _network/2025-12-26-굴비와-예제로-공부해보는-SOCKMAP과-스플라이싱.md
+  references: []
+  prerequisite: []
+  extends: []
+  comparison: []
 ---
 
 # TCP Splicing: Gotcha, you reverse proxy!

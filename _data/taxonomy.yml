@@ -8,7 +8,6 @@ categories:
     name_ko: 네트워크 기술
     name_en: Network Technology
     description: 네트워크 프로토콜, 성능 최적화, 시스템 프로그래밍
-    icon: "🌐"
     subcategories:
       - id: network-protocol
         name: 프로토콜 연구
@@ -28,7 +27,6 @@ categories:
     name_ko: 임베디드 시스템
     name_en: Embedded Systems
     description: 임베디드 리눅스, 하드웨어 제어, IoT
-    icon: "🔧"
     subcategories:
       - id: embedded-hardware
         name: 하드웨어 제어
@@ -48,7 +46,6 @@ categories:
     name_ko: 알고리즘 문제풀이
     name_en: Algorithm Problem Solving
     description: 알고리즘 연구, 자료구조, 문제 해법
-    icon: "📊"
     subcategories:
       - id: algorithm-graph
         name: 그래프 탐색
@@ -72,7 +69,6 @@ categories:
     name_ko: 종합 기술
     name_en: General Technology
     description: 일반 프로그래밍, 시스템 설계, 개발 도구
-    icon: "💻"
     subcategories:
       - id: general-programming
         name: 프로그래밍 기법
@@ -92,27 +88,22 @@ relationship_types:
   - id: prerequisite
     name: 선수 지식
     description: 이 문서를 이해하기 위해 먼저 읽어야 할 문서
-    icon: "📚"
   
   - id: related
     name: 관련 문서
     description: 같은 주제나 개념을 다루는 문서
-    icon: "🔗"
   
   - id: extends
     name: 확장 개념
     description: 이 문서의 개념을 확장하거나 심화하는 문서
-    icon: "📈"
   
   - id: references
     name: 참조
     description: 이 문서에서 인용하거나 참조하는 문서
-    icon: "📖"
   
   - id: comparison
     name: 비교 대상
     description: 비교 분석을 위한 대조 문서
-    icon: "⚖️"
 
 # 難易度 分級 (Difficulty Levels)
 difficulty_levels:
