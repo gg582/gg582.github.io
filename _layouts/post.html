@@ -3,11 +3,25 @@ layout: default
 ---
 
 <!-- Page Header -->
-{% if page.background %}
-<header class="masthead" style="background-image: url('{{ page.background | prepend: site.baseurl | replace: '//', '/' }}')">
-  {% else %}
-  <header class="masthead">
-    {% endif %}
+{% assign background_image = page.background %}
+{% unless background_image %}
+  {% case page.collection %}
+    {% when 'codingtest' %}
+      {% assign background_image = '/img/bg-codingtest.jpg' %}
+    {% when 'embedded' %}
+      {% assign background_image = '/img/bg-embedded.jpg' %}
+    {% when 'network' %}
+      {% assign background_image = '/img/bg-network.jpg' %}
+    {% else %}
+      {% assign background_image = '/img/bg-post.jpg' %}
+  {% endcase %}
+{% endunless %}
+
+{% if background_image %}
+<header class="masthead" style="background-image: url('{{ background_image | prepend: site.baseurl | replace: '//', '/' }}')">
+{% else %}
+<header class="masthead">
+{% endif %}
     <div class="overlay"></div>
     <div class="container">
       <div class="row">
@@ -21,6 +35,7 @@ layout: default
               <a href="#">{% if page.author %}{{ page.author }}{% else %}{{ site.author }}{% endif %}</a>
               on {{ page.date | date: '%B %d, %Y' }} &middot; {% include read_time.html
               content=page.content %}
+              &middot; <img src="https://hits.seeyoufarm.com/api/count/incr/uri={{ site.url }}{{ page.url | cgi_escape | escape }}&total_style=unlimited&title_style=bold&icon_style=black&edge_flat=false" style="display:inline;height:13px;"/>
             </span>
           </div>
         </div>
