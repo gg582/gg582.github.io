@@ -52,7 +52,7 @@
   <!-- Prerequisites -->
   {% if page.relationships.prerequisite %}
   <div class="panel-section prerequisites-section">
-    <h3 class="panel-heading">📚 Prerequisites</h3>
+    <h3 class="panel-heading">Prerequisites</h3>
     <div class="panel-content">
       <ul class="reference-list">
         {% for prereq_path in page.relationships.prerequisite %}
@@ -73,7 +73,7 @@
   <!-- Cross References -->
   {% if page.relationships.references %}
   <div class="panel-section cross-ref-section">
-    <h3 class="panel-heading">📖 References</h3>
+    <h3 class="panel-heading">References</h3>
     <div class="panel-content">
       <ul class="reference-list">
         {% for ref_path in page.relationships.references %}
@@ -98,19 +98,16 @@
       <ul class="quick-links-list">
         <li>
           <a href="#" class="quick-link" id="copy-permalink">
-            <span class="link-icon">🔗</span>
             <span class="link-text">Copy Permalink</span>
           </a>
         </li>
         <li>
           <a href="#" class="quick-link" id="print-document">
-            <span class="link-icon">🖨️</span>
             <span class="link-text">Print Document</span>
           </a>
         </li>
         <li>
           <a href="https://github.com/gg582/gg582.github.io/edit/main/{{ page.path }}" class="quick-link" target="_blank">
-            <span class="link-icon">✏️</span>
             <span class="link-text">Suggest Edit</span>
           </a>
         </li>
