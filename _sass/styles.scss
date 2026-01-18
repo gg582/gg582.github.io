@@ -1,8 +1,8 @@
-// AI Refactoring: Import variable overrides first
-@import "refactor-vars";
-
 // Import Core Clean Blog SCSS
 @import "../assets/vendor/startbootstrap-clean-blog/scss/styles.scss";
+
+// AI Refactoring: Import variable overrides first
+@import "refactor-vars";
 
 // AI Refactoring: Import custom styles and layout overrides
 @import "refactor-styles";
@@ -148,7 +148,8 @@ pre code, .highlight code, .highlight .w {
 /*
  * Dark Mode Styles
  */
-background-color: #232328;
+body.dark-mode {
+  background-color: #232328;
   color: #f1f1f1;
 
   p, li, span, div {
@@ -272,6 +273,7 @@ background-color: #232328;
 
 
 }
+} // Closing brace for body.dark-mode
 
 footer .list-inline .fa-stack .fa-circle {
   color: #333; /* Dark gray for the circle background */
