@@ -148,8 +148,7 @@ pre code, .highlight code, .highlight .w {
 /*
  * Dark Mode Styles
  */
-body.dark-mode {
-  background-color: #2C3E50;
+background-color: #232328;
   color: #f1f1f1;
 
   p, li, span, div {
@@ -202,12 +201,11 @@ body.dark-mode {
     border-top: 1px solid #4a4a4a;
   }
   footer .list-inline .list-inline-item a {
-    color: #f1f1f1;
+    color: #DB4F20;
   }
   footer .list-inline .list-inline-item a:hover, footer .list-inline .list-inline-item a:focus {
-    color: #80bfff;
-  }
-  footer .copyright {
+    color: lighten(#DB4F20, 10%);
+  }  footer .copyright {
     color: #b0b0b0;
   }
 
