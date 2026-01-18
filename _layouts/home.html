@@ -34,7 +34,7 @@ layout: default
 
         <article class="post-preview">
           <a href="{{ post.url | prepend: site.baseurl | replace: '//', '/' }}">
-            <h2 class="post-title">{{ post.title }}</h2>
+            <h2 class="post-title">{{ post.title }} <img src="https://hits.seeyoufarm.com/api/count/incr/uri={{ site.url }}{{ post.url | cgi_escape | escape }}&total_style=unlimited&title_style=bold&icon_style=black&edge_flat=false" style="display:inline;height:20px;"/></h2>
             {% if post.subtitle %}
             <h3 class="post-subtitle">{{ post.subtitle }}</h3>
             {% else %}

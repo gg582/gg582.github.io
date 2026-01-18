@@ -27,7 +27,7 @@ layout: default
       <div class="row">
         <div class="col-lg-8 col-md-10 mx-auto">
           <div class="post-heading">
-            <h1>{{ page.title }}</h1>
+            <h1>{{ page.title }} <img src="https://hits.seeyoufarm.com/api/count/incr/uri={{ site.url }}{{ page.url | cgi_escape | escape }}&total_style=unlimited&title_style=bold&icon_style=black&edge_flat=false" style="display:inline;height:20px;"/></h1>
             {% if page.subtitle %}
             <h2 class="subheading">{{ page.subtitle }}</h2>
             {% endif %}
@@ -35,7 +35,6 @@ layout: default
               <a href="#">{% if page.author %}{{ page.author }}{% else %}{{ site.author }}{% endif %}</a>
               on {{ page.date | date: '%B %d, %Y' }} &middot; {% include read_time.html
               content=page.content %}
-              &middot; <img src="https://hits.seeyoufarm.com/api/count/incr/uri={{ site.url }}{{ page.url | cgi_escape | escape }}&total_style=unlimited&title_style=bold&icon_style=black&edge_flat=false" style="display:inline;height:13px;"/>
             </span>
           </div>
         </div>
