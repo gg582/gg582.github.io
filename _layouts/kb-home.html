@@ -45,7 +45,6 @@ layout: default
         {% for category in site.data.taxonomy.categories %}
         <div class="category-card">
           <a href="{{ site.baseurl }}/분류/{{ category.id }}" class="category-link">
-            <div class="category-icon">{{ category.icon }}</div>
             <div class="category-info">
               <h3 class="category-name">{{ category.name_ko }}</h3>
               <p class="category-desc">{{ category.description }}</p>
@@ -89,7 +88,7 @@ layout: default
               <div class="featured-header">
                 {% if doc.taxonomy %}
                 {% assign cat = site.data.taxonomy.categories | where: "id", doc.taxonomy.category | first %}
-                <span class="featured-category">{{ cat.icon }} {{ cat.name_ko }}</span>
+                <span class="featured-category">{{ cat.name_ko }}</span>
                 {% endif %}
                 {% if doc.difficulty %}
                 {% assign level = site.data.taxonomy.difficulty_levels | where: "id", doc.difficulty | first %}
@@ -115,7 +114,7 @@ layout: default
               <div class="featured-header">
                 {% if doc.taxonomy %}
                 {% assign cat = site.data.taxonomy.categories | where: "id", doc.taxonomy.category | first %}
-                <span class="featured-category">{{ cat.icon }} {{ cat.name_ko }}</span>
+                <span class="featured-category">{{ cat.name_ko }}</span>
                 {% endif %}
               </div>
               <h3 class="featured-title">
@@ -146,7 +145,7 @@ layout: default
               {% if doc.taxonomy %}
               {% assign cat = site.data.taxonomy.categories | where: "id", doc.taxonomy.category | first %}
               <div class="timeline-category">
-                {{ cat.icon }} {{ cat.name_ko }}
+                {{ cat.name_ko }}
                 {% if doc.taxonomy.subcategory %}
                 {% assign subcat = cat.subcategories | where: "id", doc.taxonomy.subcategory | first %}
                 › {{ subcat.name }}
@@ -179,7 +178,6 @@ layout: default
           {% for category in site.data.taxonomy.categories %}
           <div class="stat-card">
             {% assign cat_docs = site.documents | where_exp: "doc", "doc.taxonomy.category == category.id" %}
-            <div class="stat-icon">{{ category.icon }}</div>
             <div class="stat-number">{{ cat_docs.size }}</div>
             <div class="stat-label">{{ category.name_ko }}</div>
           </div>

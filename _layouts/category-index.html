@@ -8,13 +8,12 @@ layout: default
   <!-- Header -->
   <header class="category-header">
     <div class="breadcrumb-nav">
-      <a href="{{ '/' | relative_url }}">🏠 Knowledge Base</a>
+      <a href="{{ '/' | relative_url }}">Knowledge Base</a>
       <span class="separator">›</span>
       <span class="current">{{ page.category_name }}</span>
     </div>
     
     <h1 class="category-title">
-      <span class="category-icon">{{ page.category_icon }}</span>
       {{ page.category_name }}
     </h1>
     
@@ -24,7 +23,7 @@ layout: default
     
     <div class="category-stats">
       {% assign category_docs = site.documents | where_exp: "doc", "doc.taxonomy.category == page.category_id" %}
-      <span class="stat-item">📚 {{ category_docs.size }} documents</span>
+      <span class="stat-item">{{ category_docs.size }} documents</span>
     </div>
   </header>
 
@@ -155,7 +154,7 @@ layout: default
 
   <!-- Document End Marker -->
   <div class="document-end-marker">
-    <span>── 下略 ──</span>
+    <span>── 하략 ──</span>
   </div>
 </div>
 
