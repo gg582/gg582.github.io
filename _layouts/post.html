@@ -27,16 +27,18 @@ layout: default
       <div class="row">
         <div class="col-lg-8 col-md-10 mx-auto">
           <div class="post-heading">
+            <!-- Positional Authority: Metadata in top-right (traditional document position) -->
+            <div class="meta" style="position: absolute; right: 0; top: 0; text-align: right; max-width: 250px; line-height: 1.8;">
+              <div style="margin-bottom: 0.3rem;">{{ page.date | date: '%Y-%m-%d' }}</div>
+              <div style="margin-bottom: 0.3rem;">작성: {% if page.author %}{{ page.author }}{% else %}{{ site.author }}{% endif %}</div>
+              <div>{% include read_time.html content=page.content %}</div>
+              <div><span id="busuanzi_container_page_pv"><span id="busuanzi_value_page_pv"></span> 조회</span></div>
+            </div>
+            
             <h1>{{ page.title }}</h1>
             {% if page.subtitle %}
-            <h2 class="subheading">{{ page.subtitle }}</h2>
+            <h2 class="subheading" style="padding-left: 2rem;">{{ page.subtitle }}</h2>
             {% endif %}
-            <span class="meta">Posted by
-              {% if page.author %}{{ page.author }}{% else %}{{ site.author }}{% endif %}
-              on {{ page.date | date: '%Y-%m-%d' }} &middot; {% include read_time.html
-              content=page.content %}
-            &middot; <span id="busuanzi_container_page_pv"><span id="busuanzi_value_page_pv"></span> views</span>
-            </span>
           </div>
         </div>
       </div>
@@ -56,12 +58,12 @@ layout: default
         <div class="clearfix">
 
           {% if page.previous.url %}
-          <a class="btn btn-primary float-left" href="{{ page.previous.url | prepend: site.baseurl | replace: '//', '/' }}" data-toggle="tooltip" data-placement="top" title="{{ page.previous.title }}">&larr; Previous<span class="d-none d-md-inline">
-              Post</span></a>
+          <a class="btn btn-primary float-left" href="{{ page.previous.url | prepend: site.baseurl | replace: '//', '/' }}" data-toggle="tooltip" data-placement="top" title="{{ page.previous.title }}">&larr; 이전<span class="d-none d-md-inline">
+              글</span></a>
           {% endif %}
           {% if page.next.url %}
-          <a class="btn btn-primary float-right" href="{{ page.next.url | prepend: site.baseurl | replace: '//', '/' }}" data-toggle="tooltip" data-placement="top" title="{{ page.next.title }}">Next<span class="d-none d-md-inline">
-              Post</span> &rarr;</a>
+          <a class="btn btn-primary float-right" href="{{ page.next.url | prepend: site.baseurl | replace: '//', '/' }}" data-toggle="tooltip" data-placement="top" title="{{ page.next.title }}">다음<span class="d-none d-md-inline">
+              글</span> &rarr;</a>
           {% endif %}
 
         </div>
