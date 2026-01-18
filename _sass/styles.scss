@@ -98,27 +98,32 @@ pre code, .highlight code, .highlight .w {
 }
 
 /*
- * Masthead Text Readability Styles
- * Applies a solid outline via text-shadow to ensure readability against varied backgrounds.
+ * Adaptive Masthead Text Color
+ * Based on background image brightness, detected by JavaScript.
  */
-.masthead .site-heading h1,
-.masthead .page-heading h1,
-.masthead .post-heading h1,
-.masthead .subheading,
-.masthead .meta {
-    color: #fff;
-    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+.masthead.light-bg .site-heading h1,
+.masthead.light-bg .page-heading h1,
+.masthead.light-bg .post-heading h1,
+.masthead.light-bg .subheading,
+.masthead.light-bg .meta {
+  color: #1A1A1A; /* Dark text for light backgrounds */
+  text-shadow: -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff; /* White outline */
 }
+
+.masthead.dark-bg .site-heading h1,
+.masthead.dark-bg .page-heading h1,
+.masthead.dark-bg .post-heading h1,
+.masthead.dark-bg .subheading,
+.masthead.dark-bg .meta {
+  color: #fff; /* White text for dark backgrounds */
+  text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000; /* Black outline */
+}
+
 
 /*
  * Dark Mode Styles
  */
 body.dark-mode {
-  .masthead {
-    /* Darken the background image in dark mode for better text contrast */
-    filter: brightness(0.7) grayscale(0.2);
-  }
-
   body {
     background-color: #1c1c1e;
     color: #f1f1f1;
@@ -192,20 +197,6 @@ body.dark-mode {
   #mainNav .navbar-brand:focus {
     background-color: darken($dark-mode-contrast, 10%) !important;
     color: #1A1A1A !important;
-  }
-
-  /* Dark mode masthead text - use light text with solid white outline */
-  .masthead .site-heading h1,
-  .masthead .page-heading h1,
-  .masthead .post-heading h1 {
-    color: $gray-200; /* Use a light color from variables */
-    text-shadow: -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff;
-  }
-
-  .masthead .subheading,
-  .masthead .meta {
-    color: $gray-300; /* Use a slightly darker light color */
-    text-shadow: -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff;
   }
 
   .masthead .overlay {
