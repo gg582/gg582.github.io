@@ -201,11 +201,18 @@ background-color: #232328;
     border-top: 1px solid #4a4a4a;
   }
   footer .list-inline .list-inline-item a {
-    color: #DB4F20;
+    // Remove color setting for the anchor tag to prevent it from affecting the icons
   }
   footer .list-inline .list-inline-item a:hover, footer .list-inline .list-inline-item a:focus {
-    color: lighten(#DB4F20, 10%);
-  }  footer .copyright {
+    // Remove color setting for the anchor tag to prevent it from affecting the icons
+  }
+  footer .list-inline .list-inline-item .fa-stack .fa-circle {
+    color: #333; /* Dark gray for the circle background in dark mode */
+  }
+  footer .list-inline .list-inline-item .fa-stack .fa-inverse {
+    color: #fff; /* White for the icon in dark mode */
+  }
+  footer .copyright {
     color: #b0b0b0;
   }
 
@@ -264,6 +271,14 @@ background-color: #232328;
   }
 
 
+}
+
+footer .list-inline .fa-stack .fa-circle {
+  color: #333; /* Dark gray for the circle background */
+}
+
+footer .list-inline .fa-stack .fa-inverse {
+  color: #fff; /* White for the icon */
 }
 
 #theme-toggle {
