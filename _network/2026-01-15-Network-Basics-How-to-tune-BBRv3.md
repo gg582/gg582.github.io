@@ -1,8 +1,27 @@
 ---
-layout: post
+layout: knowledge-base
 title: Network Basics - How to Tune BBRv3
+subtitle: "TCP BBRv3 혼잡제어 알고리즘 튜닝 가이드"
 date: 2026-01-15 12:30:00 +0900
 categories: [network]
+taxonomy:
+  category: network
+  subcategory: network-performance
+  order: 2
+difficulty: expert
+keywords:
+  - BBRv3
+  - TCP 혼잡제어
+  - 알고리즘 튜닝
+  - 네트워크 최적화
+relationships:
+  related:
+    - _network/2025-12-23-BBRv1을-튜닝해서-지터를-더-줄여보자.md
+  references: []
+  prerequisite: []
+  extends:
+    - _network/2025-12-23-BBRv1을-튜닝해서-지터를-더-줄여보자.md
+  comparison: []
 ---
 
 # Tuning the standard algorithm: Holy Grail shouldn't hold Coca-Cola

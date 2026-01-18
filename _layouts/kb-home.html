@@ -1,0 +1,202 @@
+---
+layout: default
+---
+
+<!-- Knowledge Base Home -->
+<!-- Classification-first navigation, not chronological -->
+
+<!-- Page Header with Background Support -->
+{% if page.background %}
+<header class="masthead" style="background-image: url('{{ page.background | prepend: site.baseurl | replace: '//', '/' }}')">
+{% else %}
+<header class="masthead">
+{% endif %}
+  <div class="overlay"></div>
+  <div class="container-fluid px-lg-5">
+    <div class="row">
+      <div class="col-lg-10 col-md-11">
+        <div class="site-heading">
+          <h1>{{ site.title }}</h1>
+          {% if site.description %}
+          <span class="subheading">{{ site.description }}</span>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="kb-home-container">
+  <div class="container-fluid px-lg-5">
+    <div class="row">
+      <div class="col-lg-10 col-md-11">
+  
+  <!-- Main Grid Layout -->
+  <div class="kb-home-grid">
+    
+    <!-- Left: Category Navigation -->
+    <aside class="kb-home-sidebar">
+      <div class="sidebar-header">
+        <h2>Knowledge Classification</h2>
+        <p>분류 체계</p>
+      </div>
+      
+      <nav class="category-nav">
+        {% for category in site.data.taxonomy.categories %}
+        <div class="category-card">
+          <a href="{{ site.baseurl }}/분류/{{ category.id }}" class="category-link">
+            <div class="category-icon">{{ category.icon }}</div>
+            <div class="category-info">
+              <h3 class="category-name">{{ category.name_ko }}</h3>
+              <p class="category-desc">{{ category.description }}</p>
+              <div class="category-stats">
+                {% assign cat_docs = site.documents | where_exp: "doc", "doc.taxonomy.category == category.id" %}
+                <span class="doc-count">{{ cat_docs.size }} docs</span>
+              </div>
+            </div>
+          </a>
+          
+          <!-- Subcategories preview -->
+          {% if category.subcategories %}
+          <ul class="subcategory-preview">
+            {% for subcat in category.subcategories limit: 3 %}
+            <li>
+              <a href="{{ site.baseurl }}/분류/{{ category.id }}/{{ subcat.id }}">
+                {{ subcat.name }}
+              </a>
+            </li>
+            {% endfor %}
+          </ul>
+          {% endif %}
+        </div>
+        {% endfor %}
+      </nav>
+    </aside>
+
+    <!-- Right: Recent & Featured Content -->
+    <main class="kb-home-main">
+      
+      <!-- Featured Documents -->
+      <section class="featured-section">
+        <h2 class="section-title">Featured Documents</h2>
+        <p class="section-subtitle">주요 문서</p>
+        
+        <div class="featured-grid">
+          {% assign featured = site.documents | where: "featured", true | sort: "date" | reverse %}
+          {% if featured.size > 0 %}
+            {% for doc in featured limit: 3 %}
+            <article class="featured-card">
+              <div class="featured-header">
+                {% if doc.taxonomy %}
+                {% assign cat = site.data.taxonomy.categories | where: "id", doc.taxonomy.category | first %}
+                <span class="featured-category">{{ cat.icon }} {{ cat.name_ko }}</span>
+                {% endif %}
+                {% if doc.difficulty %}
+                {% assign level = site.data.taxonomy.difficulty_levels | where: "id", doc.difficulty | first %}
+                <span class="featured-difficulty" style="background: {{ level.color }};">{{ level.name_ko }}</span>
+                {% endif %}
+              </div>
+              <h3 class="featured-title">
+                <a href="{{ doc.url | relative_url }}">{{ doc.title }}</a>
+              </h3>
+              {% if doc.subtitle %}
+              <p class="featured-subtitle">{{ doc.subtitle }}</p>
+              {% endif %}
+              <div class="featured-meta">
+                <span>{{ doc.date | date: "%Y-%m-%d" }}</span>
+              </div>
+            </article>
+            {% endfor %}
+          {% else %}
+            <!-- Fallback: show recent documents -->
+            {% assign recent = site.documents | sort: "date" | reverse %}
+            {% for doc in recent limit: 3 %}
+            <article class="featured-card">
+              <div class="featured-header">
+                {% if doc.taxonomy %}
+                {% assign cat = site.data.taxonomy.categories | where: "id", doc.taxonomy.category | first %}
+                <span class="featured-category">{{ cat.icon }} {{ cat.name_ko }}</span>
+                {% endif %}
+              </div>
+              <h3 class="featured-title">
+                <a href="{{ doc.url | relative_url }}">{{ doc.title }}</a>
+              </h3>
+              <div class="featured-meta">
+                <span>{{ doc.date | date: "%Y-%m-%d" }}</span>
+              </div>
+            </article>
+            {% endfor %}
+          {% endif %}
+        </div>
+      </section>
+
+      <!-- Recent Updates -->
+      <section class="recent-section">
+        <h2 class="section-title">Recent Updates</h2>
+        <p class="section-subtitle">최근 업데이트</p>
+        
+        <div class="document-timeline">
+          {% assign recent_docs = site.documents | sort: "date" | reverse %}
+          {% for doc in recent_docs limit: 10 %}
+          <article class="timeline-item">
+            <div class="timeline-date">
+              {{ doc.date | date: "%Y-%m-%d" }}
+            </div>
+            <div class="timeline-content">
+              {% if doc.taxonomy %}
+              {% assign cat = site.data.taxonomy.categories | where: "id", doc.taxonomy.category | first %}
+              <div class="timeline-category">
+                {{ cat.icon }} {{ cat.name_ko }}
+                {% if doc.taxonomy.subcategory %}
+                {% assign subcat = cat.subcategories | where: "id", doc.taxonomy.subcategory | first %}
+                › {{ subcat.name }}
+                {% endif %}
+              </div>
+              {% endif %}
+              <h3 class="timeline-title">
+                <a href="{{ doc.url | relative_url }}">{{ doc.title }}</a>
+              </h3>
+            </div>
+          </article>
+          {% endfor %}
+        </div>
+        
+        <div class="view-all-link">
+          <a href="{{ '/전체목록' | relative_url }}" class="btn-view-all">
+            View All Documents →
+          </a>
+        </div>
+      </section>
+
+      <!-- Statistics -->
+      <section class="stats-section">
+        <h2 class="section-title">Knowledge Base Statistics</h2>
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-number">{{ site.documents.size }}</div>
+            <div class="stat-label">Total Documents</div>
+          </div>
+          {% for category in site.data.taxonomy.categories %}
+          <div class="stat-card">
+            {% assign cat_docs = site.documents | where_exp: "doc", "doc.taxonomy.category == category.id" %}
+            <div class="stat-icon">{{ category.icon }}</div>
+            <div class="stat-number">{{ cat_docs.size }}</div>
+            <div class="stat-label">{{ category.name_ko }}</div>
+          </div>
+          {% endfor %}
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Document End Marker -->
+  <div class="document-end">
+    하략
+  </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+

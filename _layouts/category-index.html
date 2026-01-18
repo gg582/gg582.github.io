@@ -1,0 +1,452 @@
+---
+layout: default
+---
+
+<!-- Category Index Page -->
+<div class="category-index-container">
+  
+  <!-- Header -->
+  <header class="category-header">
+    <div class="breadcrumb-nav">
+      <a href="{{ '/' | relative_url }}">🏠 Knowledge Base</a>
+      <span class="separator">›</span>
+      <span class="current">{{ page.category_name }}</span>
+    </div>
+    
+    <h1 class="category-title">
+      <span class="category-icon">{{ page.category_icon }}</span>
+      {{ page.category_name }}
+    </h1>
+    
+    {% if page.category_description %}
+    <p class="category-description">{{ page.category_description }}</p>
+    {% endif %}
+    
+    <div class="category-stats">
+      {% assign category_docs = site.documents | where_exp: "doc", "doc.taxonomy.category == page.category_id" %}
+      <span class="stat-item">📚 {{ category_docs.size }} documents</span>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <div class="category-content">
+    
+    <!-- Subcategories Grid -->
+    {% if page.subcategories %}
+    <section class="subcategories-section">
+      <h2 class="section-heading">Subcategories</h2>
+      
+      <div class="subcategories-grid">
+        {% for subcat in page.subcategories %}
+        <div class="subcategory-card">
+          <h3 class="subcategory-name">
+            <a href="{{ site.baseurl }}/분류/{{ page.category_id }}/{{ subcat.id }}">
+              {{ subcat.name }}
+            </a>
+          </h3>
+          <p class="subcategory-desc">{{ subcat.description }}</p>
+          
+          {% assign subcat_docs = site.documents | where_exp: "doc", "doc.taxonomy.subcategory == subcat.id" %}
+          <div class="subcategory-stats">
+            <span>{{ subcat_docs.size }} docs</span>
+          </div>
+          
+          <!-- Preview documents -->
+          {% if subcat_docs.size > 0 %}
+          <ul class="document-preview">
+            {% for doc in subcat_docs limit: 3 %}
+            <li>
+              <a href="{{ doc.url | relative_url }}">{{ doc.title }}</a>
+            </li>
+            {% endfor %}
+          </ul>
+          {% endif %}
+        </div>
+        {% endfor %}
+      </div>
+    </section>
+    {% endif %}
+
+    <!-- All Documents in Category -->
+    <section class="documents-section">
+      <h2 class="section-heading">Document List</h2>
+      
+      <!-- Group by subcategory if available -->
+      {% if page.subcategories %}
+        {% for subcat in page.subcategories %}
+        {% assign subcat_docs = site.documents | where_exp: "doc", "doc.taxonomy.subcategory == subcat.id" | sort: "taxonomy.order" %}
+        
+        {% if subcat_docs.size > 0 %}
+        <div class="document-group">
+          <h3 class="group-heading">{{ subcat.name }}</h3>
+          
+          <div class="document-list">
+            {% for doc in subcat_docs %}
+            <article class="document-item">
+              <div class="document-meta">
+                <span class="doc-date">{{ doc.date | date: "%Y-%m-%d" }}</span>
+                {% if doc.difficulty %}
+                {% assign level = site.data.taxonomy.difficulty_levels | where: "id", doc.difficulty | first %}
+                <span class="doc-difficulty difficulty-{{ doc.difficulty }}" style="background: {{ level.color }};">
+                  {{ level.name_ko }}
+                </span>
+                {% endif %}
+              </div>
+              
+              <h4 class="document-title">
+                <a href="{{ doc.url | relative_url }}">{{ doc.title }}</a>
+              </h4>
+              
+              {% if doc.subtitle %}
+              <p class="document-subtitle">{{ doc.subtitle }}</p>
+              {% endif %}
+              
+              {% if doc.keywords %}
+              <div class="document-keywords">
+                {% for keyword in doc.keywords limit: 5 %}
+                <span class="keyword-tag">{{ keyword }}</span>
+                {% endfor %}
+              </div>
+              {% endif %}
+            </article>
+            {% endfor %}
+          </div>
+        </div>
+        {% endif %}
+        {% endfor %}
+      {% else %}
+        <!-- No subcategories, list all documents -->
+        <div class="document-list">
+          {% assign all_docs = site.documents | where_exp: "doc", "doc.taxonomy.category == page.category_id" | sort: "date" | reverse %}
+          
+          {% for doc in all_docs %}
+          <article class="document-item">
+            <div class="document-meta">
+              <span class="doc-date">{{ doc.date | date: "%Y-%m-%d" }}</span>
+              {% if doc.difficulty %}
+              {% assign level = site.data.taxonomy.difficulty_levels | where: "id", doc.difficulty | first %}
+              <span class="doc-difficulty difficulty-{{ doc.difficulty }}" style="background: {{ level.color }};">
+                {{ level.name_ko }}
+              </span>
+              {% endif %}
+            </div>
+            
+            <h4 class="document-title">
+              <a href="{{ doc.url | relative_url }}">{{ doc.title }}</a>
+            </h4>
+            
+            {% if doc.subtitle %}
+            <p class="document-subtitle">{{ doc.subtitle }}</p>
+            {% endif %}
+            
+            {% if doc.keywords %}
+            <div class="document-keywords">
+              {% for keyword in doc.keywords limit: 5 %}
+              <span class="keyword-tag">{{ keyword }}</span>
+              {% endfor %}
+            </div>
+            {% endif %}
+          </article>
+          {% endfor %}
+        </div>
+      {% endif %}
+    </section>
+  </div>
+
+  <!-- Document End Marker -->
+  <div class="document-end-marker">
+    <span>── 下略 ──</span>
+  </div>
+</div>
+
+<style>
+.category-index-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 100px 2rem 4rem;
+}
+
+.category-header {
+  margin-bottom: 4rem;
+  padding-bottom: 2rem;
+  border-bottom: 2px solid #e0e0e0;
+  
+  .breadcrumb-nav {
+    font-size: 0.9rem;
+    margin-bottom: 1.5rem;
+    color: #718096;
+    
+    a {
+      color: #4a5568;
+      text-decoration: none;
+      
+      &:hover {
+        color: #3182ce;
+      }
+    }
+    
+    .separator {
+      margin: 0 0.5rem;
+    }
+    
+    .current {
+      color: #2d3748;
+      font-weight: 600;
+    }
+  }
+  
+  .category-title {
+    font-size: 3rem;
+    font-weight: 700;
+    margin: 0 0 1rem 0;
+    color: #2d3748;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    
+    .category-icon {
+      font-size: 3rem;
+    }
+  }
+  
+  .category-description {
+    font-size: 1.2rem;
+    color: #718096;
+    margin: 0 0 1.5rem 0;
+  }
+  
+  .category-stats {
+    font-size: 1rem;
+    color: #4a5568;
+    
+    .stat-item {
+      margin-right: 1.5rem;
+    }
+  }
+}
+
+.section-heading {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin: 0 0 2rem 0;
+  color: #2d3748;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #e0e0e0;
+}
+
+.subcategories-section {
+  margin-bottom: 4rem;
+}
+
+.subcategories-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.subcategory-card {
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 1.5rem;
+  transition: all 0.3s;
+  
+  &:hover {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    transform: translateY(-2px);
+  }
+  
+  .subcategory-name {
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin: 0 0 0.8rem 0;
+    
+    a {
+      color: #2d3748;
+      text-decoration: none;
+      
+      &:hover {
+        color: #3182ce;
+      }
+    }
+  }
+  
+  .subcategory-desc {
+    font-size: 0.95rem;
+    color: #718096;
+    margin: 0 0 1rem 0;
+  }
+  
+  .subcategory-stats {
+    font-size: 0.85rem;
+    color: #a0aec0;
+    margin-bottom: 1rem;
+  }
+  
+  .document-preview {
+    list-style: none;
+    padding: 0;
+    margin: 1rem 0 0 0;
+    border-top: 1px solid #e0e0e0;
+    padding-top: 1rem;
+    
+    li {
+      margin-bottom: 0.5rem;
+      
+      a {
+        font-size: 0.9rem;
+        color: #4a5568;
+        text-decoration: none;
+        
+        &:hover {
+          color: #3182ce;
+        }
+        
+        &::before {
+          content: "→ ";
+          color: #cbd5e0;
+        }
+      }
+    }
+  }
+}
+
+.documents-section {
+  margin-bottom: 4rem;
+}
+
+.document-group {
+  margin-bottom: 3rem;
+  
+  .group-heading {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #4a5568;
+    margin: 0 0 1.5rem 0;
+    padding-left: 1rem;
+    border-left: 4px solid #3182ce;
+  }
+}
+
+.document-list {
+  .document-item {
+    padding: 1.5rem;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    margin-bottom: 1rem;
+    background: white;
+    transition: all 0.2s;
+    
+    &:hover {
+      border-color: #3182ce;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+    
+    .document-meta {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 0.8rem;
+      align-items: center;
+      
+      .doc-date {
+        font-size: 0.85rem;
+        color: #718096;
+        font-weight: 600;
+      }
+      
+      .doc-difficulty {
+        font-size: 0.75rem;
+        padding: 0.2rem 0.6rem;
+        border-radius: 3px;
+        color: white;
+        font-weight: 600;
+      }
+    }
+    
+    .document-title {
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin: 0 0 0.5rem 0;
+      
+      a {
+        color: #2d3748;
+        text-decoration: none;
+        
+        &:hover {
+          color: #3182ce;
+        }
+      }
+    }
+    
+    .document-subtitle {
+      font-size: 0.95rem;
+      color: #718096;
+      margin: 0 0 1rem 0;
+    }
+    
+    .document-keywords {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      
+      .keyword-tag {
+        font-size: 0.8rem;
+        padding: 0.3rem 0.6rem;
+        background: #e6fffa;
+        color: #234e52;
+        border-radius: 3px;
+      }
+    }
+  }
+}
+
+body.dark-mode {
+  .category-header {
+    border-bottom-color: #4a5568;
+    
+    .category-title {
+      color: #f7fafc;
+    }
+    
+    .breadcrumb-nav .current {
+      color: #e2e8f0;
+    }
+  }
+  
+  .section-heading {
+    color: #f7fafc;
+    border-bottom-color: #4a5568;
+  }
+  
+  .subcategory-card,
+  .document-item {
+    background: #2d3748;
+    border-color: #4a5568;
+    
+    &:hover {
+      border-color: #4299e1;
+    }
+  }
+  
+  .subcategory-name a,
+  .document-title a {
+    color: #e2e8f0;
+    
+    &:hover {
+      color: #63b3ed;
+    }
+  }
+  
+  .document-preview {
+    border-top-color: #4a5568;
+    
+    a {
+      color: #cbd5e0;
+      
+      &:hover {
+        color: #63b3ed;
+      }
+    }
+  }
+}
+</style>

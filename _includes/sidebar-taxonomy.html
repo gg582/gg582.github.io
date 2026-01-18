@@ -1,0 +1,97 @@
+<!-- Hierarchical Taxonomy Tree Navigation -->
+<nav class="taxonomy-tree" aria-label="Knowledge Classification Navigation">
+  <div class="taxonomy-header">
+    <h2>Knowledge Classification</h2>
+    <p class="taxonomy-subtitle">분류 체계</p>
+  </div>
+
+  <div class="taxonomy-tree-content">
+    {% for category in site.data.taxonomy.categories %}
+    <div class="taxonomy-category" data-category="{{ category.id }}">
+      <!-- Category Header -->
+      <div class="category-header {% if page.taxonomy.category == category.id %}active{% endif %}">
+        <button class="category-toggle" aria-expanded="false" aria-controls="category-{{ category.id }}">
+          <span class="category-icon">{{ category.icon }}</span>
+          <span class="category-name">{{ category.name_ko }}</span>
+          <span class="category-count">
+            {% assign category_posts = site.documents | where_exp: "doc", "doc.taxonomy.category == category.id" %}
+            ({{ category_posts.size }})
+          </span>
+        </button>
+      </div>
+
+      <!-- Subcategories -->
+      <div class="category-children" id="category-{{ category.id }}">
+        {% if category.subcategories %}
+        <ul class="subcategory-list">
+          {% for subcategory in category.subcategories %}
+          <li class="subcategory-item {% if page.taxonomy.subcategory == subcategory.id %}active{% endif %}">
+            <a href="{{ site.baseurl }}/분류/{{ category.id }}/{{ subcategory.id }}" class="subcategory-link">
+              <span class="subcategory-name">{{ subcategory.name }}</span>
+              <span class="subcategory-count">
+                {% assign subcat_posts = site.documents | where_exp: "doc", "doc.taxonomy.subcategory == subcategory.id" %}
+                ({{ subcat_posts.size }})
+              </span>
+            </a>
+            
+            <!-- Document list under subcategory (shown when active) -->
+            {% if page.taxonomy.subcategory == subcategory.id %}
+            <ul class="document-list">
+              {% assign docs = site.documents | where_exp: "doc", "doc.taxonomy.subcategory == subcategory.id" | sort: "taxonomy.order" %}
+              {% for doc in docs %}
+              <li class="document-item {% if page.url == doc.url %}current{% endif %}">
+                <a href="{{ doc.url | relative_url }}" class="document-link">
+                  {{ doc.title }}
+                </a>
+              </li>
+              {% endfor %}
+            </ul>
+            {% endif %}
+          </li>
+          {% endfor %}
+        </ul>
+        {% endif %}
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <!-- Quick Navigation -->
+  <div class="taxonomy-quick-nav">
+    <h3>Quick Navigation</h3>
+    <ul class="quick-nav-list">
+      <li><a href="{{ '/' | relative_url }}">🏠 Knowledge Base Home</a></li>
+      <li><a href="{{ '/전체목록' | relative_url }}">📚 Complete Catalog</a></li>
+      <li><a href="{{ '/색인' | relative_url }}">🔍 Index</a></li>
+    </ul>
+  </div>
+</nav>
+
+<script>
+// Taxonomy tree toggle functionality
+document.addEventListener('DOMContentLoaded', function() {
+  const categoryToggles = document.querySelectorAll('.category-toggle');
+  
+  categoryToggles.forEach(toggle => {
+    toggle.addEventListener('click', function() {
+      const categoryId = this.closest('.taxonomy-category').dataset.category;
+      const children = document.getElementById('category-' + categoryId);
+      const isExpanded = this.getAttribute('aria-expanded') === 'true';
+      
+      this.setAttribute('aria-expanded', !isExpanded);
+      children.classList.toggle('expanded');
+    });
+  });
+
+  // Auto-expand current category
+  const activeCategory = document.querySelector('.taxonomy-category .category-header.active');
+  if (activeCategory) {
+    const toggle = activeCategory.querySelector('.category-toggle');
+    const categoryId = activeCategory.closest('.taxonomy-category').dataset.category;
+    const children = document.getElementById('category-' + categoryId);
+    
+    toggle.setAttribute('aria-expanded', 'true');
+    children.classList.add('expanded');
+  }
+});
+</script>

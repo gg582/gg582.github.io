@@ -1,0 +1,128 @@
+<!-- Related Documents Section -->
+<div class="related-documents">
+  <h3 class="section-heading">Related Documents</h3>
+
+  {% assign has_relations = false %}
+
+  <!-- Prerequisites -->
+  {% if page.relationships.prerequisite %}
+  {% assign has_relations = true %}
+  <div class="relation-group">
+    <h4 class="relation-type">📚 Prerequisites</h4>
+    <p class="relation-description">Concepts to understand before reading this document</p>
+    <ul class="document-list">
+      {% for prereq_path in page.relationships.prerequisite %}
+        {% assign prereq = site.documents | where: "path", prereq_path | first %}
+        {% if prereq %}
+        <li class="document-item">
+          <a href="{{ prereq.url | relative_url }}" class="document-link">
+            <span class="document-title">{{ prereq.title }}</span>
+            {% if prereq.taxonomy %}
+            {% assign cat = site.data.taxonomy.categories | where: "id", prereq.taxonomy.category | first %}
+            <span class="document-category">{{ cat.icon }} {{ cat.name_ko }}</span>
+            {% endif %}
+          </a>
+        </li>
+        {% endif %}
+      {% endfor %}
+    </ul>
+  </div>
+  {% endif %}
+
+  <!-- Related Documents -->
+  {% if page.relationships.related %}
+  {% assign has_relations = true %}
+  <div class="relation-group">
+    <h4 class="relation-type">🔗 Related Topics</h4>
+    <p class="relation-description">Documents on the same topic or concept</p>
+    <ul class="document-list">
+      {% for related_path in page.relationships.related %}
+        {% assign related = site.documents | where: "path", related_path | first %}
+        {% if related %}
+        <li class="document-item">
+          <a href="{{ related.url | relative_url }}" class="document-link">
+            <span class="document-title">{{ related.title }}</span>
+            {% if related.taxonomy %}
+            {% assign cat = site.data.taxonomy.categories | where: "id", related.taxonomy.category | first %}
+            <span class="document-category">{{ cat.icon }} {{ cat.name_ko }}</span>
+            {% endif %}
+          </a>
+        </li>
+        {% endif %}
+      {% endfor %}
+    </ul>
+  </div>
+  {% endif %}
+
+  <!-- Extended Concepts -->
+  {% if page.relationships.extends %}
+  {% assign has_relations = true %}
+  <div class="relation-group">
+    <h4 class="relation-type">📈 Extended Concepts</h4>
+    <p class="relation-description">Deepening and extending this document's concepts</p>
+    <ul class="document-list">
+      {% for extend_path in page.relationships.extends %}
+        {% assign extend = site.documents | where: "path", extend_path | first %}
+        {% if extend %}
+        <li class="document-item">
+          <a href="{{ extend.url | relative_url }}" class="document-link">
+            <span class="document-title">{{ extend.title }}</span>
+            {% if extend.taxonomy %}
+            {% assign cat = site.data.taxonomy.categories | where: "id", extend.taxonomy.category | first %}
+            <span class="document-category">{{ cat.icon }} {{ cat.name_ko }}</span>
+            {% endif %}
+          </a>
+        </li>
+        {% endif %}
+      {% endfor %}
+    </ul>
+  </div>
+  {% endif %}
+
+  <!-- Comparison Documents -->
+  {% if page.relationships.comparison %}
+  {% assign has_relations = true %}
+  <div class="relation-group">
+    <h4 class="relation-type">⚖️ Comparison</h4>
+    <p class="relation-description">Related technologies or concepts for comparison</p>
+    <ul class="document-list">
+      {% for comp_path in page.relationships.comparison %}
+        {% assign comp = site.documents | where: "path", comp_path | first %}
+        {% if comp %}
+        <li class="document-item">
+          <a href="{{ comp.url | relative_url }}" class="document-link">
+            <span class="document-title">{{ comp.title }}</span>
+            {% if comp.taxonomy %}
+            {% assign cat = site.data.taxonomy.categories | where: "id", comp.taxonomy.category | first %}
+            <span class="document-category">{{ cat.icon }} {{ cat.name_ko }}</span>
+            {% endif %}
+          </a>
+        </li>
+        {% endif %}
+      {% endfor %}
+    </ul>
+  </div>
+  {% endif %}
+
+  <!-- Auto-suggested related documents (same category/subcategory) -->
+  {% unless has_relations %}
+  <div class="relation-group">
+    <h4 class="relation-type">🔗 Same Category</h4>
+    <p class="relation-description">Other documents in the same category</p>
+    <ul class="document-list">
+      {% assign related_docs = site.documents | where_exp: "doc", "doc.taxonomy.category == page.taxonomy.category" | where_exp: "doc", "doc.url != page.url" | sample: 5 %}
+      {% for doc in related_docs limit: 5 %}
+      <li class="document-item">
+        <a href="{{ doc.url | relative_url }}" class="document-link">
+          <span class="document-title">{{ doc.title }}</span>
+          {% if doc.taxonomy %}
+          {% assign cat = site.data.taxonomy.categories | where: "id", doc.taxonomy.category | first %}
+          <span class="document-category">{{ cat.icon }} {{ cat.name_ko }}</span>
+          {% endif %}
+        </a>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+  {% endunless %}
+</div>

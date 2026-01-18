@@ -1,0 +1,37 @@
+<!-- Hierarchical Breadcrumb Navigation -->
+<nav class="breadcrumb-nav" aria-label="Document Hierarchy Navigation">
+  <ol class="breadcrumb-list">
+    <li class="breadcrumb-item">
+      <a href="{{ '/' | relative_url }}" class="breadcrumb-link">
+        <span class="breadcrumb-icon">🏠</span>
+        <span class="breadcrumb-text">Knowledge Base</span>
+      </a>
+    </li>
+
+    {% if page.taxonomy and page.taxonomy.category %}
+    {% assign category = site.data.taxonomy.categories | where: "id", page.taxonomy.category | first %}
+    <li class="breadcrumb-item">
+      <span class="breadcrumb-separator">›</span>
+      <a href="{{ site.baseurl }}/분류/{{ category.id }}" class="breadcrumb-link">
+        <span class="breadcrumb-icon">{{ category.icon }}</span>
+        <span class="breadcrumb-text">{{ category.name_ko }}</span>
+      </a>
+    </li>
+
+    {% if page.taxonomy.subcategory %}
+    {% assign subcategory = category.subcategories | where: "id", page.taxonomy.subcategory | first %}
+    <li class="breadcrumb-item">
+      <span class="breadcrumb-separator">›</span>
+      <a href="{{ site.baseurl }}/분류/{{ category.id }}/{{ subcategory.id }}" class="breadcrumb-link">
+        <span class="breadcrumb-text">{{ subcategory.name }}</span>
+      </a>
+    </li>
+    {% endif %}
+    {% endif %}
+
+    <li class="breadcrumb-item current">
+      <span class="breadcrumb-separator">›</span>
+      <span class="breadcrumb-current">{{ page.title }}</span>
+    </li>
+  </ol>
+</nav>
