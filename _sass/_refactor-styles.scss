@@ -5,7 +5,7 @@
 
 // CSS Custom Properties for consistent spacing
 :root {
-  --document-side-margin: 3rem;
+  --document-side-margin: 1.5rem; // Reduced margin for wider content
   --document-side-note-width: 5rem;
   
   @media (max-width: 992px) {
@@ -324,8 +324,84 @@ article {
   padding-right: var(--document-side-margin);
 }
 
+// Wider content for Korean blog style
+.post-content,
+article,
+.list-container {
+  max-width: none !important; // Remove Bootstrap constraints
+  width: 100%;
+}
+
+// Ensure post content is wide and left-aligned
+.post-content {
+  p, ul, ol, blockquote, pre, table {
+    max-width: none !important;
+    margin-left: 0 !important;
+  }
+}
+
 // Apply to main content columns
+.container-fluid > .row > .col-lg-10,
+.container-fluid > .row > .col-md-11,
 .container > .row > .col-lg-11,
 .container > .row > .col-md-11 {
   @extend .document-content-area;
+}
+
+// Strong left alignment for Korean blog style
+.container-fluid {
+  // Override Bootstrap's container-fluid to align left with controlled padding
+  padding-left: 0;
+  padding-right: 0;
+  max-width: none; // Remove any max-width constraints
+  
+  &.px-lg-5 {
+    @media (min-width: 992px) {
+      padding-left: 5% !important; // Left margin for Korean blog style
+      padding-right: 10% !important; // More space on right for asymmetric Korean style
+    }
+    
+    @media (max-width: 991px) {
+      padding-left: 1rem !important;
+      padding-right: 1rem !important;
+    }
+  }
+  
+  .row {
+    margin-left: 0;
+    margin-right: 0;
+  }
+}
+
+// Ensure all content is left-aligned for Korean blog aesthetic
+.col-lg-10,
+.col-md-11 {
+  text-align: left;
+  padding-left: 0;
+  padding-right: 0;
+  max-width: 100%; // Ensure full width usage
+  flex: 0 0 100%; // Take full width
+  
+  @media (max-width: 991px) {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+}
+
+// Enhanced left alignment for main content areas
+article,
+.post-content,
+.page-content,
+.list-container {
+  text-align: left !important;
+}
+
+// Headings should be strongly left-aligned
+h1, h2, h3, h4, h5, h6 {
+  text-align: left !important;
+}
+
+// Paragraphs and content blocks
+p, ul, ol, blockquote {
+  text-align: left !important;
 }
