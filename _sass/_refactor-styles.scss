@@ -1,48 +1,91 @@
-// AI Refactoring: Baekja Cheolhwa & Dongchae Aesthetics
+// AI Refactoring: Korean Traditional Public Document Structuralist Methodology
 // File: _sass/_refactor-styles.scss
 
-// Base body style
+// CSS Custom Properties for consistent spacing
+:root {
+  --document-side-margin: 6rem;
+  --document-side-note-width: 5rem;
+  
+  @media (max-width: 992px) {
+    --document-side-margin: 2rem;
+  }
+}
+
+// Base body style - Document-like precision
 body {
   letter-spacing: -0.04em; /* Firm, engraved feel */
-  line-height: 1.6;
+  line-height: 1.8; /* Increased for clearer line separation */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  margin: 0;
+  padding: 0;
 }
 
 // General components
 a {
   transition: all 0.2s ease-in-out;
+  text-decoration: none;
 }
 
+// Space division (間) - Very thin horizontal lines for sectioning
 hr {
-  border-color: $divider;
+  border: none;
+  border-top: 0.5px solid $divider;
+  margin: 3rem 0;
 }
 
-// Header (Masthead)
+// Functional margins - Side note areas
+.document-container {
+  position: relative;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 6rem; /* Wide margins for functional space */
+}
+
+@media (max-width: 992px) {
+  .document-container {
+    padding: 0 2rem;
+  }
+}
+
+// Header (Masthead) - Minimal with thin separator
 .masthead {
-  border-bottom: 2px solid $chulhwa;
-  padding-top: 120px;
-  padding-bottom: 120px;
+  border-bottom: 0.5px solid $chulhwa;
+  padding-top: 100px;
+  padding-bottom: 60px;
+  position: relative;
 
   .site-heading h1, .page-heading h1, .post-heading h1 {
-    font-weight: 700;
+    font-weight: 400; /* Normal weight - no emphasis through font */
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
   }
+  
   .subheading, .meta {
-    color: rgba($porcelain, 0.85);
-    font-weight: 400;
+    color: rgba($chulhwa, 0.7);
+    font-weight: 300;
+    font-size: 1rem;
+  }
+  
+  // Remove overlay for cleaner document look
+  .overlay {
+    display: none;
   }
 }
 
-// Post list refactoring - Tree Structure
+// Post list refactoring - Strict hierarchy through indentation
 .list-container {
-  border-top: 2px solid $chulhwa;
+  border-top: 0.5px solid $chulhwa;
+  padding-top: 2rem;
 }
 
 .list-item {
-  display: flex;
-  align-items: baseline;
-  padding: 0.5rem 0;
-  border-bottom: none;
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  gap: 0;
+  padding: 1.5rem 0;
+  border-bottom: 0.5px solid $divider;
+  align-items: start;
 
   a {
     text-decoration: none;
@@ -54,85 +97,89 @@ hr {
   }
 }
 
+// Positional authority - metadata on the left in fixed position
 .item-meta {
-  flex: 0 0 100px;
   font-size: 0.9rem;
   color: $sub-text;
-  text-align: right;
-  padding-right: 1rem;
+  text-align: left;
+  padding-right: 2rem;
+  font-weight: 300;
+  line-height: 1.8;
 }
 
+// Content with strict indentation
 .item-content {
-  flex: 1;
   position: relative;
-  padding-left: 2rem; // Indent for tree graphics
-  padding-bottom: 1.5rem; // Space between nodes
-  border-left: 1px solid $divider; // The vertical trunk `│`
-
-  // The horizontal branch `─`
-  &::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 1.1rem; // Align with title baseline
-    width: 1.5rem;
-    border-top: 1px solid $divider;
-  }
-
+  padding-left: 3rem; /* Strict indentation for hierarchy */
+  
   .post-title {
-    font-size: 1.3rem;
-    font-weight: 600;
+    font-size: 1.2rem;
+    font-weight: 400; /* No bold - position determines importance */
     margin-top: 0;
-    margin-bottom: 0.25rem;
+    margin-bottom: 0.5rem;
+    line-height: 1.6;
   }
 
   .post-subtitle {
-    font-size: 1rem;
+    font-size: 0.95rem;
     font-weight: 300;
     margin: 0;
     color: $sub-text;
+    padding-left: 2rem; /* Secondary indentation for hierarchy */
   }
 }
 
-// Style the last item in the list to have a `└`
-.list-container > .list-item:last-child > .item-content {
-  border-left: 1px solid transparent; // Hide the long trunk line
-
-  // Re-draw the `└` shape's vertical part
-  &::after {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 0;
-    height: 1.1rem; // Must match `::before`'s top
-    border-left: 1px solid $divider;
-  }
+// Last item styling
+.list-container > .list-item:last-child {
+  border-bottom: 0.5px solid $chulhwa;
 }
 
 // Note: .post-preview is used in /posts/index.html with new .list-item markup
-// Original post-preview styling is overridden by the tree structure above
+// Original post-preview styling is overridden by the hierarchy structure above
 
-// Pager buttons
+// Pager buttons - minimal bureaucratic style
 .clearfix .btn {
-  border: 1px solid $divider;
+  border: 0.5px solid $divider;
   color: $sub-text;
   background-color: transparent;
-  font-size: 0.9rem;
-  padding: 0.75rem 1.5rem;
+  font-size: 0.85rem;
+  padding: 0.5rem 1.5rem;
+  font-weight: 300;
 
   &:hover {
-    background-color: $porcelain;
-    border-color: $dongchae;
-    color: $dongchae;
+    background-color: transparent;
+    border-color: $chulhwa;
+    color: $chulhwa;
   }
 }
 
-// Footer
+// Explicit document termination marker
+.document-end {
+  text-align: center;
+  padding: 3rem 0 2rem;
+  font-size: 0.9rem;
+  color: $sub-text;
+  border-top: 0.5px solid $divider;
+  margin-top: 3rem;
+  letter-spacing: 0.3em;
+  
+  &::before {
+    content: '―';
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+}
+
+// Footer - Document end with termination marker
 footer {
-  border-top: 1px solid $divider;
+  border-top: 0.5px solid $chulhwa;
   padding: 2rem 0;
+  margin-top: 3rem;
+  
   .copyright {
     color: $sub-text;
+    font-size: 0.85rem;
+    font-weight: 300;
   }
   .list-inline-item a {
     color: $sub-text;
@@ -142,14 +189,150 @@ footer {
   }
 }
 
-// Post page
+// Post page - Positional metadata
 .post-heading {
+  position: relative;
+  
+  h1 {
+    margin-bottom: 2rem;
+  }
+  
+  // Metadata positioned in traditional top-right corner
   .meta {
-    color: rgba($porcelain, 0.9);
+    position: absolute;
+    right: 0;
+    top: 0;
+    font-size: 0.85rem;
+    color: rgba($chulhwa, 0.7);
+    text-align: right;
+    line-height: 1.8;
+    max-width: 250px;
+    
+    > div {
+      margin-bottom: 0.3rem;
+    }
+  }
+  
+  // Subtitle with secondary indentation
+  .subheading {
+    padding-left: 2rem;
   }
 }
+
+// Post content area with functional margins
 article {
-  border-bottom: 1px solid $divider;
-  padding-bottom: 2rem;
+  border-bottom: 0.5px solid $divider;
+  padding-bottom: 3rem;
   margin-bottom: 2rem;
+  position: relative;
+  
+  // Functional margin for side notes (using CSS custom property for consistency)
+  &::before {
+    content: '';
+    position: absolute;
+    left: calc(-1 * var(--document-side-margin));
+    top: 0;
+    bottom: 0;
+    width: var(--document-side-note-width);
+    border-right: 0.5px solid rgba($divider, 0.3);
+  }
+  
+  @media (max-width: 992px) {
+    &::before {
+      display: none;
+    }
+  }
+}
+
+// Side note styling (functional margin usage)
+.side-note {
+  position: absolute;
+  left: -5.5rem;
+  width: 4.5rem;
+  font-size: 0.75rem;
+  color: $sub-text;
+  text-align: right;
+  line-height: 1.4;
+  
+  @media (max-width: 992px) {
+    position: static;
+    width: auto;
+    text-align: left;
+    margin: 1rem 0;
+    padding-left: 1rem;
+    border-left: 0.5px solid $divider;
+  }
+}
+
+// Document metadata - positioned in traditional locations
+.document-id {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  font-size: 0.8rem;
+  color: $sub-text;
+  text-align: right;
+  line-height: 1.4;
+  font-weight: 300;
+}
+
+.document-date {
+  position: absolute;
+  bottom: 1rem;
+  left: 1rem;
+  font-size: 0.8rem;
+  color: $sub-text;
+  line-height: 1.4;
+  font-weight: 300;
+}
+
+// Strict hierarchy numbering system
+.hierarchical-content {
+  ol {
+    counter-reset: item;
+    list-style: none;
+    padding-left: 0;
+    
+    li {
+      counter-increment: item;
+      padding-left: 3rem;
+      position: relative;
+      margin-bottom: 0.5rem;
+      
+      &::before {
+        content: counter(item) ".";
+        position: absolute;
+        left: 0;
+        width: 2.5rem;
+        text-align: right;
+        padding-right: 0.5rem;
+        color: $sub-text;
+        font-weight: 300;
+      }
+      
+      ol {
+        margin-top: 0.5rem;
+        
+        li::before {
+          content: counter(item, lower-alpha) ")";
+        }
+        
+        ol li::before {
+          content: "- ";
+        }
+      }
+    }
+  }
+}
+
+// Document content area with proper spacing
+.document-content-area {
+  padding-left: var(--document-side-margin);
+  padding-right: var(--document-side-margin);
+}
+
+// Apply to main content columns
+.container > .row > .col-lg-8,
+.container > .row > .col-md-10 {
+  @extend .document-content-area;
 }
