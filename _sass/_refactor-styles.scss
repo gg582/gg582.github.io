@@ -325,7 +325,7 @@ article {
 }
 
 // Apply to main content columns
-.container > .row > .col-lg-8,
-.container > .row > .col-md-10 {
+.container > .row > .col-lg-11,
+.container > .row > .col-md-11 {
   @extend .document-content-area;
 }
