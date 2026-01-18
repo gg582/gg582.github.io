@@ -108,10 +108,10 @@ pre code, .highlight code, .highlight .w {
 #mainNav .navbar-toggler {
     background-color: $korean-trad-red !important; /* Traditional orange-tinted vermilion - desaturated */
     color: $korean-trad-black !important; /* Ink black color */
-    padding: 8px 16px !important;
+    padding: 4px 10px !important; /* Tighter padding to fit text closely */
     border-radius: 0 !important; /* Sharp corners for traditional document feel */
-    border: 2px solid $korean-trad-black !important; /* Double border effect - outer */
-    box-shadow: inset 0 0 0 1px $korean-trad-black !important; /* Double border effect - inner */
+    border: 1px solid $korean-trad-black !important; /* Double border effect - outer thin line */
+    box-shadow: inset 0 0 0 1px $korean-trad-black !important; /* Double border effect - inner thin line */
     font-weight: 600 !important;
     display: inline-block !important;
     margin: 4px 2px !important;
@@ -120,7 +120,7 @@ pre code, .highlight code, .highlight .w {
 
 /* Additional border for menu toggle button */
 #mainNav .navbar-toggler {
-    border: 2px solid $korean-trad-black !important;
+    border: 1px solid $korean-trad-black !important;
     box-shadow: inset 0 0 0 1px $korean-trad-black !important;
 }
 
@@ -214,19 +214,19 @@ pre code, .highlight code, .highlight .w {
   #mainNav .navbar-nav .nav-link {
     background-color: $dark-mode-contrast !important;
     color: #1A1A1A !important;
-    border: 2px solid #1A1A1A !important;
+    border: 1px solid #1A1A1A !important;
     box-shadow: inset 0 0 0 1px #1A1A1A !important;
   }
   #mainNav .navbar-brand {
     background-color: $dark-mode-contrast !important;
     color: #1A1A1A !important;
-    border: 2px solid #1A1A1A !important;
+    border: 1px solid #1A1A1A !important;
     box-shadow: inset 0 0 0 1px #1A1A1A !important;
   }
   #mainNav .navbar-toggler {
     background-color: $dark-mode-contrast !important;
     color: #1A1A1A !important;
-    border: 2px solid #1A1A1A !important;
+    border: 1px solid #1A1A1A !important;
     box-shadow: inset 0 0 0 1px #1A1A1A !important;
   }
   #mainNav .navbar-nav .nav-link:hover,
