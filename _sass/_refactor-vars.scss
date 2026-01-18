@@ -8,6 +8,15 @@ $dongchae:  #8C5E58;
 $divider:   #E2E0D8;
 $sub-text:  #75726C;
 
+// Korean Traditional Document Colors (Joseon Dynasty style)
+// Adjusted for traditional paper feel - less saturated, warmer orange-red
+$korean-trad-red: #C85A3C;      // 주황빛 주홍색 (Orange-tinted vermilion) - desaturated, warmer
+$korean-trad-red-dark: #A84A30; // Darker vermilion for hover states
+$korean-trad-black: #1A1A1A;    // 먹색 (Ink black) - slightly softer than pure black for paper feel
+
+// Dark mode contrast color - grayish blue (회청색)
+$dark-mode-contrast: #A8C5D1;   // 회청색 (Grayish blue) - soft, muted blue-gray for dark backgrounds
+
 // 2. Override Theme Variables
 // Grays
 $white: $porcelain;
