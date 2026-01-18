@@ -1,7 +1,7 @@
 // AI Refactoring: Baekja Cheolhwa & Dongchae Aesthetics
 // File: _sass/_refactor-vars.scss
 
-// 1. Color System (도자 안료의 재해석)
+// 1. Color System (Reinterpretation of ceramic glaze colors)
 $porcelain: #F9F8F5;
 $chulhwa:   #2B2624;
 $dongchae:  #8C5E58;
@@ -39,7 +39,7 @@ $link-hover-decoration: none; // Spec implies clean lines, underline might be no
 // Borders
 $border-width: 1px;
 $border-color: $divider;
-$border-radius: 0; // "Administrative Precision", "표(Table)의 논리" -> sharp corners
+$border-radius: 0; // "Administrative Precision", "Table logic" -> sharp corners
 $border-radius-lg: 0;
 $border-radius-sm: 0;
 

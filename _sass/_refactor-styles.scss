@@ -3,7 +3,7 @@
 
 // Base body style
 body {
-  letter-spacing: -0.04em; /* 단단한 각인 느낌 */
+  letter-spacing: -0.04em; /* Firm, engraved feel */
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -109,13 +109,8 @@ hr {
   }
 }
 
-// Hide original post-preview styles if they interfere
-.post-preview {
-  display: none;
-}
-.post-preview + hr {
-  display: none;
-}
+// Note: .post-preview is used in /posts/index.html with new .list-item markup
+// Original post-preview styling is overridden by the tree structure above
 
 // Pager buttons
 .clearfix .btn {
