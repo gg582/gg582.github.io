@@ -1,6 +1,16 @@
 // AI Refactoring: Korean Traditional Public Document Structuralist Methodology
 // File: _sass/_refactor-styles.scss
 
+// CSS Custom Properties for consistent spacing
+:root {
+  --document-side-margin: 6rem;
+  --document-side-note-width: 5rem;
+  
+  @media (max-width: 992px) {
+    --document-side-margin: 2rem;
+  }
+}
+
 // Base body style - Document-like precision
 body {
   letter-spacing: -0.04em; /* Firm, engraved feel */
@@ -217,16 +227,13 @@ article {
   position: relative;
   
   // Functional margin for side notes (using CSS custom property for consistency)
-  --side-margin-width: 6rem;
-  --side-note-width: 5rem;
-  
   &::before {
     content: '';
     position: absolute;
-    left: calc(-1 * var(--side-margin-width));
+    left: calc(-1 * var(--document-side-margin));
     top: 0;
     bottom: 0;
-    width: var(--side-note-width);
+    width: var(--document-side-note-width);
     border-right: 0.5px solid rgba($divider, 0.3);
   }
   
@@ -318,14 +325,14 @@ article {
   }
 }
 
-// Container with proper document spacing - more specific to avoid Bootstrap conflicts
+// Document content area with proper spacing
+.document-content-area {
+  padding-left: var(--document-side-margin);
+  padding-right: var(--document-side-margin);
+}
+
+// Apply to main content columns
 .container > .row > .col-lg-8,
 .container > .row > .col-md-10 {
-  padding-left: 6rem;
-  padding-right: 6rem;
-  
-  @media (max-width: 992px) {
-    padding-left: 2rem;
-    padding-right: 2rem;
-  }
+  @extend .document-content-area;
 }
