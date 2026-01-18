@@ -1,0 +1,160 @@
+// AI Refactoring: Baekja Cheolhwa & Dongchae Aesthetics
+// File: _sass/_refactor-styles.scss
+
+// Base body style
+body {
+  letter-spacing: -0.04em; /* 단단한 각인 느낌 */
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+// General components
+a {
+  transition: all 0.2s ease-in-out;
+}
+
+hr {
+  border-color: $divider;
+}
+
+// Header (Masthead)
+.masthead {
+  border-bottom: 2px solid $chulhwa;
+  padding-top: 120px;
+  padding-bottom: 120px;
+
+  .site-heading h1, .page-heading h1, .post-heading h1 {
+    font-weight: 700;
+  }
+  .subheading, .meta {
+    color: rgba($porcelain, 0.85);
+    font-weight: 400;
+  }
+}
+
+// Post list refactoring - Tree Structure
+.list-container {
+  border-top: 2px solid $chulhwa;
+}
+
+.list-item {
+  display: flex;
+  align-items: baseline;
+  padding: 0.5rem 0;
+  border-bottom: none;
+
+  a {
+    text-decoration: none;
+    &:hover {
+      .post-title {
+        color: $dongchae;
+      }
+    }
+  }
+}
+
+.item-meta {
+  flex: 0 0 100px;
+  font-size: 0.9rem;
+  color: $sub-text;
+  text-align: right;
+  padding-right: 1rem;
+}
+
+.item-content {
+  flex: 1;
+  position: relative;
+  padding-left: 2rem; // Indent for tree graphics
+  padding-bottom: 1.5rem; // Space between nodes
+  border-left: 1px solid $divider; // The vertical trunk `│`
+
+  // The horizontal branch `─`
+  &::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 1.1rem; // Align with title baseline
+    width: 1.5rem;
+    border-top: 1px solid $divider;
+  }
+
+  .post-title {
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-top: 0;
+    margin-bottom: 0.25rem;
+  }
+
+  .post-subtitle {
+    font-size: 1rem;
+    font-weight: 300;
+    margin: 0;
+    color: $sub-text;
+  }
+}
+
+// Style the last item in the list to have a `└`
+.list-container > .list-item:last-child > .item-content {
+  border-left: 1px solid transparent; // Hide the long trunk line
+
+  // Re-draw the `└` shape's vertical part
+  &::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 1.1rem; // Must match `::before`'s top
+    border-left: 1px solid $divider;
+  }
+}
+
+// Hide original post-preview styles if they interfere
+.post-preview {
+  display: none;
+}
+.post-preview + hr {
+  display: none;
+}
+
+// Pager buttons
+.clearfix .btn {
+  border: 1px solid $divider;
+  color: $sub-text;
+  background-color: transparent;
+  font-size: 0.9rem;
+  padding: 0.75rem 1.5rem;
+
+  &:hover {
+    background-color: $porcelain;
+    border-color: $dongchae;
+    color: $dongchae;
+  }
+}
+
+// Footer
+footer {
+  border-top: 1px solid $divider;
+  padding: 2rem 0;
+  .copyright {
+    color: $sub-text;
+  }
+  .list-inline-item a {
+    color: $sub-text;
+    &:hover {
+      color: $chulhwa;
+    }
+  }
+}
+
+// Post page
+.post-heading {
+  .meta {
+    color: $sub-text;
+  }
+}
+article {
+  border-bottom: 1px solid $divider;
+  padding-bottom: 2rem;
+  margin-bottom: 2rem;
+}

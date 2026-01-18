@@ -1,0 +1,48 @@
+// AI Refactoring: Baekja Cheolhwa & Dongchae Aesthetics
+// File: _sass/_refactor-vars.scss
+
+// 1. Color System (도자 안료의 재해석)
+$porcelain: #F9F8F5;
+$chulhwa:   #2B2624;
+$dongchae:  #8C5E58;
+$divider:   #E2E0D8;
+$sub-text:  #75726C;
+
+// 2. Override Theme Variables
+// Grays
+$white: $porcelain;
+$black: $chulhwa;
+
+$gray-100: lighten($porcelain, 1%);
+$gray-200: #F2F0E9; // From spec, alternative porcelain
+$gray-300: $divider;
+$gray-400: darken($divider, 5%);
+$gray-500: $sub-text;
+$gray-600: darken($sub-text, 5%);
+$gray-700: lighten($chulhwa, 20%);
+$gray-800: lighten($chulhwa, 10%);
+$gray-900: $chulhwa;
+
+// Theme Colors
+$primary: $dongchae;
+$secondary: $sub-text;
+
+// Body
+$body-bg: $porcelain;
+$body-color: $chulhwa;
+
+// Links
+$link-color: $dongchae;
+$link-hover-color: darken($dongchae, 10%);
+$link-hover-decoration: none; // Spec implies clean lines, underline might be noisy
+
+// Borders
+$border-width: 1px;
+$border-color: $divider;
+$border-radius: 0; // "Administrative Precision", "표(Table)의 논리" -> sharp corners
+$border-radius-lg: 0;
+$border-radius-sm: 0;
+
+// Pager
+$pager-border-color: $divider;
+$pager-disabled-color: $gray-500;

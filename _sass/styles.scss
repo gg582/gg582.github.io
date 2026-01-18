@@ -1,5 +1,11 @@
+// AI Refactoring: Import variable overrides first
+@import "refactor-vars";
+
 // Import Core Clean Blog SCSS
 @import "../assets/vendor/startbootstrap-clean-blog/scss/styles.scss";
+
+// AI Refactoring: Import custom styles and layout overrides
+@import "refactor-styles";
 
 /* 
  * Custom Typography: 

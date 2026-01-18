@@ -32,8 +32,8 @@ layout: default
             <h2 class="subheading">{{ page.subtitle }}</h2>
             {% endif %}
             <span class="meta">Posted by
-              <a href="#">{% if page.author %}{{ page.author }}{% else %}{{ site.author }}{% endif %}</a>
-              on {{ page.date | date: '%B %d, %Y' }} &middot; {% include read_time.html
+              {% if page.author %}{{ page.author }}{% else %}{{ site.author }}{% endif %}
+              on {{ page.date | date: '%Y-%m-%d' }} &middot; {% include read_time.html
               content=page.content %}
             &middot; <span id="busuanzi_container_page_pv"><span id="busuanzi_value_page_pv"></span> views</span>
             </span>
@@ -49,7 +49,9 @@ layout: default
 
         {{ content }}
 
-        <hr>
+  </div>
+</article>
+
 
         <div class="clearfix">
 
