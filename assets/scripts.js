@@ -42,6 +42,8 @@ $(function () {
 
   // New: Adaptive Masthead Text Color
   const masthead = document.querySelector('.masthead');
+  const mainNav = document.getElementById('mainNav'); // Get the mainNav element
+
   if (masthead) {
     const imageUrl = getComputedStyle(masthead).backgroundImage.slice(4, -1).replace(/"/g, "");
     if (imageUrl) {
@@ -49,15 +51,19 @@ $(function () {
         .then(brightness => {
           if (brightness === 'light') {
             masthead.classList.add('light-bg');
+            if (mainNav) mainNav.classList.add('light-bg'); // Apply to mainNav
           } else {
             masthead.classList.add('dark-bg');
+            if (mainNav) mainNav.classList.add('dark-bg'); // Apply to mainNav
           }
         })
         .catch(() => {
           masthead.classList.add('dark-bg'); // Default to dark background on error
+          if (mainNav) mainNav.classList.add('dark-bg'); // Apply to mainNav
         });
     } else {
       masthead.classList.add('dark-bg'); // Default if no image
+      if (mainNav) mainNav.classList.add('dark-bg'); // Apply to mainNav
     }
   }
 
