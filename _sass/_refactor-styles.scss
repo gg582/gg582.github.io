@@ -3,11 +3,11 @@
 
 // CSS Custom Properties for consistent spacing
 :root {
-  --document-side-margin: 6rem;
+  --document-side-margin: 3rem;
   --document-side-note-width: 5rem;
   
   @media (max-width: 992px) {
-    --document-side-margin: 2rem;
+    --document-side-margin: 1rem;
   }
 }
 
@@ -35,18 +35,6 @@ hr {
 }
 
 // Functional margins - Side note areas
-.document-container {
-  position: relative;
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 0 6rem; /* Wide margins for functional space */
-}
-
-@media (max-width: 992px) {
-  .document-container {
-    padding: 0 2rem;
-  }
-}
 
 // Header (Masthead) - Minimal with thin separator
 .masthead {
@@ -105,6 +93,7 @@ hr {
   padding-right: 2rem;
   font-weight: 300;
   line-height: 1.8;
+  border-right: 0.5px solid $divider;
 }
 
 // Content with strict indentation

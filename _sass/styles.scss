@@ -106,29 +106,23 @@ pre code, .highlight code, .highlight .w {
 #mainNav .navbar-brand,
 #mainNav .navbar-nav .nav-link,
 #mainNav .navbar-toggler {
-    background-color: $korean-trad-red !important; /* Traditional orange-tinted vermilion - desaturated */
+    @include modern-red-gradient;
     color: $korean-trad-black !important; /* Ink black color */
     padding: 4px 10px !important; /* Tighter padding to fit text closely */
-    border-radius: 0 !important; /* Sharp corners for traditional document feel */
-    border: 1px solid $korean-trad-black !important; /* Double border effect - outer thin line */
-    box-shadow: inset 0 0 0 1px $korean-trad-black !important; /* Double border effect - inner thin line */
+    border-radius: $korean-trad-radius !important; /* Subtle border radius */
+    border: 1px double $korean-trad-black !important; /* Thin double border */
     font-weight: 600 !important;
     display: inline-block !important;
     margin: 4px 2px !important;
     transition: background-color 0.3s ease !important;
 }
 
-/* Additional border for menu toggle button */
-#mainNav .navbar-toggler {
-    border: 1px solid $korean-trad-black !important;
-    box-shadow: inset 0 0 0 1px $korean-trad-black !important;
-}
 
 #mainNav .navbar-brand:hover,
 #mainNav .navbar-brand:focus,
 #mainNav .navbar-nav .nav-link:hover,
 #mainNav .navbar-nav .nav-link:focus {
-    background-color: $korean-trad-red-dark !important; /* Slightly darker on hover */
+    @include modern-red-gradient-hover;
     color: $korean-trad-black !important;
 }
 
@@ -136,32 +130,27 @@ pre code, .highlight code, .highlight .w {
     color: $korean-trad-black !important;
 }
 
-/*
- * Masthead text contrast enhancement
- * The refactor-styles.scss removes the overlay, so text needs to adapt to background
- * Using dark text with light shadow for better readability on light backgrounds
- */
 .masthead .site-heading h1,
 .masthead .page-heading h1,
-.masthead .post-heading h1 {
-    color: $chulhwa !important;
-    text-shadow: 0 0 20px rgba(255, 255, 255, 0.8),
-                 0 0 40px rgba(255, 255, 255, 0.6),
-                 2px 2px 4px rgba(255, 255, 255, 0.5) !important;
-}
-
+.masthead .post-heading h1,
 .masthead .subheading,
 .masthead .meta {
-    color: rgba($chulhwa, 0.85) !important;
-    text-shadow: 0 0 15px rgba(255, 255, 255, 0.8),
-                 0 0 30px rgba(255, 255, 255, 0.5),
-                 1px 1px 3px rgba(255, 255, 255, 0.4) !important;
+    @include modern-red-gradient;
+    color: $korean-trad-black !important;
+    padding: 4px 10px !important;
+    border-radius: $korean-trad-radius !important;
+    border: 1px double $korean-trad-black !important;
+    font-weight: 600 !important;
+    display: inline-block !important;
+    margin: 4px 2px !important;
+    transition: background-color 0.3s ease !important;
+    text-shadow: none !important;
 }
 
 /*
  * Dark Mode Styles
  */
-@media (prefers-color-scheme: dark) {
+body.dark-mode {
   body {
     background-color: #1c1c1e;
     color: #f1f1f1;
@@ -350,7 +339,15 @@ pre code, .highlight code, .highlight .w {
   .highlight .mi, .highlight .il, .highlight .m, .highlight .mf, .highlight .mh, .highlight .mi, .highlight .mo, .highlight .mx {
     color: #bd93f9;
   }
-  .highlight .n, .highlight .na, .highlight .nc, .highlight .nd, .highlight .nf, .highlight .ni, .highlight .nl, .highlight .nn, .highlight .no, .highlight .nx, .highlight .py, .highlight .nv, .highlight .vc, .highlight .vg, .highlight .vi, .highlight .vm {
+  .highlight .nv, .highlight .vc, .highlight .vg, .highlight .vi, .highlight .vm {
     color: #8be9fd;
   }
 }
+
+#theme-toggle {
+  cursor: pointer;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
