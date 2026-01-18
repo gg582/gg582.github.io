@@ -1,0 +1,78 @@
+<!-- 反向鏈接 (Backlinks - Documents Referencing This One) -->
+<div class="backlinks-section">
+  <h3 class="section-heading">引用本文</h3>
+  <p class="section-description">其他文獻對本文的引用</p>
+
+  {% assign current_path = page.path %}
+  {% assign backlinks = site.documents | where_exp: "doc", "doc.relationships" %}
+  
+  {% assign has_backlinks = false %}
+  
+  <ul class="backlinks-list">
+    {% for doc in backlinks %}
+      {% assign is_backlink = false %}
+      
+      {% if doc.relationships.prerequisite %}
+        {% if doc.relationships.prerequisite contains current_path %}
+          {% assign is_backlink = true %}
+          {% assign link_type = "先修知識" %}
+        {% endif %}
+      {% endif %}
+      
+      {% if doc.relationships.related %}
+        {% if doc.relationships.related contains current_path %}
+          {% assign is_backlink = true %}
+          {% assign link_type = "關聯文獻" %}
+        {% endif %}
+      {% endif %}
+      
+      {% if doc.relationships.extends %}
+        {% if doc.relationships.extends contains current_path %}
+          {% assign is_backlink = true %}
+          {% assign link_type = "擴展概念" %}
+        {% endif %}
+      {% endif %}
+      
+      {% if doc.relationships.references %}
+        {% if doc.relationships.references contains current_path %}
+          {% assign is_backlink = true %}
+          {% assign link_type = "參考文獻" %}
+        {% endif %}
+      {% endif %}
+      
+      {% if doc.relationships.comparison %}
+        {% if doc.relationships.comparison contains current_path %}
+          {% assign is_backlink = true %}
+          {% assign link_type = "比較對象" %}
+        {% endif %}
+      {% endif %}
+      
+      {% if is_backlink %}
+        {% assign has_backlinks = true %}
+        <li class="backlink-item">
+          <div class="backlink-content">
+            <a href="{{ doc.url | relative_url }}" class="backlink-title">
+              {{ doc.title }}
+            </a>
+            <span class="backlink-type">{{ link_type }}</span>
+          </div>
+          {% if doc.taxonomy %}
+          <div class="backlink-meta">
+            {% assign cat = site.data.taxonomy.categories | where: "id", doc.taxonomy.category | first %}
+            <span class="backlink-category">{{ cat.icon }} {{ cat.name_ko }}</span>
+            {% if doc.date %}
+            <span class="backlink-date">{{ doc.date | date: "%Y-%m-%d" }}</span>
+            {% endif %}
+          </div>
+          {% endif %}
+        </li>
+      {% endif %}
+    {% endfor %}
+  </ul>
+
+  {% unless has_backlinks %}
+  <p class="no-backlinks">
+    <em>아직 이 문서를 참조하는 다른 문서가 없습니다.</em>
+  </p>
+  {% endunless %}
+</div>

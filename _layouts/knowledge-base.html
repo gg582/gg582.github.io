@@ -1,0 +1,117 @@
+---
+layout: default
+---
+
+<!-- 知識庫布局 (Knowledge Base Layout) -->
+<!-- Three-column scholarly layout: Left taxonomy tree, Main content, Right references -->
+
+<div class="knowledge-base-container">
+  <!-- Left Sidebar: 分類導航 (Classification Navigation) -->
+  <aside class="kb-sidebar-left">
+    {% include sidebar-taxonomy.html %}
+  </aside>
+
+  <!-- Main Content: 正文 (Main Text) -->
+  <main class="kb-main-content">
+    <!-- Breadcrumb: 文獻層次 (Document Hierarchy) -->
+    {% include breadcrumb.html %}
+
+    <!-- Document Header -->
+    <header class="kb-document-header">
+      <h1 class="kb-document-title">{{ page.title }}</h1>
+      
+      {% if page.subtitle %}
+      <p class="kb-document-subtitle">{{ page.subtitle }}</p>
+      {% endif %}
+
+      <!-- Document Metadata -->
+      <div class="kb-document-meta">
+        {% if page.taxonomy %}
+        <div class="meta-item">
+          <span class="meta-label">分類:</span>
+          <span class="meta-value">
+            {% assign category = site.data.taxonomy.categories | where: "id", page.taxonomy.category | first %}
+            {{ category.name_ko }}
+            {% if page.taxonomy.subcategory %}
+              {% assign subcat = category.subcategories | where: "id", page.taxonomy.subcategory | first %}
+              → {{ subcat.name }}
+            {% endif %}
+          </span>
+        </div>
+        {% endif %}
+
+        {% if page.difficulty %}
+        <div class="meta-item">
+          <span class="meta-label">難易度:</span>
+          <span class="meta-value difficulty-{{ page.difficulty }}">
+            {% assign level = site.data.taxonomy.difficulty_levels | where: "id", page.difficulty | first %}
+            {{ level.name_ko }}
+          </span>
+        </div>
+        {% endif %}
+
+        {% if page.date %}
+        <div class="meta-item">
+          <span class="meta-label">記錄日期:</span>
+          <span class="meta-value">{{ page.date | date: "%Y年 %m月 %d日" }}</span>
+        </div>
+        {% endif %}
+
+        {% if page.updated %}
+        <div class="meta-item">
+          <span class="meta-label">更新日期:</span>
+          <span class="meta-value">{{ page.updated | date: "%Y年 %m月 %d日" }}</span>
+        </div>
+        {% endif %}
+
+        <div class="meta-item">
+          <span class="meta-label">讀取時間:</span>
+          <span class="meta-value">{% include read_time.html content=page.content %}</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Document Content -->
+    <article class="kb-document-body">
+      {{ content }}
+    </article>
+
+    <!-- Document Footer: Classification and Metadata -->
+    {% include document-footer.html %}
+
+    <!-- Related Documents Section -->
+    <section class="kb-related-section">
+      {% include related-documents.html %}
+    </section>
+
+    <!-- Backlinks Section -->
+    <section class="kb-backlinks-section">
+      {% include backlinks.html %}
+    </section>
+
+    <!-- Document End Marker (下略) -->
+    <div class="document-end-marker">
+      <span>── 下略 ──</span>
+    </div>
+  </main>
+
+  <!-- Right Sidebar: 註解與參考 (Annotations and References) -->
+  <aside class="kb-sidebar-right">
+    {% include reference-panel.html %}
+  </aside>
+</div>
+
+<!-- Utterances Comments -->
+<div class="kb-comments-section">
+  <script src="https://utteranc.es/client.js"
+    repo="gg582/gg582.github.io"
+    issue-term="title"
+    label="UtterancesCommentIssue"
+    theme="boxy-light"
+    crossorigin="anonymous"
+    async>
+  </script>
+</div>
+
+<!-- Page View Counter -->
+<script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
