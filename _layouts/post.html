@@ -27,7 +27,7 @@ layout: default
       <div class="row">
         <div class="col-lg-8 col-md-10 mx-auto">
           <div class="post-heading">
-            <h1>{{ page.title }} <img src="https://hits.seeyoufarm.com/api/count/incr/uri={{ site.url }}{{ page.url | cgi_escape | escape }}&total_style=unlimited&title_style=bold&icon_style=black&edge_flat=false" style="display:inline;height:20px;"/></h1>
+            <h1>{{ page.title }}</h1>
             {% if page.subtitle %}
             <h2 class="subheading">{{ page.subtitle }}</h2>
             {% endif %}
@@ -35,6 +35,7 @@ layout: default
               <a href="#">{% if page.author %}{{ page.author }}{% else %}{{ site.author }}{% endif %}</a>
               on {{ page.date | date: '%B %d, %Y' }} &middot; {% include read_time.html
               content=page.content %}
+            &middot; <span id="view-count"></span>
             </span>
           </div>
         </div>
@@ -66,6 +67,14 @@ layout: default
       </div>
     </div>
   </div>
+      <script>
+        fetch('https://hitscounter.dev/history?url={{ site.url }}{{ page.url }}')
+          .then(response => response.json())
+          .then(data => {
+            const viewCount = data.at(-1).hits;
+            document.getElementById('view-count').innerText = `조회수 ${viewCount}`;
+          });
+      </script>
       <script src="https://utteranc.es/client.js"
         repo="gg582/gg582.github.io"
         issue-term="title"
