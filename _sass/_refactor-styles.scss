@@ -51,6 +51,10 @@ hr {
     margin-bottom: 1rem;
   }
   
+  .site-heading .subheading, .page-heading .subheading {
+    text-align: left; /* Left-align description text to match blog title */
+  }
+  
   .subheading, .meta {
     color: rgba($chulhwa, 0.7);
     font-weight: 300;
