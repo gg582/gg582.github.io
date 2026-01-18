@@ -98,9 +98,27 @@ pre code, .highlight code, .highlight .w {
 }
 
 /*
+ * Masthead Text Readability Styles
+ * Applies a solid outline via text-shadow to ensure readability against varied backgrounds.
+ */
+.masthead .site-heading h1,
+.masthead .page-heading h1,
+.masthead .post-heading h1,
+.masthead .subheading,
+.masthead .meta {
+    color: #fff;
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+}
+
+/*
  * Dark Mode Styles
  */
 body.dark-mode {
+  .masthead {
+    /* Darken the background image in dark mode for better text contrast */
+    filter: brightness(0.7) grayscale(0.2);
+  }
+
   body {
     background-color: #1c1c1e;
     color: #f1f1f1;
@@ -176,22 +194,18 @@ body.dark-mode {
     color: #1A1A1A !important;
   }
 
-  /* Dark mode masthead text - use grayish blue for contrast */
+  /* Dark mode masthead text - use light text with solid white outline */
   .masthead .site-heading h1,
   .masthead .page-heading h1,
   .masthead .post-heading h1 {
-    color: $dark-mode-contrast !important;
-    text-shadow: 0 0 20px rgba(0, 0, 0, 0.8),
-                 0 0 40px rgba(0, 0, 0, 0.6),
-                 2px 2px 4px rgba(0, 0, 0, 0.5) !important;
+    color: $gray-200; /* Use a light color from variables */
+    text-shadow: -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff;
   }
 
   .masthead .subheading,
   .masthead .meta {
-    color: rgba($dark-mode-contrast, 0.85) !important;
-    text-shadow: 0 0 15px rgba(0, 0, 0, 0.8),
-                 0 0 30px rgba(0, 0, 0, 0.5),
-                 1px 1px 3px rgba(0, 0, 0, 0.4) !important;
+    color: $gray-300; /* Use a slightly darker light color */
+    text-shadow: -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff;
   }
 
   .masthead .overlay {
