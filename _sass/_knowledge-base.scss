@@ -1376,3 +1376,349 @@ body.dark-mode {
     }
   }
 }
+
+// ============================================================================
+// Knowledge Base Home Page Styles
+// ============================================================================
+
+.kb-home-grid {
+  display: grid;
+  grid-template-columns: 400px 1fr;
+  gap: 3rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 3rem 2rem;
+
+  @media (max-width: 1024px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.kb-home-sidebar {
+  .sidebar-header {
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid #2c3e50;
+    
+    h2 {
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin: 0 0 0.3rem 0;
+    }
+    
+    p {
+      font-size: 0.9rem;
+      color: #718096;
+      margin: 0;
+    }
+  }
+}
+
+.category-nav {
+  .category-card {
+    margin-bottom: 1.5rem;
+    background: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: all 0.3s;
+    
+    &:hover {
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      transform: translateY(-2px);
+    }
+    
+    .category-link {
+      display: flex;
+      gap: 1rem;
+      padding: 1.5rem;
+      text-decoration: none;
+      color: inherit;
+      
+      .category-icon {
+        font-size: 2.5rem;
+      }
+      
+      .category-info {
+        flex: 1;
+        
+        .category-name {
+          font-size: 1.3rem;
+          font-weight: 700;
+          margin: 0 0 0.5rem 0;
+          color: #2d3748;
+        }
+        
+        .category-desc {
+          font-size: 0.9rem;
+          color: #718096;
+          margin: 0 0 0.5rem 0;
+        }
+        
+        .category-stats {
+          font-size: 0.85rem;
+          color: #a0aec0;
+        }
+      }
+    }
+    
+    .subcategory-preview {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      background: #f7fafc;
+      border-top: 1px solid #e0e0e0;
+      
+      li {
+        border-bottom: 1px solid #e0e0e0;
+        
+        &:last-child {
+          border-bottom: none;
+        }
+        
+        a {
+          display: block;
+          padding: 0.6rem 1.5rem;
+          color: #4a5568;
+          text-decoration: none;
+          font-size: 0.9rem;
+          transition: all 0.2s;
+          
+          &:hover {
+            background: #edf2f7;
+            color: #2d3748;
+            padding-left: 2rem;
+          }
+        }
+      }
+    }
+  }
+}
+
+.kb-home-main {
+  .section-title {
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 0 0 0.5rem 0;
+    color: #2d3748;
+  }
+  
+  .section-subtitle {
+    font-size: 0.9rem;
+    color: #718096;
+    margin: 0 0 2rem 0;
+  }
+}
+
+.featured-section {
+  margin-bottom: 4rem;
+}
+
+.featured-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.featured-card {
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 1.5rem;
+  transition: all 0.3s;
+  
+  &:hover {
+    box-shadow: 0 6px 16px rgba(0,0,0,0.1);
+    transform: translateY(-4px);
+  }
+  
+  .featured-header {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+    
+    .featured-category {
+      font-size: 0.8rem;
+      padding: 0.3rem 0.6rem;
+      background: #e6fffa;
+      color: #234e52;
+      border-radius: 4px;
+    }
+    
+    .featured-difficulty {
+      font-size: 0.8rem;
+      padding: 0.3rem 0.6rem;
+      color: white;
+      border-radius: 4px;
+      font-weight: 600;
+    }
+  }
+  
+  .featured-title {
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin: 0 0 0.5rem 0;
+    
+    a {
+      color: #2d3748;
+      text-decoration: none;
+      
+      &:hover {
+        color: #3182ce;
+      }
+    }
+  }
+  
+  .featured-subtitle {
+    font-size: 0.9rem;
+    color: #718096;
+    margin: 0 0 1rem 0;
+  }
+  
+  .featured-meta {
+    font-size: 0.85rem;
+    color: #a0aec0;
+  }
+}
+
+.recent-section {
+  margin-bottom: 4rem;
+}
+
+.document-timeline {
+  .timeline-item {
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    gap: 1.5rem;
+    padding: 1.5rem 0;
+    border-bottom: 1px solid #e0e0e0;
+    
+    &:last-child {
+      border-bottom: none;
+    }
+    
+    .timeline-date {
+      font-size: 0.9rem;
+      color: #718096;
+      font-weight: 600;
+    }
+    
+    .timeline-content {
+      .timeline-category {
+        font-size: 0.85rem;
+        color: #718096;
+        margin-bottom: 0.5rem;
+      }
+      
+      .timeline-title {
+        font-size: 1.1rem;
+        font-weight: 600;
+        margin: 0;
+        
+        a {
+          color: #2d3748;
+          text-decoration: none;
+          
+          &:hover {
+            color: #3182ce;
+          }
+        }
+      }
+    }
+  }
+}
+
+.view-all-link {
+  text-align: center;
+  margin-top: 2rem;
+  
+  .btn-view-all {
+    display: inline-block;
+    padding: 0.8rem 2rem;
+    background: #3182ce;
+    color: white;
+    text-decoration: none;
+    border-radius: 6px;
+    font-weight: 600;
+    transition: all 0.3s;
+    
+    &:hover {
+      background: #2c5282;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    }
+  }
+}
+
+.stats-section {
+  margin-bottom: 4rem;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 1rem;
+}
+
+.stat-card {
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 1.5rem;
+  text-align: center;
+  
+  .stat-icon {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .stat-number {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #3182ce;
+    margin-bottom: 0.5rem;
+  }
+  
+  .stat-label {
+    font-size: 0.9rem;
+    color: #718096;
+  }
+}
+
+// Dark mode support for home page
+body.dark-mode {
+  .category-card,
+  .featured-card,
+  .stat-card {
+    background: #2d3748;
+    border-color: #4a5568;
+  }
+  
+  .category-link .category-info .category-name,
+  .featured-title a,
+  .timeline-title a {
+    color: #e2e8f0;
+    
+    &:hover {
+      color: #63b3ed;
+    }
+  }
+  
+  .subcategory-preview {
+    background: #1a202c;
+    
+    a {
+      color: #cbd5e0;
+      
+      &:hover {
+        background: #2d3748;
+        color: #e2e8f0;
+      }
+    }
+  }
+  
+  .section-title {
+    color: #f7fafc;
+  }
+}

@@ -3,36 +3,36 @@ layout: default
 title: 전체 문헌 목록
 ---
 
-<!-- 全體文獻目錄 (Complete Document Catalog) -->
+<!-- Complete Document Catalog -->
 <div class="document-catalog-container">
   
   <header class="catalog-header">
     <div class="breadcrumb-nav">
-      <a href="{{ '/' | relative_url }}">🏠 知識庫</a>
+      <a href="{{ '/' | relative_url }}">🏠 Knowledge Base</a>
       <span class="separator">›</span>
-      <span class="current">全體文獻目錄</span>
+      <span class="current">Complete Catalog</span>
     </div>
     
-    <h1 class="catalog-title">全體文獻目錄</h1>
-    <p class="catalog-subtitle">Complete Document Catalog · 總 {{ site.documents.size }} 篇</p>
+    <h1 class="catalog-title">Complete Document Catalog</h1>
+    <p class="catalog-subtitle">전체 문헌 목록 · Total {{ site.documents.size }} documents</p>
   </header>
 
   <!-- Filter Controls -->
   <div class="catalog-controls">
     <div class="sort-controls">
-      <label>排序方式:</label>
+      <label>Sort by:</label>
       <select id="sort-select">
-        <option value="category">按分類排序</option>
-        <option value="date-desc">最新優先</option>
-        <option value="date-asc">最舊優先</option>
-        <option value="title">按標題排序</option>
+        <option value="category">By Category</option>
+        <option value="date-desc">Newest First</option>
+        <option value="date-asc">Oldest First</option>
+        <option value="title">By Title</option>
       </select>
     </div>
     
     <div class="filter-controls">
-      <label>篩選分類:</label>
+      <label>Filter:</label>
       <select id="category-filter">
-        <option value="all">全部分類</option>
+        <option value="all">All Categories</option>
         {% for category in site.data.taxonomy.categories %}
         <option value="{{ category.id }}">{{ category.icon }} {{ category.name_ko }}</option>
         {% endfor %}

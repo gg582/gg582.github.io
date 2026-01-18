@@ -2,13 +2,13 @@
 layout: default
 ---
 
-<!-- 分類索引頁面 (Category Index Page) -->
+<!-- Category Index Page -->
 <div class="category-index-container">
   
   <!-- Header -->
   <header class="category-header">
     <div class="breadcrumb-nav">
-      <a href="{{ '/' | relative_url }}">🏠 知識庫</a>
+      <a href="{{ '/' | relative_url }}">🏠 Knowledge Base</a>
       <span class="separator">›</span>
       <span class="current">{{ page.category_name }}</span>
     </div>
@@ -24,7 +24,7 @@ layout: default
     
     <div class="category-stats">
       {% assign category_docs = site.documents | where_exp: "doc", "doc.taxonomy.category == page.category_id" %}
-      <span class="stat-item">📚 {{ category_docs.size }} 篇文獻</span>
+      <span class="stat-item">📚 {{ category_docs.size }} documents</span>
     </div>
   </header>
 
@@ -34,7 +34,7 @@ layout: default
     <!-- Subcategories Grid -->
     {% if page.subcategories %}
     <section class="subcategories-section">
-      <h2 class="section-heading">細分類</h2>
+      <h2 class="section-heading">Subcategories</h2>
       
       <div class="subcategories-grid">
         {% for subcat in page.subcategories %}
@@ -48,7 +48,7 @@ layout: default
           
           {% assign subcat_docs = site.documents | where_exp: "doc", "doc.taxonomy.subcategory == subcat.id" %}
           <div class="subcategory-stats">
-            <span>{{ subcat_docs.size }} 篇</span>
+            <span>{{ subcat_docs.size }} docs</span>
           </div>
           
           <!-- Preview documents -->
@@ -69,7 +69,7 @@ layout: default
 
     <!-- All Documents in Category -->
     <section class="documents-section">
-      <h2 class="section-heading">文獻列表</h2>
+      <h2 class="section-heading">Document List</h2>
       
       <!-- Group by subcategory if available -->
       {% if page.subcategories %}

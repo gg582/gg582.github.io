@@ -1,14 +1,14 @@
-<!-- 文獻分類框 (Document Classification Box) -->
+<!-- Document Classification Box -->
 <footer class="document-footer">
   <div class="classification-box">
-    <h3 class="classification-heading">文獻分類資訊</h3>
+    <h3 class="classification-heading">Document Classification</h3>
     
     <div class="classification-grid">
       <!-- Primary Classification -->
       {% if page.taxonomy and page.taxonomy.category %}
       {% assign category = site.data.taxonomy.categories | where: "id", page.taxonomy.category | first %}
       <div class="classification-item">
-        <dt class="classification-label">主分類</dt>
+        <dt class="classification-label">Primary Category</dt>
         <dd class="classification-value">
           <a href="{{ site.baseurl }}/분류/{{ category.id }}" class="category-badge">
             {{ category.icon }} {{ category.name_ko }}
@@ -19,7 +19,7 @@
       {% if page.taxonomy.subcategory %}
       {% assign subcategory = category.subcategories | where: "id", page.taxonomy.subcategory | first %}
       <div class="classification-item">
-        <dt class="classification-label">細分類</dt>
+        <dt class="classification-label">Subcategory</dt>
         <dd class="classification-value">
           <a href="{{ site.baseurl }}/분류/{{ category.id }}/{{ subcategory.id }}" class="subcategory-badge">
             {{ subcategory.name }}
@@ -32,7 +32,7 @@
       <!-- Keywords/Tags -->
       {% if page.keywords %}
       <div class="classification-item full-width">
-        <dt class="classification-label">主題詞</dt>
+        <dt class="classification-label">Keywords</dt>
         <dd class="classification-value">
           <div class="keywords-list">
             {% for keyword in page.keywords %}
@@ -46,7 +46,7 @@
       <!-- Difficulty Level -->
       {% if page.difficulty %}
       <div class="classification-item">
-        <dt class="classification-label">難易度</dt>
+        <dt class="classification-label">Difficulty</dt>
         <dd class="classification-value">
           {% assign level = site.data.taxonomy.difficulty_levels | where: "id", page.difficulty | first %}
           <span class="difficulty-badge difficulty-{{ page.difficulty }}" style="background-color: {{ level.color }};">
@@ -59,7 +59,7 @@
       <!-- Document Version -->
       {% if page.version %}
       <div class="classification-item">
-        <dt class="classification-label">版本</dt>
+        <dt class="classification-label">Version</dt>
         <dd class="classification-value">{{ page.version }}</dd>
       </div>
       {% endif %}
@@ -67,14 +67,14 @@
       <!-- Last Updated -->
       {% if page.updated %}
       <div class="classification-item">
-        <dt class="classification-label">最終修訂</dt>
-        <dd class="classification-value">{{ page.updated | date: "%Y年 %m月 %d日" }}</dd>
+        <dt class="classification-label">Last Updated</dt>
+        <dd class="classification-value">{{ page.updated | date: "%Y-%m-%d" }}</dd>
       </div>
       {% endif %}
 
       <!-- License -->
       <div class="classification-item">
-        <dt class="classification-label">使用許可</dt>
+        <dt class="classification-label">License</dt>
         <dd class="classification-value">
           <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" class="license-link">
             CC BY-SA 4.0
@@ -84,7 +84,7 @@
 
       <!-- Permanent URL -->
       <div class="classification-item full-width">
-        <dt class="classification-label">永久鏈接</dt>
+        <dt class="classification-label">Permalink</dt>
         <dd class="classification-value">
           <code class="permalink-url">{{ page.url | absolute_url }}</code>
         </dd>
@@ -93,7 +93,7 @@
 
     <!-- Citation Format -->
     <div class="citation-box">
-      <h4 class="citation-heading">引用格式</h4>
+      <h4 class="citation-heading">Citation</h4>
       <div class="citation-content">
         <code class="citation-text">
           {{ site.author }} ({{ page.date | date: "%Y" }}). {{ page.title }}. 

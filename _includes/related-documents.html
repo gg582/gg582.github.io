@@ -1,15 +1,15 @@
-<!-- 相關文獻 (Related Documents Section) -->
+<!-- Related Documents Section -->
 <div class="related-documents">
-  <h3 class="section-heading">相關文獻</h3>
+  <h3 class="section-heading">Related Documents</h3>
 
   {% assign has_relations = false %}
 
-  <!-- Prerequisites (先修知識) -->
+  <!-- Prerequisites -->
   {% if page.relationships.prerequisite %}
   {% assign has_relations = true %}
   <div class="relation-group">
-    <h4 class="relation-type">📚 先修知識</h4>
-    <p class="relation-description">閱讀本文前建議先理解的概念</p>
+    <h4 class="relation-type">📚 Prerequisites</h4>
+    <p class="relation-description">Concepts to understand before reading this document</p>
     <ul class="document-list">
       {% for prereq_path in page.relationships.prerequisite %}
         {% assign prereq = site.documents | where: "path", prereq_path | first %}
@@ -29,12 +29,12 @@
   </div>
   {% endif %}
 
-  <!-- Related Documents (關聯文獻) -->
+  <!-- Related Documents -->
   {% if page.relationships.related %}
   {% assign has_relations = true %}
   <div class="relation-group">
-    <h4 class="relation-type">🔗 關聯文獻</h4>
-    <p class="relation-description">相同主題或概念的文獻</p>
+    <h4 class="relation-type">🔗 Related Topics</h4>
+    <p class="relation-description">Documents on the same topic or concept</p>
     <ul class="document-list">
       {% for related_path in page.relationships.related %}
         {% assign related = site.documents | where: "path", related_path | first %}
@@ -54,12 +54,12 @@
   </div>
   {% endif %}
 
-  <!-- Extended Concepts (擴展概念) -->
+  <!-- Extended Concepts -->
   {% if page.relationships.extends %}
   {% assign has_relations = true %}
   <div class="relation-group">
-    <h4 class="relation-type">📈 擴展概念</h4>
-    <p class="relation-description">本文概念的深化與延伸</p>
+    <h4 class="relation-type">📈 Extended Concepts</h4>
+    <p class="relation-description">Deepening and extending this document's concepts</p>
     <ul class="document-list">
       {% for extend_path in page.relationships.extends %}
         {% assign extend = site.documents | where: "path", extend_path | first %}
@@ -79,12 +79,12 @@
   </div>
   {% endif %}
 
-  <!-- Comparison Documents (比較文獻) -->
+  <!-- Comparison Documents -->
   {% if page.relationships.comparison %}
   {% assign has_relations = true %}
   <div class="relation-group">
-    <h4 class="relation-type">⚖️ 比較文獻</h4>
-    <p class="relation-description">對照分析的相關技術或概念</p>
+    <h4 class="relation-type">⚖️ Comparison</h4>
+    <p class="relation-description">Related technologies or concepts for comparison</p>
     <ul class="document-list">
       {% for comp_path in page.relationships.comparison %}
         {% assign comp = site.documents | where: "path", comp_path | first %}
@@ -107,8 +107,8 @@
   <!-- Auto-suggested related documents (same category/subcategory) -->
   {% unless has_relations %}
   <div class="relation-group">
-    <h4 class="relation-type">🔗 同類文獻</h4>
-    <p class="relation-description">相同分類的其他文獻</p>
+    <h4 class="relation-type">🔗 Same Category</h4>
+    <p class="relation-description">Other documents in the same category</p>
     <ul class="document-list">
       {% assign related_docs = site.documents | where_exp: "doc", "doc.taxonomy.category == page.taxonomy.category" | where_exp: "doc", "doc.url != page.url" | sample: 5 %}
       {% for doc in related_docs limit: 5 %}
