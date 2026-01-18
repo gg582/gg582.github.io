@@ -107,7 +107,6 @@ pre code, .highlight code, .highlight .w {
 .masthead.light-bg .subheading,
 .masthead.light-bg .meta {
   color: #1A1A1A; /* Dark text for light backgrounds */
-  text-shadow: -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff; /* White outline */
 }
 
 .masthead.dark-bg .site-heading h1,
@@ -116,7 +115,6 @@ pre code, .highlight code, .highlight .w {
 .masthead.dark-bg .subheading,
 .masthead.dark-bg .meta {
   color: #fff; /* White text for dark backgrounds */
-  text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000; /* Black outline */
 }
 
 
@@ -197,11 +195,6 @@ body.dark-mode {
   #mainNav .navbar-brand:focus {
     background-color: darken($dark-mode-contrast, 10%) !important;
     color: #1A1A1A !important;
-  }
-
-  .masthead .overlay {
-    background-color: #000;
-    opacity: 0.6;
   }
 
   footer {
