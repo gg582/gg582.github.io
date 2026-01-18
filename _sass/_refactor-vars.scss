@@ -8,24 +8,6 @@ $dongchae:  #8C5E58;
 $divider:   #E2E0D8;
 $sub-text:  #75726C;
 
-// Korean Traditional Document Colors (Joseon Dynasty style)
-// Adjusted for modern feel - less saturated red
-$korean-trad-red: #D9534F;      // Modern, less saturated red
-$korean-trad-red-dark: #C9302C; // Darker red for hover states
-$korean-trad-red-darker: darken($korean-trad-red-dark, 5%); // Even darker for hover gradient
-$korean-trad-black: #1A1A1A;    // 먹색 (Ink black) - slightly softer than pure black for paper feel
-$korean-trad-radius: 3px;       // Subtle border radius
-
-// Mixin for gradient background
-@mixin modern-red-gradient {
-  background: linear-gradient(to bottom, $korean-trad-red, $korean-trad-red-dark) !important;
-}
-
-// Mixin for hover gradient background
-@mixin modern-red-gradient-hover {
-  background: linear-gradient(to bottom, $korean-trad-red, $korean-trad-red-darker) !important;
-}
-
 // Dark mode contrast color - grayish blue (회청색)
 $dark-mode-contrast: #A8C5D1;   // 회청색 (Grayish blue) - soft, muted blue-gray for dark backgrounds
 

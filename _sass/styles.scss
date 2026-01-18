@@ -98,56 +98,6 @@ pre code, .highlight code, .highlight .w {
 }
 
 /*
- * Korean Traditional Document Style for Navbar
- * Using traditional Korean color scheme: Orange-tinted red box (주황빛 주홍색) with Black text (먹색)
- * This mimics the emphasis style used in historical Korean documents like Joseon Dynasty Annals
- * Flat, desaturated colors for authentic paper-like traditional feel
- */
-#mainNav .navbar-brand,
-#mainNav .navbar-nav .nav-link,
-#mainNav .navbar-toggler {
-    @include modern-red-gradient;
-    color: $korean-trad-black !important; /* Ink black color */
-    padding: 4px 10px !important; /* Tighter padding to fit text closely */
-    border-radius: $korean-trad-radius !important; /* Subtle border radius */
-    border: 1px double $korean-trad-black !important; /* Thin double border */
-    font-weight: 600 !important;
-    display: inline-block !important;
-    margin: 4px 2px !important;
-    transition: background-color 0.3s ease !important;
-}
-
-
-#mainNav .navbar-brand:hover,
-#mainNav .navbar-brand:focus,
-#mainNav .navbar-nav .nav-link:hover,
-#mainNav .navbar-nav .nav-link:focus {
-    @include modern-red-gradient-hover;
-    color: $korean-trad-black !important;
-}
-
-#mainNav .navbar-toggler .fa-bars {
-    color: $korean-trad-black !important;
-}
-
-.masthead .site-heading h1,
-.masthead .page-heading h1,
-.masthead .post-heading h1,
-.masthead .subheading,
-.masthead .meta {
-    @include modern-red-gradient;
-    color: $korean-trad-black !important;
-    padding: 4px 10px !important;
-    border-radius: $korean-trad-radius !important;
-    border: 1px double $korean-trad-black !important;
-    font-weight: 600 !important;
-    display: inline-block !important;
-    margin: 4px 2px !important;
-    transition: background-color 0.3s ease !important;
-    text-shadow: none !important;
-}
-
-/*
  * Dark Mode Styles
  */
 body.dark-mode {
