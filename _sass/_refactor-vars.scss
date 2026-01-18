@@ -8,6 +8,11 @@ $dongchae:  #8C5E58;
 $divider:   #E2E0D8;
 $sub-text:  #75726C;
 
+// Korean Traditional Document Colors (Joseon Dynasty style)
+$korean-trad-red: #C8102E;      // 주홍색 (Vermilion) - used for emphasis in traditional documents
+$korean-trad-red-dark: #A00D26; // Darker vermilion for hover states
+$korean-trad-black: #000000;    // 먹색 (Ink black) - traditional ink color
+
 // 2. Override Theme Variables
 // Grays
 $white: $porcelain;

@@ -105,8 +105,8 @@ pre code, .highlight code, .highlight .w {
 #mainNav .navbar-brand,
 #mainNav .navbar-nav .nav-link,
 #mainNav .navbar-toggler {
-    background-color: #C8102E !important; /* Traditional Korean red/vermilion */
-    color: #000000 !important; /* Black ink color */
+    background-color: $korean-trad-red !important; /* Traditional Korean red/vermilion */
+    color: $korean-trad-black !important; /* Black ink color */
     padding: 8px 16px !important;
     border-radius: 4px !important;
     font-weight: 600 !important;
@@ -119,17 +119,17 @@ pre code, .highlight code, .highlight .w {
 #mainNav .navbar-brand:focus,
 #mainNav .navbar-nav .nav-link:hover,
 #mainNav .navbar-nav .nav-link:focus {
-    background-color: #A00D26 !important; /* Darker red on hover */
-    color: #000000 !important;
+    background-color: $korean-trad-red-dark !important; /* Darker red on hover */
+    color: $korean-trad-black !important;
 }
 
 /* Adjust navbar toggler button for boxed style */
 #mainNav .navbar-toggler {
-    border: 2px solid #000000 !important;
+    border: 2px solid $korean-trad-black !important;
 }
 
 #mainNav .navbar-toggler .fa-bars {
-    color: #000000 !important;
+    color: $korean-trad-black !important;
 }
 
 /*
@@ -186,24 +186,24 @@ pre code, .highlight code, .highlight .w {
   }
   /* Maintain Korean traditional box style in dark mode */
   #mainNav .navbar-nav .nav-link {
-    background-color: #C8102E !important;
-    color: #000000 !important;
+    background-color: $korean-trad-red !important;
+    color: $korean-trad-black !important;
   }
   #mainNav .navbar-brand {
-    background-color: #C8102E !important;
-    color: #000000 !important;
+    background-color: $korean-trad-red !important;
+    color: $korean-trad-black !important;
   }
   #mainNav .navbar-toggler {
-    background-color: #C8102E !important;
-    color: #000000 !important;
-    border: 2px solid #000000 !important;
+    background-color: $korean-trad-red !important;
+    color: $korean-trad-black !important;
+    border: 2px solid $korean-trad-black !important;
   }
   #mainNav .navbar-nav .nav-link:hover,
   #mainNav .navbar-nav .nav-link:focus,
   #mainNav .navbar-brand:hover,
   #mainNav .navbar-brand:focus {
-    background-color: #A00D26 !important;
-    color: #000000 !important;
+    background-color: $korean-trad-red-dark !important;
+    color: $korean-trad-black !important;
   }
 
   .masthead .overlay {
