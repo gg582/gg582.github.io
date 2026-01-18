@@ -1,17 +1,17 @@
 $(function () {
   $('[data-toggle="tooltip"]').tooltip();
 
-  const themeToggle = document.getElementById('theme-toggle');
+  const themeToggleCheckbox = document.getElementById('checkbox'); // Changed ID
   const body = document.body;
 
   // Function to set the theme
   function setTheme(theme) {
     if (theme === 'dark') {
       body.classList.add('dark-mode');
-      themeToggle.textContent = 'Dark';
+      themeToggleCheckbox.checked = true; // Set checked property
     } else {
       body.classList.remove('dark-mode');
-      themeToggle.textContent = 'Light';
+      themeToggleCheckbox.checked = false; // Unset checked property
     }
   }
 
@@ -25,10 +25,9 @@ $(function () {
     setTheme(prefersDark ? 'dark' : 'light');
   }
 
-  // Toggle theme on button click
-  themeToggle.addEventListener('click', () => {
-    const currentTheme = body.classList.contains('dark-mode') ? 'dark' : 'light';
-    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+  // Toggle theme on checkbox change event
+  themeToggleCheckbox.addEventListener('change', () => { // Changed event listener to 'change'
+    const newTheme = themeToggleCheckbox.checked ? 'dark' : 'light'; // Determine new theme based on checked state
     setTheme(newTheme);
     localStorage.setItem('theme', newTheme);
   });

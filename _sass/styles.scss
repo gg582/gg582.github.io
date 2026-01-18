@@ -288,3 +288,81 @@ footer .list-inline .fa-stack .fa-inverse {
   appearance: none;
 }
 
+/* 전체 컨테이너 설정 */
+.theme-switch-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.theme-switch {
+  display: inline-block;
+  height: 34px;
+  position: relative;
+  width: 80px; /* 글자가 들어가야 하므로 조금 더 넓게 설정 */
+}
+
+.theme-switch input {
+  display: none;
+}
+
+/* 슬라이더 배경 */
+.slider {
+  background-color: #333; /* 기본 상태(Light)일 때 배경 */
+  bottom: 0;
+  cursor: pointer;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  transition: .4s;
+  border-radius: 34px;
+}
+
+/* 배경에 적히는 글자 (Light/Dark) */
+.slider:before {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 12px;
+  font-family: sans-serif;
+  font-weight: bold;
+  color: white;
+  transition: .4s;
+}
+
+/* 기본 상태 (왼쪽일 때): 오른쪽 여백에 'Dark' 표시 */
+.slider:before {
+  content: "Dark";
+  right: 10px;
+}
+
+/* 움직이는 동그란 버튼 */
+.slider:after {
+  background-color: #fff;
+  bottom: 4px;
+  content: "";
+  height: 26px;
+  left: 4px;
+  position: absolute;
+  transition: .4s;
+  width: 26px;
+  border-radius: 50%;
+}
+
+/* 체크되었을 때 (오른쪽으로 밀린 상태) */
+input:checked + .slider {
+  background-color: #2196F3;
+}
+
+/* 오른쪽으로 밀렸을 때: 왼쪽 여백에 'Light' 표시 */
+input:checked + .slider:before {
+  content: "Light";
+  left: 10px;
+  right: auto;
+}
+
+/* 버튼 이동 */
+input:checked + .slider:after {
+  transform: translateX(46px);
+}
