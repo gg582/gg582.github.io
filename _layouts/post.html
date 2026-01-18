@@ -35,7 +35,7 @@ layout: default
               <a href="#">{% if page.author %}{{ page.author }}{% else %}{{ site.author }}{% endif %}</a>
               on {{ page.date | date: '%B %d, %Y' }} &middot; {% include read_time.html
               content=page.content %}
-            &middot; <span id="view-count"></span>
+            &middot; <span id="busuanzi_container_page_pv">조회수 <span id="busuanzi_value_page_pv">0</span></span>
             </span>
           </div>
         </div>
@@ -67,14 +67,7 @@ layout: default
       </div>
     </div>
   </div>
-      <script>
-        fetch('https://hitscounter.dev/history?url={{ site.url }}{{ page.url }}')
-          .then(response => response.json())
-          .then(data => {
-            const viewCount = data.at(-1).hits;
-            document.getElementById('view-count').innerText = `조회수 ${viewCount}`;
-          });
-      </script>
+      <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
       <script src="https://utteranc.es/client.js"
         repo="gg582/gg582.github.io"
         issue-term="title"
