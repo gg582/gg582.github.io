@@ -122,8 +122,10 @@ pre code, .highlight code, .highlight .w {
  * Dark Mode Styles
  */
 body.dark-mode {
-  body {
-    background-color: #1c1c1e;
+  background-color: #2C3E50;
+  color: #f1f1f1;
+
+  p, li, span, div {
     color: #f1f1f1;
   }
 
@@ -167,38 +169,44 @@ body.dark-mode {
   }
 
   #mainNav {
-    background-color: #1c1c1e;
-    border-bottom-color: #4a4a4a;
+    background-color: transparent;
+    border-bottom: none;
+  }
+  #mainNav.is-fixed {
+    background-color: #2C3E50 !important;
+    border-bottom: 1px solid #4a4a4a !important;
   }
   /* Dark mode uses grayish-blue (회청색) for contrast */
   #mainNav .navbar-nav .nav-link {
-    background-color: $dark-mode-contrast !important;
-    color: #1A1A1A !important;
-    border: 1px solid #1A1A1A !important;
-    box-shadow: inset 0 0 0 1px #1A1A1A !important;
+    color: #f1f1f1;
+    background-color: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
   }
   #mainNav .navbar-brand {
-    background-color: $dark-mode-contrast !important;
-    color: #1A1A1A !important;
-    border: 1px solid #1A1A1A !important;
-    box-shadow: inset 0 0 0 1px #1A1A1A !important;
+    color: #f1f1f1;
+    background-color: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
   }
   #mainNav .navbar-toggler {
-    background-color: $dark-mode-contrast !important;
-    color: #1A1A1A !important;
-    border: 1px solid #1A1A1A !important;
-    box-shadow: inset 0 0 0 1px #1A1A1A !important;
+    color: #f1f1f1;
+    background-color: transparent !important;
+    border: 1px solid #f1f1f1 !important;
+    box-shadow: none !important;
   }
   #mainNav .navbar-nav .nav-link:hover,
   #mainNav .navbar-nav .nav-link:focus,
   #mainNav .navbar-brand:hover,
   #mainNav .navbar-brand:focus {
-    background-color: darken($dark-mode-contrast, 10%) !important;
-    color: #1A1A1A !important;
+    background-color: transparent !important;
+    color: #80bfff !important;
   }
 
   footer {
-    background-color: #1c1c1e;
+    background-color: #2C3E50;
     border-top: 1px solid #4a4a4a;
   }
   footer .list-inline .list-inline-item a {
@@ -234,7 +242,7 @@ body.dark-mode {
   }
 
   .toc {
-    background: #2c2c2e;
+    background: #34495E;
     border: 1px solid #4a4a4a;
   }
   .toc h4 {
@@ -247,7 +255,7 @@ body.dark-mode {
   .bbr-results, .bbr-comparison-box, .post-content table {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4) !important;
     th {
-        background-color: #333 !important;
+        background-color: #34495E !important;
         color: #fff !important;
         border: 1px solid #4a4a4a !important;
     }
@@ -256,7 +264,7 @@ body.dark-mode {
         color: #ccc !important;
     }
     .metric-label, .case-label, td:first-child {
-        background-color: #222 !important;
+        background-color: #2C3E50 !important;
         color: #eee !important;
     }
     .highlight-positive {
@@ -266,7 +274,7 @@ body.dark-mode {
   }
 
   pre, .highlight {
-    background-color: #2c2c2e;
+    background-color: #2C3E50;
     border: 1px solid #4a4a4a;
   }
   pre code, .highlight code, .highlight .w {
