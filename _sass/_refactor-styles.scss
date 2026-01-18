@@ -235,6 +235,13 @@ article {
   }
 }
 
+// Diagnostic: Force mobile menu to display on small screens
+@media (max-width: 991.98px) { // Bootstrap's 'lg' breakpoint is 992px, so max-width: 991.98px targets smaller screens
+  #navbarResponsive {
+    display: block !important;
+  }
+}
+
 // Side note styling (functional margin usage)
 .side-note {
   position: absolute;
