@@ -187,6 +187,7 @@ footer {
     margin-bottom: 2rem;
   }
   
+  // Metadata positioned in traditional top-right corner
   .meta {
     position: absolute;
     right: 0;
@@ -194,8 +195,17 @@ footer {
     font-size: 0.85rem;
     color: rgba($chulhwa, 0.7);
     text-align: right;
-    line-height: 1.6;
-    max-width: 200px;
+    line-height: 1.8;
+    max-width: 250px;
+    
+    > div {
+      margin-bottom: 0.3rem;
+    }
+  }
+  
+  // Subtitle with secondary indentation
+  .subheading {
+    padding-left: 2rem;
   }
 }
 
@@ -206,14 +216,17 @@ article {
   margin-bottom: 2rem;
   position: relative;
   
-  // Functional margin for side notes
+  // Functional margin for side notes (using CSS custom property for consistency)
+  --side-margin-width: 6rem;
+  --side-note-width: 5rem;
+  
   &::before {
     content: '';
     position: absolute;
-    left: -6rem;
+    left: calc(-1 * var(--side-margin-width));
     top: 0;
     bottom: 0;
-    width: 5rem;
+    width: var(--side-note-width);
     border-right: 0.5px solid rgba($divider, 0.3);
   }
   
@@ -305,21 +318,14 @@ article {
   }
 }
 
-// Container with proper document spacing
-.container {
-  position: relative;
+// Container with proper document spacing - more specific to avoid Bootstrap conflicts
+.container > .row > .col-lg-8,
+.container > .row > .col-md-10 {
+  padding-left: 6rem;
+  padding-right: 6rem;
   
-  .row {
-    margin: 0;
-    
-    .col-lg-8, .col-md-10 {
-      padding-left: 6rem;
-      padding-right: 6rem;
-      
-      @media (max-width: 992px) {
-        padding-left: 2rem;
-        padding-right: 2rem;
-      }
-    }
+  @media (max-width: 992px) {
+    padding-left: 2rem;
+    padding-right: 2rem;
   }
 }
