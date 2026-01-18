@@ -31,7 +31,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install PyYAML openai anthropic
+          pip install PyYAML
 
       - name: Detect new or modified posts
         id: detect_posts
@@ -53,8 +53,6 @@ jobs:
 
       - name: Classify and update posts
         if: steps.detect_posts.outputs.no_changes == 'false'
-        env:
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: |
           python3 << 'PYTHON_SCRIPT'
           import os
@@ -282,7 +280,7 @@ jobs:
           commit-message: "Auto-classify and update knowledge base metadata for new posts"
           branch: auto-classify-kb-updates
           delete-branch: true
-          title: "🤖 Auto-classify Knowledge Base: ${{ steps.check_updates.outputs.update_count }} post(s) updated"
+          title: "Auto-classify Knowledge Base: ${{ steps.check_updates.outputs.update_count }} post(s) updated"
           body: |
             ## Automated Knowledge Base Update
             
