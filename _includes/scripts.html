@@ -4,6 +4,15 @@
 
 <script src="{{"/assets/scripts.js" | relative_url }}"></script>
 
+<script>
+  $(document).ready(function() {
+    // Initialize Bootstrap collapse for the navbar
+    $('.navbar-toggler').on('click', function() {
+      $('#navbarResponsive').collapse('toggle');
+    });
+  });
+</script>
+
 {% if page.url contains 'contact' %}
   <!-- Form Validation -->
   <script src="{{"/assets/vendor/startbootstrap-clean-blog/js/jqBootstrapValidation.js" | relative_url }}"></script>
