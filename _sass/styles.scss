@@ -9,6 +9,7 @@
 
 // Knowledge Base System: East Asian Scholarly Layout
 @import "knowledge-base";
+@import "category-layout";
 
 /* 
  * Custom Typography: 
@@ -79,12 +80,12 @@ b, strong {
 
 /*
  * Custom Font Overrides
- * UI Font: IBM Plex Sans KR
- * Code Font: Inconsolata (with IBM Plex Sans KR fallback) - Limited to code blocks
+ * UI Font: Pretendard
+ * Code Font: Inconsolata (with M PLUS 1p fallback) - Limited to code blocks
  */
 
 body, p, h1, h2, h3, h4, h5, h6, .section-heading, a, .caption, blockquote {
-    font-family: 'IBM Plex Sans KR', sans-serif !important;
+    font-family: 'Pretendard', 'M PLUS 1p', sans-serif !important;
 }
 
 /* Rounded Code Blocks & Font */
@@ -92,7 +93,7 @@ pre, .highlight {
     border-radius: 10px !important;
     /* Ensure the background clipping respects the border radius if there's a background color */
     overflow: hidden; 
-    font-family: 'Inconsolata', 'IBM Plex Sans KR', monospace !important;
+    font-family: 'Inconsolata', 'M PLUS 1p', monospace !important;
     /* Theme-independent Code Block Styles */
     background-color: #2d2d2d; /* Dark gray background */
     color: #f8f8f2; /* Light text color */
@@ -103,7 +104,7 @@ pre, .highlight {
 
 /* Targeting code inside blocks to ensure they inherit or use the specific font */
 pre code, .highlight code, .highlight .w {
-    font-family: 'Inconsolata', 'IBM Plex Sans KR', monospace !important;
+    font-family: 'Inconsolata', 'M PLUS 1p', monospace !important;
     color: #f8f8f2; /* Ensure code text is light */
 }
 
