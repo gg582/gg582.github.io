@@ -31,8 +31,6 @@ relationships:
   comparison: []
 ---
 
-
-
 # Tuning the standard algorithm: Holy Grail shouldn't hold Coca-Cola
 
 Tuning the standard algorithm may sound dangerous and intriguing at the same time.
