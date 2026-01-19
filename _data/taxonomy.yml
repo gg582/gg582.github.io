@@ -86,10 +86,6 @@ categories:
         name: 그리디 알고리즘
         description: 탐욕법, 최적화 문제
         weight: 6
-      - id: algorithm-sorting
-        name: 정렬 알고리즘
-        description: 정렬, 이분 탐색
-        weight: 7
 
   - id: general
     name: 종합 기술
