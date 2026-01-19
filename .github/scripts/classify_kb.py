@@ -3,6 +3,19 @@ import re
 import yaml
 import sys
 
+# Extensive mapping for modern IT domains
+DOMAINS = {
+    'on-device-ai': ['npu', 'quantization', 'tflite', 'tensorrt', 'edge-ai', 'inference', 'onnx', 'mcu-ai'],
+    'virtualization': ['kvm', 'qemu', 'hypervisor', 'virtio', 'docker', 'kubernetes', 'xen', 'containerd', 'vmm'],
+    'deep-learning': ['pytorch', 'tensorflow', 'transformer', 'llm', 'backpropagation', 'gradient-descent', 'cnn', 'rnn'],
+    'game-graphics': ['unity', 'unreal', 'opengl', 'vulkan', 'directx', 'shader', 'hlsl', 'glsl', 'ray-tracing', 'rendering', 'godot'],
+    'high-perf-computing': ['simd', 'avx', 'neon', 'cuda', 'opencl', 'lock-free', 'atomic', 'memory-barrier', 'hpc', 'parallel'],
+    'system-kernel-network': ['ebpf', 'xdp', 'bbr', 'tcp-ip', 'socketmap', 'syscall', 'zero-copy', 'io_uring', 'dpdk', 'rdma', 'netfilter'],
+    'cyber-security': ['malware', 'exploit', 'cryptography', 'overflow', 'reverse-engineering', 'ctf', 'zero-day', 'tls', 'pki'],
+    'data-engineering': ['spark', 'hadoop', 'kafka', 'etl', 'data-lake', 'warehouse', 'nosql', 'postgresql', 'redis', 'mongodb'],
+    'web-app-dev': ['react', 'vue', 'nextjs', 'typescript', 'wasm', 'tailwind', 'webpack', 'vite', 'spring', 'nodejs', 'fastapi']
+}
+
 def extract_frontmatter(content):
     """Extract YAML frontmatter and body from markdown content."""
     if not content.startswith('---'):
@@ -25,32 +38,19 @@ def infer_category_from_path(filepath):
     return 'general'
 
 def is_primarily_english(text):
-    """Detect if content is primarily in English (low Korean character density)."""
-    korean_chars = len(re.findall(r'[ㄱ-ㅎㅏ-ㅣ가-힣]', text))
+    """Detect if content is primarily in English (at least 80% English character density)."""
     if not text: return True
-    # If Korean character ratio is less than 5%, consider it primarily English
-    return (korean_chars / len(text)) < 0.05
+    english_chars = len(re.findall(r'[a-zA-Z]', text))
+    total_chars = len(re.findall(r'\S', text))
+    if total_chars == 0: return True
+    return (english_chars / total_chars) >= 0.8
 
 def infer_subcategory(title, content):
     """Infer a broad subcategory based on scoring and thresholds."""
     text = (title + ' ' + content).lower()
     is_english = is_primarily_english(text)
 
-    # Extensive mapping for modern IT domains
-    domains = {
-        'on-device-ai': ['npu', 'quantization', 'tflite', 'tensorrt', 'edge-ai', 'inference', 'onnx', 'mcu-ai'],
-        'virtualization': ['kvm', 'qemu', 'hypervisor', 'virtio', 'docker', 'kubernetes', 'xen', 'containerd', 'vmm'],
-        'deep-learning': ['pytorch', 'tensorflow', 'transformer', 'llm', 'backpropagation', 'gradient-descent', 'cnn', 'rnn'],
-        'game-graphics': ['unity', 'unreal', 'opengl', 'vulkan', 'directx', 'shader', 'hlsl', 'glsl', 'ray-tracing', 'rendering', 'godot'],
-        'high-perf-computing': ['simd', 'avx', 'neon', 'cuda', 'opencl', 'lock-free', 'atomic', 'memory-barrier', 'hpc', 'parallel'],
-        'system-kernel-network': ['ebpf', 'xdp', 'bbr', 'tcp-ip', 'socketmap', 'syscall', 'zero-copy', 'io_uring', 'dpdk', 'rdma', 'netfilter'],
-        'cyber-security': ['malware', 'exploit', 'cryptography', 'overflow', 'reverse-engineering', 'ctf', 'zero-day', 'tls', 'pki'],
-        'data-engineering': ['spark', 'hadoop', 'kafka', 'etl', 'data-lake', 'warehouse', 'nosql', 'postgresql', 'redis', 'mongodb'],
-        'web-app-dev': ['react', 'vue', 'nextjs', 'typescript', 'wasm', 'tailwind', 'webpack', 'vite', 'spring', 'nodejs', 'fastapi']
-    }
-
     # Base thresholds for assignment (minimum number of keyword occurrences)
-    # Categories mentioned as too 'aggressive' get higher base thresholds
     thresholds = {
         'web-app-dev': 3,
         'deep-learning': 3,
@@ -71,10 +71,9 @@ def infer_subcategory(title, content):
     best_subcat = 'general-tech'
     max_score = 0
 
-    for subcat, keywords in domains.items():
+    for subcat, keywords in DOMAINS.items():
         score = 0
         for kw in keywords:
-            # Use word boundaries to avoid partial matches (e.g., 'react' in 'reaction')
             pattern = r'\b' + re.escape(kw) + r'\b'
             matches = re.findall(pattern, text)
             score += len(matches)
@@ -97,38 +96,45 @@ def process_post(filepath):
     if frontmatter is None:
         return
 
-    # Extracting current metadata
     title = frontmatter.get('title', '')
+    text_to_scan = (title + ' ' + body).lower()
 
     # Apply Knowledge-base Metadata
     frontmatter['layout'] = 'knowledge-base'
     if 'taxonomy' not in frontmatter:
         frontmatter['taxonomy'] = {}
 
-    # Only update if category/subcategory are missing or empty
     if not frontmatter['taxonomy'].get('category'):
         frontmatter['taxonomy']['category'] = infer_category_from_path(filepath)
     
     if not frontmatter['taxonomy'].get('subcategory'):
         frontmatter['taxonomy']['subcategory'] = infer_subcategory(title, body)
 
-    # Default order if not exists
     if 'order' not in frontmatter['taxonomy']:
         frontmatter['taxonomy']['order'] = 1
 
-    # Tag harvesting for 'keywords' field
-    tech_pool = [
-        'NPU', 'KVM', 'PyTorch', 'Vulkan', 'BBR', 'eBPF', 'CUDA', 'LLM',
-        'RISC-V', 'io_uring', 'Docker', 'WASM', 'Kafka', 'React', 'SIMD', 'SOCKMAP'
-    ]
+    # Tag harvesting (Rule-based)
     keywords = frontmatter.get('keywords', [])
     if not isinstance(keywords, list): keywords = []
 
-    for tech in tech_pool:
-        # Use word boundaries for tag harvesting as well
+    # Use keywords from DOMAINS for tagging
+    all_potential_tags = []
+    for subcat_keywords in DOMAINS.values():
+        all_potential_tags.extend(subcat_keywords)
+    
+    # Add extra common tech terms
+    all_potential_tags.extend([
+        'linux', 'kernel', 'arm', 'risc-v', 'x86', 'performance', 'latency', 
+        'optimization', 'debugging', 'architecture', 'api', 'rest', 'graphql'
+    ])
+
+    for tech in set(all_potential_tags):
         pattern = r'\b' + re.escape(tech.lower()) + r'\b'
-        if re.search(pattern, (title + body).lower()) and tech not in keywords:
-            keywords.append(tech)
+        if re.search(pattern, text_to_scan):
+            # Normalize to title case or appropriate casing if needed, 
+            # but here we just use the list entry
+            if tech not in keywords:
+                keywords.append(tech)
 
     frontmatter['keywords'] = keywords[:15]
 
@@ -144,7 +150,6 @@ def process_post(filepath):
     print(f"  ✓ Processed: {filepath} (Category: {final_cat}, Sub: {final_sub})")
 
 if __name__ == "__main__":
-    # Get CHANGED_FILES from the workflow environment
     changed_files_raw = os.environ.get('CHANGED_FILES', '')
     if changed_files_raw:
         files = changed_files_raw.split()
