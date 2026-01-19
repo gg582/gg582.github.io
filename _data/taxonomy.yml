@@ -1,10 +1,10 @@
-# 知識分類體系 (Knowledge Classification System)
+# Knowledge Classification System
 # Hierarchical taxonomy for organizing technical knowledge
 # Based on East Asian scholarly classification principles
 
 categories:
   - id: network
-    name: 網絡技術
+    name: 네트워크 기숙
     name_ko: 네트워크 기술
     name_en: Network Technology
     description: 네트워크 프로토콜, 성능 최적화, 시스템 프로그래밍
@@ -23,7 +23,7 @@ categories:
         weight: 3
 
   - id: embedded
-    name: 嵌入式系統
+    name: 임베디드 시스템
     name_ko: 임베디드 시스템
     name_en: Embedded Systems
     description: 임베디드 리눅스, 하드웨어 제어, IoT
@@ -42,7 +42,7 @@ categories:
         weight: 3
 
   - id: codingtest
-    name: 演算法題解
+    name: 알고리즘 문제 풀이
     name_ko: 알고리즘 문제풀이
     name_en: Algorithm Problem Solving
     description: 알고리즘 연구, 자료구조, 문제 해법
@@ -63,9 +63,13 @@ categories:
         name: 자료구조
         description: 트리, 그래프, 해시
         weight: 4
+      - id: algorithm-floyd-warshall
+        name: 플로이드 워셜
+        description: Floyd-Warshall Algorithm
+        weight: 5
 
   - id: general
-    name: 綜合技術
+    name: 종합 기술
     name_ko: 종합 기술
     name_en: General Technology
     description: 일반 프로그래밍, 시스템 설계, 개발 도구
@@ -83,7 +87,7 @@ categories:
         description: 아키텍처, 성능 분석
         weight: 3
 
-# 文獻關係類型 (Document Relationship Types)
+# Document Relationship Types
 relationship_types:
   - id: prerequisite
     name: 선수 지식
@@ -105,24 +109,24 @@ relationship_types:
     name: 비교 대상
     description: 비교 분석을 위한 대조 문서
 
-# 難易度 分級 (Difficulty Levels)
+# Difficulty Levels
 difficulty_levels:
   - id: beginner
-    name: 初級
+    name: 초급
     name_ko: 초급
     color: "#28a745"
   
   - id: intermediate
-    name: 中級
+    name: 중급
     name_ko: 중급
     color: "#ffc107"
   
   - id: advanced
-    name: 高級
+    name:  고급
     name_ko: 고급
     color: "#dc3545"
   
   - id: expert
-    name: 專家
+    name: 전문가
     name_ko: 전문가
     color: "#6f42c1"
