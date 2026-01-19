@@ -16,16 +16,11 @@ keywords:
 - Algorithm Tuning
 - Network Optimization
 - BBR
-- kernel
-- performance
-- rest
-- linux
-- kubernetes
-- latency
-- optimization
-- parallel
-- bbr
-- overflow
+- Kernel
+- Performance
+- Linux
+- Latency
+- Optimization
 relationships:
   related:
   - _network/2025-12-23-BBRv1을-튜닝해서-지터를-더-줄여보자.md

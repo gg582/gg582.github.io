@@ -114,29 +114,26 @@ def process_post(filepath):
         frontmatter['taxonomy']['order'] = 1
 
     # Tag harvesting (Rule-based)
-    keywords = frontmatter.get('keywords', [])
-    if not isinstance(keywords, list): keywords = []
+    if not frontmatter.get('keywords'):
+        keywords = []
+        # Use keywords from DOMAINS for tagging
+        all_potential_tags = []
+        for subcat_keywords in DOMAINS.values():
+            all_potential_tags.extend(subcat_keywords)
+        
+        # Add extra common tech terms
+        all_potential_tags.extend([
+            'linux', 'kernel', 'arm', 'risc-v', 'x86', 'performance', 'latency', 
+            'optimization', 'debugging', 'architecture', 'api', 'rest', 'graphql'
+        ])
 
-    # Use keywords from DOMAINS for tagging
-    all_potential_tags = []
-    for subcat_keywords in DOMAINS.values():
-        all_potential_tags.extend(subcat_keywords)
-    
-    # Add extra common tech terms
-    all_potential_tags.extend([
-        'linux', 'kernel', 'arm', 'risc-v', 'x86', 'performance', 'latency', 
-        'optimization', 'debugging', 'architecture', 'api', 'rest', 'graphql'
-    ])
-
-    for tech in set(all_potential_tags):
-        pattern = r'\b' + re.escape(tech.lower()) + r'\b'
-        if re.search(pattern, text_to_scan):
-            # Normalize to title case or appropriate casing if needed, 
-            # but here we just use the list entry
-            if tech not in keywords:
-                keywords.append(tech)
-
-    frontmatter['keywords'] = keywords[:15]
+        for tech in set(all_potential_tags):
+            pattern = r'\b' + re.escape(tech.lower()) + r'\b'
+            if re.search(pattern, text_to_scan):
+                if tech not in keywords:
+                    keywords.append(tech)
+        
+        frontmatter['keywords'] = keywords[:15]
 
     # Reconstruct the file with updated YAML
     new_yaml = yaml.dump(frontmatter, allow_unicode=True, sort_keys=False)
