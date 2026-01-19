@@ -102,18 +102,18 @@ When looking at the bit-field, there are unused bits.
 If we are planning to reduce CWND, we need a switch bit to trigger it.
 So, we can use an additional 1 bit to mark this information.
 
-<table class="custom-table">
+<table>
   <thead>
     <tr>
       <th class="highlight-cell text-center">reduce_cwnd</th>
-      <th class="text-center">..</th>
-      <th class="text-center">..</th>
-      <th class="text-center">..</th>
-      <th class="text-center">..</th>
+      <th>..</th>
+      <th>..</th>
+      <th>..</th>
+      <th>..</th>
     </tr>
   </thead>
   <tbody>
-    <tr class="text-center">
+    <tr>
       <td>1 bit</td>
       <td>-</td>
       <td>-</td>
@@ -678,8 +678,7 @@ echo "You can now reboot into the other kernel and run this script again."
 Ping is ICMP, but queueing on the bottleneck link affects all traffic, so ping RTT/jitter is still a practical proxy for bufferbloat under load.
 This can still be a good metric to measure bufferbloat.
 
-<div style="overflow-x:auto;">
-  <table class="custom-table">
+<table>
     <thead>
       <tr>
         <th>Path</th>
@@ -692,120 +691,119 @@ This can still be a good metric to measure bufferbloat.
     </thead>
     <tbody>
       <tr>
-        <th colspan="6" class="section-header">
+        <th colspan="6">
           LAN (ping 192.168.168.102, n=1000)
         </th>
       </tr>
       <tr>
         <td>LAN</td>
         <td>Avg RTT (ms)</td>
-        <td class="text-right">0.023</td>
-        <td class="text-right">0.017</td>
-        <td class="text-right">-0.006</td>
-        <td class="text-right">+26.8%</td>
+        <td>0.023</td>
+        <td>0.017</td>
+        <td>-0.006</td>
+        <td>+26.8%</td>
       </tr>
       <tr>
         <td>LAN</td>
         <td>mdev (ms)</td>
-        <td class="text-right">0.032</td>
-        <td class="text-right">0.009</td>
-        <td class="text-right">-0.023</td>
-        <td class="text-right">+71.9%</td>
+        <td>0.032</td>
+        <td>0.009</td>
+        <td>-0.023</td>
+        <td>+71.9%</td>
       </tr>
       <tr>
         <td>LAN</td>
         <td>p99 RTT (ms)</td>
-        <td class="text-right">0.046</td>
-        <td class="text-right">0.043</td>
-        <td class="text-right">-0.003</td>
-        <td class="text-right">+6.5%</td>
+        <td>0.046</td>
+        <td>0.043</td>
+        <td>-0.003</td>
+        <td>+6.5%</td>
       </tr>
       <tr>
         <td>LAN</td>
         <td>p99.9 RTT (ms)</td>
-        <td class="text-right">0.152</td>
-        <td class="text-right">0.058</td>
-        <td class="text-right">-0.094</td>
-        <td class="text-right">+61.8%</td>
+        <td>0.152</td>
+        <td>0.058</td>
+        <td>-0.094</td>
+        <td>+61.8%</td>
       </tr>
       <tr>
         <td>LAN</td>
         <td>Max RTT (ms)</td>
-        <td class="text-right">0.962</td>
-        <td class="text-right">0.059</td>
-        <td class="text-right">-0.903</td>
-        <td class="text-right">+93.9%</td>
+        <td>0.962</td>
+        <td>0.059</td>
+        <td>-0.903</td>
+        <td>+93.9%</td>
       </tr>
       <tr>
         <td>LAN</td>
         <td>Loss (%)</td>
-        <td class="text-right">0.0</td>
-        <td class="text-right">0.0</td>
-        <td class="text-right">0.0 pp</td>
-        <td class="text-right">0.0 pp</td>
+        <td>0.0</td>
+        <td>0.0</td>
+        <td>0.0 pp</td>
+        <td>0.0 pp</td>
       </tr>
 
   <tr>
-    <th colspan="6" class="section-header">
+    <th colspan="6">
       WAN (ping 1.1.1.1, n=1000)
     </th>
   </tr>
   <tr>
     <td>WAN</td>
     <td>Avg RTT (ms)</td>
-    <td class="text-right">5.830</td>
-    <td class="text-right">5.791</td>
-    <td class="text-right">-0.039</td>
-    <td class="text-right">+0.7%</td>
+    <td>5.830</td>
+    <td>5.791</td>
+    <td>-0.039</td>
+    <td>+0.7%</td>
   </tr>
   <tr>
     <td>WAN</td>
     <td>mdev (ms)</td>
-    <td class="text-right">0.841</td>
-    <td class="text-right">0.201</td>
-    <td class="text-right">-0.640</td>
-    <td class="text-right">+76.1%</td>
+    <td>0.841</td>
+    <td>0.201</td>
+    <td>-0.640</td>
+    <td>+76.1%</td>
   </tr>
   <tr>
     <td>WAN</td>
     <td>p99 RTT (ms)</td>
-    <td class="text-right">6.310</td>
-    <td class="text-right">6.220</td>
-    <td class="text-right">-0.090</td>
-    <td class="text-right">+1.4%</td>
+    <td>6.310</td>
+    <td>6.220</td>
+    <td>-0.090</td>
+    <td>+1.4%</td>
   </tr>
   <tr>
     <td>WAN</td>
     <td>p99.9 RTT (ms)</td>
-    <td class="text-right">12.818</td>
-    <td class="text-right">6.341</td>
-    <td class="text-right">-6.477</td>
-    <td class="text-right">+50.5%</td>
+    <td>12.818</td>
+    <td>6.341</td>
+    <td>-6.477</td>
+    <td>+50.5%</td>
   </tr>
   <tr>
     <td>WAN</td>
     <td>Max RTT (ms)</td>
-    <td class="text-right">30.600</td>
-    <td class="text-right">7.220</td>
-    <td class="text-right">-23.380</td>
-    <td class="text-right">+76.4%</td>
+    <td>30.600</td>
+    <td>7.220</td>
+    <td>-23.380</td>
+    <td>+76.4%</td>
   </tr>
   <tr>
     <td>WAN</td>
     <td>Loss (%)</td>
-    <td class="text-right">0.0</td>
-    <td class="text-right">0.0</td>
-    <td class="text-right">0.0 pp</td>
-    <td class="text-right">0.0 pp</td>
+    <td>0.0</td>
+    <td>0.0</td>
+    <td>0.0 pp</td>
+    <td>0.0 pp</td>
   </tr>
 </tbody>
 
   </table>
 
-  <p style="margin:0.6em 0 0; font-size:0.95em; color:var(--dim-text);">
+  <p>
     Percentages are computed as (Vanilla - Modified) / Vanilla. Positive means Modified is better (lower latency/jitter).
   </p>
-</div>
 
 As a result, RTT has improved significantly--something that would not happen if we only tweaked user-space applications.
 Now, let's move on to the iPerf test, since BBRv3 does a lot more than BBRv1/v2, which I posted about before.
@@ -816,60 +814,60 @@ In that previous post, I only attached a ping test, but now I am sharing an iPer
 When running test 112620, public IPerf3's response was broken for 4 attempts.
 This shows a behavior when network quality is poor.
 
-<table class="custom-table">
+<table>
   <thead>
     <tr>
       <th>Case</th>
-      <th class="text-center">Forward<br>recv (Mbps)</th>
-      <th class="text-center">Reverse<br>recv (Mbps)</th>
-      <th class="text-center">Forward<br>retrans</th>
-      <th class="text-center">Reverse<br>retrans</th>
-      <th class="text-center">Ping fwd<br>avg (ms)</th>
-      <th class="text-center">Ping fwd<br>max (ms)</th>
-      <th class="text-center">Ping rev<br>avg (ms)</th>
-      <th class="text-center">Ping rev<br>max (ms)</th>
+      <th>Forward<br>recv (Mbps)</th>
+      <th>Reverse<br>recv (Mbps)</th>
+      <th>Forward<br>retrans</th>
+      <th>Reverse<br>retrans</th>
+      <th>Ping fwd<br>avg (ms)</th>
+      <th>Ping fwd<br>max (ms)</th>
+      <th>Ping rev<br>avg (ms)</th>
+      <th>Ping rev<br>max (ms)</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td class="section-header">bbr3_112401</td>
-      <td class="text-center">84.99</td>
-      <td class="text-center">87.31</td>
-      <td class="text-center">342</td>
-      <td class="text-center">35734</td>
-      <td class="text-center">25.96</td>
-      <td class="text-center">43.69</td>
-      <td class="text-center">27.49</td>
-      <td class="text-center">65.29</td>
+      <td>bbr3_112401</td>
+      <td>84.99</td>
+      <td>87.31</td>
+      <td>342</td>
+      <td>35734</td>
+      <td>25.96</td>
+      <td>43.69</td>
+      <td>27.49</td>
+      <td>65.29</td>
     </tr>
     <tr>
-      <td class="section-header">bbr3_112620<br>(worst case)</td>
-      <td class="text-center">84.01</td>
-      <td class="text-center">87.90</td>
-      <td class="text-center">671</td>
-      <td class="text-center">43481</td>
-      <td class="text-center">27.69</td>
-      <td class="text-center">46.41</td>
-      <td class="text-center">26.82</td>
-      <td class="text-center">46.99</td>
+      <td>bbr3_112620<br>(worst case)</td>
+      <td>84.01</td>
+      <td>87.90</td>
+      <td>671</td>
+      <td>43481</td>
+      <td>27.69</td>
+      <td>46.41</td>
+      <td>26.82</td>
+      <td>46.99</td>
     </tr>
     <tr>
-      <td class="section-header">bbr3vanilla_112511</td>
-      <td class="text-center">81.23</td>
-      <td class="text-center">87.80</td>
-      <td class="text-center">580</td>
-      <td class="text-center">42012</td>
-      <td class="text-center">28.71</td>
-      <td class="text-center">73.05</td>
-      <td class="text-center">29.17</td>
-      <td class="text-center">46.19</td>
+      <td>bbr3vanilla_112511</td>
+      <td>81.23</td>
+      <td>87.80</td>
+      <td>580</td>
+      <td>42012</td>
+      <td>28.71</td>
+      <td>73.05</td>
+      <td>29.17</td>
+      <td>46.19</td>
     </tr>
   </tbody>
 </table>
 
 ### Analysis
 
-<table class="custom-table">
+<table>
   <thead>
     <tr>
       <th>Metric (Forward)</th>
@@ -880,28 +878,28 @@ This shows a behavior when network quality is poor.
   </thead>
   <tbody>
     <tr>
-      <td class="section-header">Throughput (Recv)</td>
-      <td class="dim-text text-center">81.23 Mbps</td>
-      <td class="text-center">84.99 Mbps</td>
-      <td class="highlight-positive text-center">+4.63%</td>
+      <td>Throughput (Recv)</td>
+      <td>81.23 Mbps</td>
+      <td>84.99 Mbps</td>
+      <td>+4.63%</td>
     </tr>
     <tr>
-      <td class="section-header">TCP Retransmissions</td>
-      <td class="dim-text text-center">580</td>
-      <td class="text-center">342</td>
-      <td class="highlight-positive text-center">+41.03% (Reduced)</td>
+      <td>TCP Retransmissions</td>
+      <td>580</td>
+      <td>342</td>
+      <td>+41.03% (Reduced)</td>
     </tr>
     <tr>
-      <td class="section-header">Avg Latency (Ping)</td>
-      <td class="dim-text text-center">28.71 ms</td>
-      <td class="text-center">25.96 ms</td>
-      <td class="highlight-positive text-center">+9.58% (Reduced)</td>
+      <td>Avg Latency (Ping)</td>
+      <td>28.71 ms</td>
+      <td>25.96 ms</td>
+      <td>+9.58% (Reduced)</td>
     </tr>
     <tr>
-      <td class="section-header">Max Latency (Jitter)</td>
-      <td class="dim-text text-center">73.05 ms</td>
-      <td class="text-center">43.69 ms</td>
-      <td class="highlight-positive text-center">+40.19% (Reduced)</td>
+      <td>Max Latency (Jitter)</td>
+      <td>73.05 ms</td>
+      <td>43.69 ms</td>
+      <td>+40.19% (Reduced)</td>
     </tr>
   </tbody>
 </table>
