@@ -9,7 +9,7 @@ taxonomy:
   category: network
   subcategory: network-protocol
   order: 2
-difficulty: expert
+difficulty: advanced
 keywords:
 - BBRv3
 - TCP Congestion Control
