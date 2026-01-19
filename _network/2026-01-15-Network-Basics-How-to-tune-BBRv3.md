@@ -182,7 +182,7 @@ First, this calculates whether to slow down or not.
 And apply this to `bbr_main`:
 
 ```c
-// ... rest of the codes are omitted
+// ... rest of the codes are omitted...
 		if (rs->interval_us > 0 && rs->acked_sacked > 0) {
 			if (!rs->is_app_limited || ctx.sample_bw >= bbr_max_bw(sk))
 				bbr->bw_hi[1] = max(bbr->bw_hi[1], ctx.sample_bw);
@@ -200,7 +200,7 @@ And apply this to `bbr_main`:
 Add this to `bbr_set_cwnd`:
 
 ```c
-// ... rest of the codes are omitte
+// ... rest of the codes are omitted...
 	if (!acked) goto done; // insert below this line
 	if (bbr->reduce_cwnd) {
 		cwnd = max_t(s32, cwnd - acked, 1);
