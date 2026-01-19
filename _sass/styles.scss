@@ -24,57 +24,57 @@ b, strong {
  * where the global default is too thin.
  */
 .bbr-results, .bbr-comparison-box, .post-content table {
-    width: 100% !important;
-    border-collapse: collapse !important;
-    margin: 2.5rem 0 !important;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
-    font-family: inherit !important;
+    width: 100%;
+    border-collapse: collapse;
+    margin: 2.5rem 0;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    font-family: inherit;
 
     /* Responsive horizontal scroll for smaller screens */
-    display: block !important;
-    overflow-x: auto !important;
+    display: block;
+    overflow-x: auto;
 
     th {
-        background-color: #1a202c !important; 
-        color: #ffffff !important;
-        padding: 15px 10px !important;
-        text-align: center !important;
-        border: 1px solid #111116 !important;
+        background-color: #1a202c; 
+        color: #ffffff;
+        padding: 15px 10px;
+        text-align: center;
+        border: 1px solid #111116;
         /* Strengthening font weight as the global default is thin */
-        font-weight: 700 !important; 
-        white-space: nowrap !important;
+        font-weight: 700; 
+        white-space: nowrap;
     }
 
     td {
-        padding: 12px 10px !important;
-        border: 1px solid #e2e8f0 !important;
-        text-align: center !important;
-        color: #495057 !important; 
-        vertical-align: middle !important;
+        padding: 12px 10px;
+        border: 1px solid #e2e8f0;
+        text-align: center;
+        color: #495057; 
+        vertical-align: middle;
         /* Ensuring standard data is not too faint */
-        font-weight: 400 !important; 
+        font-weight: 400; 
     }
 
     /* Styling for the Metric/Case labels in the first column */
     .metric-label, .case-label, td:first-child {
-        background-color: #f8fafc !important;
+        background-color: #f8fafc;
         /* Using extra bold (800) or bold (700) to stand out from thin global text */
-        font-weight: 800 !important; 
-        text-align: left !important;
-        color: #212529 !important; 
-        min-width: 160px !important;
+        font-weight: 800; 
+        text-align: left;
+        color: #212529; 
+        min-width: 160px;
     }
 
     /* Highlight positive performance improvements in success green */
     .highlight-positive {
-        color: #28a745 !important; 
-        font-weight: 800 !important;
-        background-color: rgba(40, 167, 69, 0.05) !important;
+        color: #28a745; 
+        font-weight: 800;
+        background-color: rgba(40, 167, 69, 0.05);
     }
 
     /* Reset display for larger screens to maintain table structure */
     @media (min-width: 992px) {
-        display: table !important;
+        display: table;
     }
 }
 
@@ -255,23 +255,23 @@ body.dark-mode {
   }
 
   .bbr-results, .bbr-comparison-box, .post-content table {
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4) !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
     th {
-        background-color: #34495E !important;
-        color: #fff !important;
-        border: 1px solid #4a4a4a !important;
+        background-color: #34495E;
+        color: #fff;
+        border: 1px solid #4a4a4a;
     }
     td {
-        border: 1px solid #4a4a4a !important;
-        color: #ccc !important;
+        border: 1px solid #4a4a4a;
+        color: #ccc;
     }
     .metric-label, .case-label, td:first-child {
-        background-color: #232328 !important;
-        color: #eee !important;
+        background-color: #232328;
+        color: #eee;
     }
     .highlight-positive {
-        color: #28a745 !important;
-        background-color: rgba(40, 167, 69, 0.15) !important;
+        color: #28a745;
+        background-color: rgba(40, 167, 69, 0.15);
     }
   }
 
