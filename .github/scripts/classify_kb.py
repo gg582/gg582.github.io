@@ -24,9 +24,17 @@ def infer_category_from_path(filepath):
     if '_posts' in filepath: return 'posts'
     return 'general'
 
+def is_primarily_english(text):
+    """Detect if content is primarily in English (low Korean character density)."""
+    korean_chars = len(re.findall(r'[ㄱ-ㅎㅏ-ㅣ가-힣]', text))
+    if not text: return True
+    # If Korean character ratio is less than 5%, consider it primarily English
+    return (korean_chars / len(text)) < 0.05
+
 def infer_subcategory(title, content):
-    """Infer a broad subcategory based on comprehensive IT domains."""
+    """Infer a broad subcategory based on scoring and thresholds."""
     text = (title + ' ' + content).lower()
+    is_english = is_primarily_english(text)
 
     # Extensive mapping for modern IT domains
     domains = {
@@ -41,10 +49,41 @@ def infer_subcategory(title, content):
         'web-app-dev': ['react', 'vue', 'nextjs', 'typescript', 'wasm', 'tailwind', 'webpack', 'vite', 'spring', 'nodejs', 'fastapi']
     }
 
+    # Base thresholds for assignment (minimum number of keyword occurrences)
+    # Categories mentioned as too 'aggressive' get higher base thresholds
+    thresholds = {
+        'web-app-dev': 3,
+        'deep-learning': 3,
+        'virtualization': 3,
+        'on-device-ai': 2,
+        'game-graphics': 2,
+        'high-perf-computing': 2,
+        'system-kernel-network': 2,
+        'cyber-security': 2,
+        'data-engineering': 2
+    }
+
+    # Increase thresholds significantly for English posts to avoid accidental classification
+    if is_english:
+        for cat in thresholds:
+            thresholds[cat] += 3
+
+    best_subcat = 'general-tech'
+    max_score = 0
+
     for subcat, keywords in domains.items():
-        if any(kw in text for kw in keywords):
-            return subcat
-    return 'general-tech'
+        score = 0
+        for kw in keywords:
+            # Use word boundaries to avoid partial matches (e.g., 'react' in 'reaction')
+            pattern = r'\b' + re.escape(kw) + r'\b'
+            matches = re.findall(pattern, text)
+            score += len(matches)
+        
+        if score >= thresholds.get(subcat, 2) and score > max_score:
+            max_score = score
+            best_subcat = subcat
+
+    return best_subcat
 
 def process_post(filepath):
     """Standardize metadata without breaking the existing folder structure."""
@@ -61,9 +100,9 @@ def process_post(filepath):
     # Extracting current metadata
     title = frontmatter.get('title', '')
 
-    # 1. Map category based on physical folder location (Critical for your tree structure)
+    # 1. Map category based on physical folder location
     category = infer_category_from_path(filepath)
-    # 2. Map subcategory based on content analysis
+    # 2. Map subcategory based on content analysis (now with scoring/thresholds)
     subcategory = infer_subcategory(title, body)
 
     # Apply Knowledge-base Metadata
@@ -87,13 +126,14 @@ def process_post(filepath):
     if not isinstance(keywords, list): keywords = []
 
     for tech in tech_pool:
-        if tech.lower() in (title + body).lower() and tech not in keywords:
+        # Use word boundaries for tag harvesting as well
+        pattern = r'\b' + re.escape(tech.lower()) + r'\b'
+        if re.search(pattern, (title + body).lower()) and tech not in keywords:
             keywords.append(tech)
 
     frontmatter['keywords'] = keywords[:15]
 
     # Reconstruct the file with updated YAML
-    # Using allow_unicode=True for potential non-ASCII characters in title/body
     new_yaml = yaml.dump(frontmatter, allow_unicode=True, sort_keys=False)
     new_content = f"---\n{new_yaml}---\n{body}"
 
@@ -105,10 +145,8 @@ if __name__ == "__main__":
     # Get CHANGED_FILES from the workflow environment
     changed_files_raw = os.environ.get('CHANGED_FILES', '')
     if changed_files_raw:
-        # Split by whitespace or newline
         files = changed_files_raw.split()
         for f in files:
             target = f.strip()
-            # Handle only markdown files in specific knowledge folders
             if target.endswith('.md') or target.endswith('.markdown'):
                 process_post(target)
