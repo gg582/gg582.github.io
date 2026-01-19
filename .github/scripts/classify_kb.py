@@ -100,18 +100,17 @@ def process_post(filepath):
     # Extracting current metadata
     title = frontmatter.get('title', '')
 
-    # 1. Map category based on physical folder location
-    category = infer_category_from_path(filepath)
-    # 2. Map subcategory based on content analysis (now with scoring/thresholds)
-    subcategory = infer_subcategory(title, body)
-
     # Apply Knowledge-base Metadata
     frontmatter['layout'] = 'knowledge-base'
     if 'taxonomy' not in frontmatter:
         frontmatter['taxonomy'] = {}
 
-    frontmatter['taxonomy']['category'] = category
-    frontmatter['taxonomy']['subcategory'] = subcategory
+    # Only update if category/subcategory are missing or empty
+    if not frontmatter['taxonomy'].get('category'):
+        frontmatter['taxonomy']['category'] = infer_category_from_path(filepath)
+    
+    if not frontmatter['taxonomy'].get('subcategory'):
+        frontmatter['taxonomy']['subcategory'] = infer_subcategory(title, body)
 
     # Default order if not exists
     if 'order' not in frontmatter['taxonomy']:
@@ -139,7 +138,10 @@ def process_post(filepath):
 
     with open(filepath, 'w', encoding='utf-8') as f:
         f.write(new_content)
-    print(f"  ✓ Processed: {filepath} (Category: {category}, Sub: {subcategory})")
+    
+    final_cat = frontmatter['taxonomy'].get('category')
+    final_sub = frontmatter['taxonomy'].get('subcategory')
+    print(f"  ✓ Processed: {filepath} (Category: {final_cat}, Sub: {final_sub})")
 
 if __name__ == "__main__":
     # Get CHANGED_FILES from the workflow environment
