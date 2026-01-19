@@ -216,7 +216,7 @@ relationships:
 
 ```bash
 # 레포지토리 클론
-git clone [https://github.com/gg582/m1-arm-linux-neon-simd-benchmark.git](https://github.com/gg582/m1-arm-linux-neon-simd-benchmark.git)
+git clone https://github.com/gg582/m1-arm-linux-neon-simd-benchmark.git
 cd m1-arm-linux-neon-simd-benchmark
 
 # 최적화 플래그를 사용하여 빌드
