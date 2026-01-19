@@ -1,9 +1,10 @@
 import os
 import re
 import yaml
+import sys
 
 def extract_frontmatter(content):
-    """Extract YAML frontmatter and post body separately."""
+    """Extract YAML frontmatter and body from markdown content."""
     if not content.startswith('---'):
         return None, content
     parts = content.split('---', 2)
@@ -15,48 +16,29 @@ def extract_frontmatter(content):
     except yaml.YAMLError:
         return None, content
 
+def infer_category_from_path(filepath):
+    """Infer primary category from the actual directory name in the tree."""
+    if '_network' in filepath: return 'network'
+    if '_embedded' in filepath: return 'embedded'
+    if '_codingtest' in filepath: return 'codingtest'
+    if '_posts' in filepath: return 'posts'
+    return 'general'
+
 def infer_subcategory(title, content):
-    """Infer a broad subcategory from comprehensive tech domains."""
+    """Infer a broad subcategory based on comprehensive IT domains."""
     text = (title + ' ' + content).lower()
 
-    # Broad domain mapping covering nearly all IT sectors
+    # Extensive mapping for modern IT domains
     domains = {
-        'on-device-ai': [
-            'npu', 'quantization', 'tflite', 'tensorrt', 'edge-ai', 'inference',
-            'onnx', 'mobile-ml', 'coreml', 'dsp', 'openvino'
-        ],
-        'virtualization-cloud': [
-            'kvm', 'qemu', 'hypervisor', 'virtio', 'container', 'docker', 'kubernetes',
-            'xen', 'vmware', 'vmm', 'overlay-network', 'helm', 'serverless'
-        ],
-        'deep-learning': [
-            'pytorch', 'tensorflow', 'backpropagation', 'transformer', 'llm', 'cnn',
-            'rnn', 'gradient-descent', 'optimizer', 'neural-network', 'gan'
-        ],
-        'game-dev-graphics': [
-            'unity', 'unreal', 'opengl', 'vulkan', 'directx', 'shader', 'hlsl', 'glsl',
-            'ray-tracing', 'rendering-pipeline', 'physics-engine', 'rasterization', 'godot'
-        ],
-        'high-perf-computing': [
-            'simd', 'avx', 'neon', 'cuda', 'opencl', 'parallel-programming',
-            'lock-free', 'atomic', 'memory-barrier', 'gpgpu', 'mpi', 'fpga'
-        ],
-        'system-kernel-network': [
-            'ebpf', 'xdp', 'bbr', 'tcp-ip', 'socketmap', 'netfilter', 'syscall',
-            'kernel-module', 'interrupt-handler', 'zero-copy', 'io_uring', 'dpdk', 'rdma'
-        ],
-        'cyber-security': [
-            'malware', 'exploit', 'cryptography', 'overflow', 'reverse-engineering',
-            'ctf', 'zero-day', 'tls', 'pki', 'penetration', 'fuzzing'
-        ],
-        'data-engineering': [
-            'spark', 'hadoop', 'kafka', 'etl', 'data-lake', 'warehouse', 'nosql',
-            'postgresql', 'redis', 'elasticsearch', 'mongodb'
-        ],
-        'web-app-dev': [
-            'react', 'vue', 'nextjs', 'typescript', 'wasm', 'tailwind', 'webpack',
-            'vite', 'spring', 'nodejs', 'fastapi', 'grpc', 'rest-api'
-        ]
+        'on-device-ai': ['npu', 'quantization', 'tflite', 'tensorrt', 'edge-ai', 'inference', 'onnx', 'mcu-ai'],
+        'virtualization': ['kvm', 'qemu', 'hypervisor', 'virtio', 'docker', 'kubernetes', 'xen', 'containerd', 'vmm'],
+        'deep-learning': ['pytorch', 'tensorflow', 'transformer', 'llm', 'backpropagation', 'gradient-descent', 'cnn', 'rnn'],
+        'game-graphics': ['unity', 'unreal', 'opengl', 'vulkan', 'directx', 'shader', 'hlsl', 'glsl', 'ray-tracing', 'rendering', 'godot'],
+        'high-perf-computing': ['simd', 'avx', 'neon', 'cuda', 'opencl', 'lock-free', 'atomic', 'memory-barrier', 'hpc', 'parallel'],
+        'system-kernel-network': ['ebpf', 'xdp', 'bbr', 'tcp-ip', 'socketmap', 'syscall', 'zero-copy', 'io_uring', 'dpdk', 'rdma', 'netfilter'],
+        'cyber-security': ['malware', 'exploit', 'cryptography', 'overflow', 'reverse-engineering', 'ctf', 'zero-day', 'tls', 'pki'],
+        'data-engineering': ['spark', 'hadoop', 'kafka', 'etl', 'data-lake', 'warehouse', 'nosql', 'postgresql', 'redis', 'mongodb'],
+        'web-app-dev': ['react', 'vue', 'nextjs', 'typescript', 'wasm', 'tailwind', 'webpack', 'vite', 'spring', 'nodejs', 'fastapi']
     }
 
     for subcat, keywords in domains.items():
@@ -65,7 +47,7 @@ def infer_subcategory(title, content):
     return 'general-tech'
 
 def process_post(filepath):
-    """Force knowledge-base layout and update metadata for the given file."""
+    """Standardize metadata without breaking the existing folder structure."""
     if not os.path.exists(filepath):
         return
 
@@ -76,26 +58,33 @@ def process_post(filepath):
     if frontmatter is None:
         return
 
-    # Metadata extraction
+    # Extracting current metadata
     title = frontmatter.get('title', '')
+
+    # 1. Map category based on physical folder location (Critical for your tree structure)
+    category = infer_category_from_path(filepath)
+    # 2. Map subcategory based on content analysis
     subcategory = infer_subcategory(title, body)
 
-    # Standardize Knowledge-base structure
+    # Apply Knowledge-base Metadata
     frontmatter['layout'] = 'knowledge-base'
     if 'taxonomy' not in frontmatter:
         frontmatter['taxonomy'] = {}
 
-    frontmatter['taxonomy']['category'] = 'knowledge-base'
+    frontmatter['taxonomy']['category'] = category
     frontmatter['taxonomy']['subcategory'] = subcategory
 
-    # Automatic keyword/tag harvesting
+    # Default order if not exists
+    if 'order' not in frontmatter['taxonomy']:
+        frontmatter['taxonomy']['order'] = 1
+
+    # Tag harvesting for 'keywords' field
     tech_pool = [
         'NPU', 'KVM', 'PyTorch', 'Vulkan', 'BBR', 'eBPF', 'CUDA', 'LLM',
-        'RISC-V', 'io_uring', 'Docker', 'WASM', 'Kafka', 'React', 'SIMD'
+        'RISC-V', 'io_uring', 'Docker', 'WASM', 'Kafka', 'React', 'SIMD', 'SOCKMAP'
     ]
     keywords = frontmatter.get('keywords', [])
-    if not isinstance(keywords, list):
-        keywords = []
+    if not isinstance(keywords, list): keywords = []
 
     for tech in tech_pool:
         if tech.lower() in (title + body).lower() and tech not in keywords:
@@ -103,18 +92,23 @@ def process_post(filepath):
 
     frontmatter['keywords'] = keywords[:15]
 
-    # Reconstruct file with updated metadata
-    new_content = '---\n' + yaml.dump(frontmatter, allow_unicode=True, sort_keys=False) + '---\n' + body
+    # Reconstruct the file with updated YAML
+    # Using allow_unicode=True for potential non-ASCII characters in title/body
+    new_yaml = yaml.dump(frontmatter, allow_unicode=True, sort_keys=False)
+    new_content = f"---\n{new_yaml}---\n{body}"
+
     with open(filepath, 'w', encoding='utf-8') as f:
         f.write(new_content)
+    print(f"  ✓ Processed: {filepath} (Category: {category}, Sub: {subcategory})")
 
 if __name__ == "__main__":
-    # CHANGED_FILES is provided by the 'Run Auto-Classification' step in the workflow
+    # Get CHANGED_FILES from the workflow environment
     changed_files_raw = os.environ.get('CHANGED_FILES', '')
     if changed_files_raw:
-        files = changed_files_raw.split('\n')
+        # Split by whitespace or newline
+        files = changed_files_raw.split()
         for f in files:
             target = f.strip()
-            # Process only markdown files
+            # Handle only markdown files in specific knowledge folders
             if target.endswith('.md') or target.endswith('.markdown'):
                 process_post(target)
