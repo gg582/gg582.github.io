@@ -102,9 +102,9 @@ When looking at the bit-field, there are unused bits.
 If we are planning to reduce CWND, we need a switch bit to trigger it.
 So, we can use an additional 1 bit to mark this information.
 
-<table style="border-collapse: collapse; width: 100%; font-family: sans-serif; border: 1px solid #ddd;">
+<table style="border-collapse: collapse; width: 100%; font-family: sans-serif; border: 1px solid #ddd; background-color: white; color: black;">
   <thead>
-    <tr style="background-color: #f2f2f2; text-align: center;">
+    <tr style="background-color: #f2f2f2; text-align: center; color: black;">
       <th style="padding: 12px; border: 1px solid #ddd; color: #ff3200;">reduce_cwnd</th>
       <th style="padding: 12px; border: 1px solid #ddd;">..</th>
       <th style="padding: 12px; border: 1px solid #ddd;">..</th>
@@ -679,7 +679,7 @@ Ping is ICMP, but queueing on the bottleneck link affects all traffic, so ping R
 This can still be a good metric to measure bufferbloat.
 
 <div style="overflow-x:auto;">
-  <table style="border-collapse:collapse; width:100%; font-variant-numeric: tabular-nums;">
+  <table style="border-collapse:collapse; width:100%; font-variant-numeric: tabular-nums; background-color: white; color: black;">
     <thead>
       <tr>
         <th style="border-bottom:2px solid #ccc; text-align:left; padding:6px 8px;">Path</th>
@@ -692,7 +692,7 @@ This can still be a good metric to measure bufferbloat.
     </thead>
     <tbody>
       <tr>
-        <th colspan="6" style="padding:10px 8px; text-align:left; background:rgba(0,0,0,0.04); border-top:1px solid #ddd;">
+        <th colspan="6" style="padding:10px 8px; text-align:left; background-color: #f2f2f2; color: black;; border-top:1px solid #ddd;">
           LAN (ping 192.168.168.102, n=1000)
         </th>
       </tr>
@@ -746,7 +746,7 @@ This can still be a good metric to measure bufferbloat.
       </tr>
 
   <tr>
-    <th colspan="6" style="padding:10px 8px; text-align:left; background:rgba(0,0,0,0.04); border-top:1px solid #ddd;">
+    <th colspan="6" style="padding:10px 8px; text-align:left; background-color: #f2f2f2; color: black;; border-top:1px solid #ddd;">
       WAN (ping 1.1.1.1, n=1000)
     </th>
   </tr>
@@ -823,6 +823,8 @@ This shows a behavior when network quality is poor.
     margin: 25px 0;
     box-shadow: 0 4px 6px rgba(0,0,0,0.1);
     font-size: 0.9em;
+    background-color: white;
+    color: black;
   }
 
   .bbr-comparison-box th, .bbr-results th {
@@ -867,7 +869,7 @@ This shows a behavior when network quality is poor.
   </thead>
   <tbody>
     <tr>
-      <td>bbr3_112401</td>
+      <td class="case-label">bbr3_112401</td>
       <td>84.99</td>
       <td>87.31</td>
       <td>342</td>
@@ -878,7 +880,7 @@ This shows a behavior when network quality is poor.
       <td>65.29</td>
     </tr>
     <tr>
-      <td>bbr3_112620<br>(worst case)</td>
+      <td class="case-label">bbr3_112620<br>(worst case)</td>
       <td>84.01</td>
       <td>87.90</td>
       <td>671</td>
@@ -889,7 +891,7 @@ This shows a behavior when network quality is poor.
       <td>46.99</td>
     </tr>
     <tr>
-      <td>bbr3vanilla_112511</td>
+      <td class="case-label">bbr3vanilla_112511</td>
       <td>81.23</td>
       <td>87.80</td>
       <td>580</td>
@@ -910,6 +912,8 @@ This shows a behavior when network quality is poor.
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 25px 0;
     box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    background-color: white;
+    color: black;
   }
   .bbr-comparison-box th {
     background-color: #1a202c;
