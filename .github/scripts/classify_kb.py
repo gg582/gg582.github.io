@@ -137,7 +137,7 @@ def process_post(filepath):
 
     # Reconstruct the file with updated YAML
     new_yaml = yaml.dump(frontmatter, allow_unicode=True, sort_keys=False)
-    new_content = f"---\n{new_yaml}---\n{body}"
+    new_content = f"---\n{new_yaml}---\n\n{body.lstrip('\r\n')}"
 
     with open(filepath, 'w', encoding='utf-8') as f:
         f.write(new_content)
