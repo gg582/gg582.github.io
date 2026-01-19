@@ -852,6 +852,13 @@ This shows a behavior when network quality is poor.
     color: #38a169;
     font-weight: bold;
   }
+  @media (prefers-color-scheme: dark) {
+    .bbr-comparison-box, .bbr-results { background-color: #1e1e1e; color: #e0e0e0; }
+    .bbr-comparison-box th, .bbr-results th { background-color: #2d3748; border-color: #4a5568; }
+    .bbr-comparison-box td, .bbr-results td { border-color: #4a5568; }
+    .bbr-comparison-box .metric-label, .bbr-results .case-label { background-color: #2d3748; color: #e2e8f0; }
+    .highlight-positive { color: #48bb78; }
+  }
 </style>
 <table class="bbr-results">
   <thead>
@@ -938,6 +945,14 @@ This shows a behavior when network quality is poor.
     font-weight: bold;
   }
   .bbr-comparison-box .vanilla-val { color: #718096; }
+  @media (prefers-color-scheme: dark) {
+    .bbr-comparison-box { background-color: #1e1e1e; color: #e0e0e0; }
+    .bbr-comparison-box th { background-color: #2d3748; border-color: #4a5568; }
+    .bbr-comparison-box td { border-color: #4a5568; }
+    .bbr-comparison-box .metric-label { background-color: #2d3748; color: #e2e8f0; }
+    .bbr-comparison-box .highlight-positive { color: #48bb78; }
+    .bbr-comparison-box .vanilla-val { color: #cbd5e0; }
+  }
 </style>
 
 <table class="bbr-comparison-box">

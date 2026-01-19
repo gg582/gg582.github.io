@@ -1080,42 +1080,57 @@ body.dark-mode {
     border-color: #4a5568;
   }
 
-  .kb-main-content {
-    background: #1a202c;
-    color: #e2e8f0;
-  }
-
-  .taxonomy-tree {
-    .taxonomy-header {
-      border-bottom-color: #4a5568;
-
-      h2 {
+      .kb-main-content {
+        background: #1a202c;
         color: #e2e8f0;
       }
-
-      .taxonomy-subtitle {
-        color: #a0aec0;
+  
+      .breadcrumb-nav {
+        .breadcrumb-item {
+          .breadcrumb-link {
+            color: #a0aec0;
+            &:hover {
+              color: #63b3ed;
+            }
+          }
+          .breadcrumb-separator {
+            color: #4a5568;
+          }
+          &.current .breadcrumb-current {
+            color: #f7fafc;
+          }
+        }
       }
-    }
-
-    .category-header.active {
-      background: #2c5282;
-    }
-
-    .category-toggle {
-      &:hover {
-        background: #374151;
-      }
-
-      .category-name {
-        color: #e2e8f0;
-      }
-
-      .category-count {
-        color: #a0aec0;
-      }
-    }
-
+  
+      .taxonomy-tree {        .taxonomy-header {
+          border-bottom-color: #4a5568;
+  
+          h2 {
+            color: #f7fafc !important;
+          }
+  
+          .taxonomy-subtitle {
+            color: #a0aec0;
+          }
+        }
+  
+        .category-header.active {
+          background: #2c5282;
+        }
+  
+        .category-toggle {
+          &:hover {
+            background: #374151;
+          }
+  
+          .category-name {
+            color: #f1f1f1 !important;
+          }
+  
+          .category-count {
+            color: #a0aec0;
+          }
+        }
     .subcategory-link {
       color: #cbd5e0;
 
@@ -1187,6 +1202,19 @@ body.dark-mode {
     code {
       background: #111116;
       color: #e2e8f0;
+    }
+
+    table {
+      th, td {
+        border-color: #4a5568;
+      }
+      th {
+        background: #111116;
+        color: #f7fafc;
+      }
+      tr:nth-child(even) {
+        background: #1a202c;
+      }
     }
   }
 
@@ -1686,39 +1714,53 @@ body.dark-mode {
   }
 }
 
-// Dark mode support for home page
-body.dark-mode {
-  .category-card,
-  .featured-card,
-  .stat-card {
-    background: #111116;
-    border-color: #4a5568;
-  }
-  
-  .category-link .category-info .category-name,
-  .featured-title a,
-  .timeline-title a {
-    color: #e2e8f0;
-    
-    &:hover {
-      color: #63b3ed;
+  // Dark mode support for home page
+  body.dark-mode {
+    .category-card,
+    .featured-card,
+    .stat-card {
+      background: #111116;
+      border-color: #4a5568;
     }
-  }
-  
-  .subcategory-preview {
-    background: #1a202c;
     
-    a {
-      color: #cbd5e0;
+    .category-name,
+    .featured-title a,
+    .timeline-title a {
+      color: #f1f1f1 !important;
       
       &:hover {
-        background: #111116;
-        color: #e2e8f0;
+        color: #63b3ed !important;
       }
     }
+    
+    .subcategory-preview {
+      background: #1a202c;
+      
+      a {
+        color: #cbd5e0;
+        
+        &:hover {
+          background: #111116;
+          color: #e2e8f0;
+        }
+      }
+    }
+    
+    .section-title {
+      color: #f7fafc;
+    }
+    .section-subtitle {
+      color: #a0aec0;
+    }
+
+    .kb-home-sidebar .sidebar-header,
+    .sidebar-header {
+      border-bottom-color: #4a5568;
+      h2 { color: #f7fafc !important; }
+      p { color: #a0aec0; }
+    }
+
+    .category-desc {
+      color: #a0aec0;
+    }
   }
-  
-  .section-title {
-    color: #f7fafc;
-  }
-}
