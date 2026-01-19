@@ -125,7 +125,7 @@
       .category-name {
         flex: 1;
         font-weight: 600;
-        color: #2d3748;
+        color: #111116;
       }
 
       .category-count {
@@ -170,7 +170,7 @@
 
           &:hover {
             background: #edf2f7;
-            color: #2d3748;
+            color: #111116;
           }
 
           .subcategory-name {
@@ -317,7 +317,7 @@
 
       &.current {
         .breadcrumb-current {
-          color: #2d3748;
+          color: #111116;
           font-weight: 600;
         }
       }
@@ -394,7 +394,7 @@
 .kb-document-body {
   font-size: 1.05rem;
   line-height: 1.8;
-  color: #2d3748;
+  color: #111116;
 
   // Add section anchors
   h2, h3, h4, h5, h6 {
@@ -468,7 +468,7 @@
     padding: 1rem 1.5rem;
     background: #f7fafc;
     border-left: 4px solid #4299e1;
-    color: #2d3748;
+    color: #111116;
 
     p:last-child {
       margin-bottom: 0;
@@ -486,7 +486,7 @@
   pre {
     margin: 2rem 0;
     padding: 1.5rem;
-    background: #2d3748;
+    background: #111116;
     color: #e2e8f0;
     border-radius: 6px;
     overflow-x: auto;
@@ -520,7 +520,7 @@
     th {
       background: #f7fafc;
       font-weight: 600;
-      color: #2d3748;
+      color: #111116;
     }
 
     tr:nth-child(even) {
@@ -545,7 +545,7 @@
       font-size: 1.3rem;
       font-weight: 700;
       margin: 0 0 1.5rem 0;
-      color: #2d3748;
+      color: #111116;
     }
 
     .classification-grid {
@@ -576,7 +576,7 @@
         }
 
         .classification-value {
-          color: #2d3748;
+          color: #111116;
           font-size: 0.95rem;
 
           .category-badge,
@@ -661,7 +661,7 @@
           border-left: 3px solid #4299e1;
           font-size: 0.85rem;
           line-height: 1.6;
-          color: #2d3748;
+          color: #111116;
           font-family: 'IBM Plex Sans KR', sans-serif;
         }
       }
@@ -732,7 +732,7 @@
 
           .document-title {
             flex: 1;
-            color: #2d3748;
+            color: #111116;
             font-weight: 500;
           }
 
@@ -796,7 +796,7 @@
 
         .backlink-title {
           font-weight: 600;
-          color: #2d3748;
+          color: #111116;
           text-decoration: none;
           flex: 1;
 
@@ -908,7 +908,7 @@
       font-size: 1rem;
       font-weight: 700;
       margin: 0 0 1rem 0;
-      color: #2d3748;
+      color: #111116;
     }
 
     .panel-content {
@@ -926,7 +926,7 @@
 
         dd {
           margin: 0 0 1rem 0;
-          color: #2d3748;
+          color: #111116;
 
           .keyword-tag {
             display: inline-block;
@@ -1076,7 +1076,7 @@ body.dark-mode {
 
   .kb-sidebar-left,
   .kb-sidebar-right {
-    background: #2d3748;
+    background: #111116;
     border-color: #4a5568;
   }
 
@@ -1179,19 +1179,19 @@ body.dark-mode {
     }
 
     blockquote {
-      background: #2d3748;
+      background: #111116;
       border-left-color: #4299e1;
       color: #e2e8f0;
     }
 
     code {
-      background: #2d3748;
+      background: #111116;
       color: #e2e8f0;
     }
   }
 
   .document-footer .classification-box {
-    background: #2d3748;
+    background: #111116;
     border-color: #4a5568;
 
     .classification-heading {
@@ -1219,14 +1219,14 @@ body.dark-mode {
       border-color: #4a5568;
 
       .citation-content .citation-text {
-        background: #2d3748;
+        background: #111116;
         color: #e2e8f0;
       }
     }
   }
 
   .related-documents {
-    background: #2d3748;
+    background: #111116;
     border-color: #744210;
 
     .section-heading {
@@ -1261,7 +1261,7 @@ body.dark-mode {
   }
 
   .backlinks-section {
-    background: #2d3748;
+    background: #111116;
     border-color: #166534;
 
     .section-heading,
@@ -1446,7 +1446,7 @@ body.dark-mode {
           font-size: 1.3rem;
           font-weight: 700;
           margin: 0 0 0.5rem 0;
-          color: #2d3748;
+          color: #111116;
         }
         
         .category-desc {
@@ -1486,7 +1486,7 @@ body.dark-mode {
           
           &:hover {
             background: #edf2f7;
-            color: #2d3748;
+            color: #111116;
             padding-left: 2rem;
           }
         }
@@ -1500,7 +1500,7 @@ body.dark-mode {
     font-size: 2rem;
     font-weight: 700;
     margin: 0 0 0.5rem 0;
-    color: #2d3748;
+    color: #111116;
   }
   
   .section-subtitle {
@@ -1561,7 +1561,7 @@ body.dark-mode {
     margin: 0 0 0.5rem 0;
     
     a {
-      color: #2d3748;
+      color: #111116;
       text-decoration: none;
       
       &:hover {
@@ -1617,7 +1617,7 @@ body.dark-mode {
         margin: 0;
         
         a {
-          color: #2d3748;
+          color: #111116;
           text-decoration: none;
           
           &:hover {
@@ -1691,7 +1691,7 @@ body.dark-mode {
   .category-card,
   .featured-card,
   .stat-card {
-    background: #2d3748;
+    background: #111116;
     border-color: #4a5568;
   }
   
@@ -1712,7 +1712,7 @@ body.dark-mode {
       color: #cbd5e0;
       
       &:hover {
-        background: #2d3748;
+        background: #111116;
         color: #e2e8f0;
       }
     }
