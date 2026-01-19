@@ -31,6 +31,84 @@ relationships:
   comparison: []
 ---
 
+<style>
+  :root {
+    --table-bg: #ffffff;
+    --table-text: #1a202c;
+    --table-header-bg: #f8fafc;
+    --table-border: #e2e8f0;
+    --accent-color: #ff3200;
+    --success-color: #38a169;
+    --dim-text: #718096;
+    --code-bg: #f6f8fa;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --table-bg: #1e1e1e;
+      --table-text: #e2e8f0;
+      --table-header-bg: #2d3748;
+      --table-border: #4a5568;
+      --success-color: #48bb78;
+      --dim-text: #cbd5e0;
+      --code-bg: #2d2d2d;
+    }
+  }
+
+  .custom-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: var(--table-bg);
+    color: var(--table-text);
+    border: 1px solid var(--table-border);
+    margin: 20px 0;
+    font-family: sans-serif;
+  }
+
+  .custom-table th {
+    background-color: var(--table-header-bg);
+    color: var(--table-text);
+    padding: 12px;
+    border: 1px solid var(--table-border);
+    font-weight: 600;
+  }
+
+  .custom-table td {
+    padding: 12px;
+    border: 1px solid var(--table-border);
+    color: var(--table-text);
+  }
+
+  .highlight-cell {
+    color: var(--accent-color);
+    font-weight: bold;
+  }
+  
+  .highlight-positive {
+    color: var(--success-color);
+    font-weight: bold;
+  }
+  
+  .dim-text {
+    color: var(--dim-text);
+  }
+
+  /* Utility classes */
+  .text-center { text-align: center; }
+  .text-right { text-align: right; }
+  .text-left { text-align: left; }
+  .w-full { width: 100%; }
+  
+  /* Section specific headers */
+  .section-header {
+    background-color: var(--table-header-bg);
+    padding: 10px 8px;
+    text-align: left;
+    border-top: 1px solid var(--table-border);
+    font-weight: bold;
+  }
+</style>
+
 # Tuning the standard algorithm: Holy Grail shouldn't hold Coca-Cola
 
 Tuning the standard algorithm may sound dangerous and intriguing at the same time.
@@ -102,23 +180,23 @@ When looking at the bit-field, there are unused bits.
 If we are planning to reduce CWND, we need a switch bit to trigger it.
 So, we can use an additional 1 bit to mark this information.
 
-<table style="border-collapse: collapse; width: 100%; font-family: sans-serif; border: 1px solid #ddd; background-color: white; color: black;">
+<table class="custom-table">
   <thead>
-    <tr style="background-color: #f2f2f2; text-align: center; color: black;">
-      <th style="padding: 12px; border: 1px solid #ddd; color: #ff3200;">reduce_cwnd</th>
-      <th style="padding: 12px; border: 1px solid #ddd;">..</th>
-      <th style="padding: 12px; border: 1px solid #ddd;">..</th>
-      <th style="padding: 12px; border: 1px solid #ddd;">..</th>
-      <th style="padding: 12px; border: 1px solid #ddd;">..</th>
+    <tr>
+      <th class="highlight-cell text-center">reduce_cwnd</th>
+      <th class="text-center">..</th>
+      <th class="text-center">..</th>
+      <th class="text-center">..</th>
+      <th class="text-center">..</th>
     </tr>
   </thead>
   <tbody>
-    <tr style="text-align: center;">
-      <td style="padding: 12px; border: 1px solid #ddd;">1 bit</td>
-      <td style="padding: 12px; border: 1px solid #ddd;">-</td>
-      <td style="padding: 12px; border: 1px solid #ddd;">-</td>
-      <td style="padding: 12px; border: 1px solid #ddd;">-</td>
-      <td style="padding: 12px; border: 1px solid #ddd;">-</td>
+    <tr class="text-center">
+      <td>1 bit</td>
+      <td>-</td>
+      <td>-</td>
+      <td>-</td>
+      <td>-</td>
     </tr>
   </tbody>
 </table>
@@ -460,7 +538,7 @@ run_bench() {
   iperf3 -h 2>&1 | grep -q -- '--json' && json_flag="--json"
 
   local ping_count
-  ping_count="$(awk "BEGIN{print int(($DURATION / $PING_INTERVAL) + 10)}")"
+  ping_count="$(awk "BEGIN{print int(($DURATION / $PING_INTERVAL) + 10))}")"
 
   while [ $attempt -le $MAX_RETRIES ]; do
     log "    -> [$direction] Attempt $attempt/$MAX_RETRIES"
@@ -679,130 +757,130 @@ Ping is ICMP, but queueing on the bottleneck link affects all traffic, so ping R
 This can still be a good metric to measure bufferbloat.
 
 <div style="overflow-x:auto;">
-  <table style="border-collapse:collapse; width:100%; font-variant-numeric: tabular-nums; background-color: white; color: black;">
+  <table class="custom-table">
     <thead>
       <tr>
-        <th style="border-bottom:2px solid #ccc; text-align:left; padding:6px 8px;">Path</th>
-        <th style="border-bottom:2px solid #ccc; text-align:left; padding:6px 8px;">Metric</th>
-        <th style="border-bottom:2px solid #ccc; text-align:left; padding:6px 8px;">Vanilla BBRv3</th>
-        <th style="border-bottom:2px solid #ccc; text-align:left; padding:6px 8px;">Modified BBRv3</th>
-        <th style="border-bottom:2px solid #ccc; text-align:left; padding:6px 8px;">Δ (Mod-Van)</th>
-        <th style="border-bottom:2px solid #ccc; text-align:left; padding:6px 8px;">Improvement (↓ better)</th>
+        <th>Path</th>
+        <th>Metric</th>
+        <th>Vanilla BBRv3</th>
+        <th>Modified BBRv3</th>
+        <th>Δ (Mod-Van)</th>
+        <th>Improvement (↓ better)</th>
       </tr>
     </thead>
     <tbody>
       <tr>
-        <th colspan="6" style="padding:10px 8px; text-align:left; background-color: #f2f2f2; color: black;; border-top:1px solid #ddd;">
+        <th colspan="6" class="section-header">
           LAN (ping 192.168.168.102, n=1000)
         </th>
       </tr>
       <tr>
-        <td style="border-top:1px solid #eee; padding:6px 8px; text-align:left;">LAN</td>
-        <td style="border-top:1px solid #eee; padding:6px 8px; text-align:left;">Avg RTT (ms)</td>
-        <td style="border-top:1px solid #eee; padding:6px 8px; text-align:right;">0.023</td>
-        <td style="border-top:1px solid #eee; padding:6px 8px; text-align:right;">0.017</td>
-        <td style="border-top:1px solid #eee; padding:6px 8px; text-align:right;">-0.006</td>
-        <td style="border-top:1px solid #eee; padding:6px 8px; text-align:right;">+26.8%</td>
+        <td>LAN</td>
+        <td>Avg RTT (ms)</td>
+        <td class="text-right">0.023</td>
+        <td class="text-right">0.017</td>
+        <td class="text-right">-0.006</td>
+        <td class="text-right">+26.8%</td>
       </tr>
       <tr>
-        <td style="border-top:1px solid #eee; padding:6px 8px; text-align:left;">LAN</td>
-        <td style="border-top:1px solid #eee; padding:6px 8px; text-align:left;">mdev (ms)</td>
-        <td style="border-top:1px solid #eee; padding:6px 8px; text-align:right;">0.032</td>
-        <td style="border-top:1px solid #eee; padding:6px 8px; text-align:right;">0.009</td>
-        <td style="border-top:1px solid #eee; padding:6px 8px; text-align:right;">-0.023</td>
-        <td style="border-top:1px solid #eee; padding:6px 8px; text-align:right;">+71.9%</td>
+        <td>LAN</td>
+        <td>mdev (ms)</td>
+        <td class="text-right">0.032</td>
+        <td class="text-right">0.009</td>
+        <td class="text-right">-0.023</td>
+        <td class="text-right">+71.9%</td>
       </tr>
       <tr>
-        <td style="border-top:1px solid #eee; padding:6px 8px; text-align:left;">LAN</td>
-        <td style="border-top:1px solid #eee; padding:6px 8px; text-align:left;">p99 RTT (ms)</td>
-        <td style="border-top:1px solid #eee; padding:6px 8px; text-align:right;">0.046</td>
-        <td style="border-top:1px solid #eee; padding:6px 8px; text-align:right;">0.043</td>
-        <td style="border-top:1px solid #eee; padding:6px 8px; text-align:right;">-0.003</td>
-        <td style="border-top:1px solid #eee; padding:6px 8px; text-align:right;">+6.5%</td>
+        <td>LAN</td>
+        <td>p99 RTT (ms)</td>
+        <td class="text-right">0.046</td>
+        <td class="text-right">0.043</td>
+        <td class="text-right">-0.003</td>
+        <td class="text-right">+6.5%</td>
       </tr>
       <tr>
-        <td style="border-top:1px solid #eee; padding:6px 8px; text-align:left;">LAN</td>
-        <td style="border-top:1px solid #eee; padding:6px 8px; text-align:left;">p99.9 RTT (ms)</td>
-        <td style="border-top:1px solid #eee; padding:6px 8px; text-align:right;">0.152</td>
-        <td style="border-top:1px solid #eee; padding:6px 8px; text-align:right;">0.058</td>
-        <td style="border-top:1px solid #eee; padding:6px 8px; text-align:right;">-0.094</td>
-        <td style="border-top:1px solid #eee; padding:6px 8px; text-align:right;">+61.8%</td>
+        <td>LAN</td>
+        <td>p99.9 RTT (ms)</td>
+        <td class="text-right">0.152</td>
+        <td class="text-right">0.058</td>
+        <td class="text-right">-0.094</td>
+        <td class="text-right">+61.8%</td>
       </tr>
       <tr>
-        <td style="border-top:1px solid #eee; padding:6px 8px; text-align:left;">LAN</td>
-        <td style="border-top:1px solid #eee; padding:6px 8px; text-align:left;">Max RTT (ms)</td>
-        <td style="border-top:1px solid #eee; padding:6px 8px; text-align:right;">0.962</td>
-        <td style="border-top:1px solid #eee; padding:6px 8px; text-align:right;">0.059</td>
-        <td style="border-top:1px solid #eee; padding:6px 8px; text-align:right;">-0.903</td>
-        <td style="border-top:1px solid #eee; padding:6px 8px; text-align:right;">+93.9%</td>
+        <td>LAN</td>
+        <td>Max RTT (ms)</td>
+        <td class="text-right">0.962</td>
+        <td class="text-right">0.059</td>
+        <td class="text-right">-0.903</td>
+        <td class="text-right">+93.9%</td>
       </tr>
       <tr>
-        <td style="border-top:1px solid #eee; padding:6px 8px; text-align:left;">LAN</td>
-        <td style="border-top:1px solid #eee; padding:6px 8px; text-align:left;">Loss (%)</td>
-        <td style="border-top:1px solid #eee; padding:6px 8px; text-align:right;">0.0</td>
-        <td style="border-top:1px solid #eee; padding:6px 8px; text-align:right;">0.0</td>
-        <td style="border-top:1px solid #eee; padding:6px 8px; text-align:right;">0.0 pp</td>
-        <td style="border-top:1px solid #eee; padding:6px 8px; text-align:right;">0.0 pp</td>
+        <td>LAN</td>
+        <td>Loss (%)</td>
+        <td class="text-right">0.0</td>
+        <td class="text-right">0.0</td>
+        <td class="text-right">0.0 pp</td>
+        <td class="text-right">0.0 pp</td>
       </tr>
 
   <tr>
-    <th colspan="6" style="padding:10px 8px; text-align:left; background-color: #f2f2f2; color: black;; border-top:1px solid #ddd;">
+    <th colspan="6" class="section-header">
       WAN (ping 1.1.1.1, n=1000)
     </th>
   </tr>
   <tr>
-    <td style="border-top:1px solid #eee; padding:6px 8px; text-align:left;">WAN</td>
-    <td style="border-top:1px solid #eee; padding:6px 8px; text-align:left;">Avg RTT (ms)</td>
-    <td style="border-top:1px solid #eee; padding:6px 8px; text-align:right;">5.830</td>
-    <td style="border-top:1px solid #eee; padding:6px 8px; text-align:right;">5.791</td>
-    <td style="border-top:1px solid #eee; padding:6px 8px; text-align:right;">-0.039</td>
-    <td style="border-top:1px solid #eee; padding:6px 8px; text-align:right;">+0.7%</td>
+    <td>WAN</td>
+    <td>Avg RTT (ms)</td>
+    <td class="text-right">5.830</td>
+    <td class="text-right">5.791</td>
+    <td class="text-right">-0.039</td>
+    <td class="text-right">+0.7%</td>
   </tr>
   <tr>
-    <td style="border-top:1px solid #eee; padding:6px 8px; text-align:left;">WAN</td>
-    <td style="border-top:1px solid #eee; padding:6px 8px; text-align:left;">mdev (ms)</td>
-    <td style="border-top:1px solid #eee; padding:6px 8px; text-align:right;">0.841</td>
-    <td style="border-top:1px solid #eee; padding:6px 8px; text-align:right;">0.201</td>
-    <td style="border-top:1px solid #eee; padding:6px 8px; text-align:right;">-0.640</td>
-    <td style="border-top:1px solid #eee; padding:6px 8px; text-align:right;">+76.1%</td>
+    <td>WAN</td>
+    <td>mdev (ms)</td>
+    <td class="text-right">0.841</td>
+    <td class="text-right">0.201</td>
+    <td class="text-right">-0.640</td>
+    <td class="text-right">+76.1%</td>
   </tr>
   <tr>
-    <td style="border-top:1px solid #eee; padding:6px 8px; text-align:left;">WAN</td>
-    <td style="border-top:1px solid #eee; padding:6px 8px; text-align:left;">p99 RTT (ms)</td>
-    <td style="border-top:1px solid #eee; padding:6px 8px; text-align:right;">6.310</td>
-    <td style="border-top:1px solid #eee; padding:6px 8px; text-align:right;">6.220</td>
-    <td style="border-top:1px solid #eee; padding:6px 8px; text-align:right;">-0.090</td>
-    <td style="border-top:1px solid #eee; padding:6px 8px; text-align:right;">+1.4%</td>
+    <td>WAN</td>
+    <td>p99 RTT (ms)</td>
+    <td class="text-right">6.310</td>
+    <td class="text-right">6.220</td>
+    <td class="text-right">-0.090</td>
+    <td class="text-right">+1.4%</td>
   </tr>
   <tr>
-    <td style="border-top:1px solid #eee; padding:6px 8px; text-align:left;">WAN</td>
-    <td style="border-top:1px solid #eee; padding:6px 8px; text-align:left;">p99.9 RTT (ms)</td>
-    <td style="border-top:1px solid #eee; padding:6px 8px; text-align:right;">12.818</td>
-    <td style="border-top:1px solid #eee; padding:6px 8px; text-align:right;">6.341</td>
-    <td style="border-top:1px solid #eee; padding:6px 8px; text-align:right;">-6.477</td>
-    <td style="border-top:1px solid #eee; padding:6px 8px; text-align:right;">+50.5%</td>
+    <td>WAN</td>
+    <td>p99.9 RTT (ms)</td>
+    <td class="text-right">12.818</td>
+    <td class="text-right">6.341</td>
+    <td class="text-right">-6.477</td>
+    <td class="text-right">+50.5%</td>
   </tr>
   <tr>
-    <td style="border-top:1px solid #eee; padding:6px 8px; text-align:left;">WAN</td>
-    <td style="border-top:1px solid #eee; padding:6px 8px; text-align:left;">Max RTT (ms)</td>
-    <td style="border-top:1px solid #eee; padding:6px 8px; text-align:right;">30.600</td>
-    <td style="border-top:1px solid #eee; padding:6px 8px; text-align:right;">7.220</td>
-    <td style="border-top:1px solid #eee; padding:6px 8px; text-align:right;">-23.380</td>
-    <td style="border-top:1px solid #eee; padding:6px 8px; text-align:right;">+76.4%</td>
+    <td>WAN</td>
+    <td>Max RTT (ms)</td>
+    <td class="text-right">30.600</td>
+    <td class="text-right">7.220</td>
+    <td class="text-right">-23.380</td>
+    <td class="text-right">+76.4%</td>
   </tr>
   <tr>
-    <td style="border-top:1px solid #eee; padding:6px 8px; text-align:left;">WAN</td>
-    <td style="border-top:1px solid #eee; padding:6px 8px; text-align:left;">Loss (%)</td>
-    <td style="border-top:1px solid #eee; padding:6px 8px; text-align:right;">0.0</td>
-    <td style="border-top:1px solid #eee; padding:6px 8px; text-align:right;">0.0</td>
-    <td style="border-top:1px solid #eee; padding:6px 8px; text-align:right;">0.0 pp</td>
-    <td style="border-top:1px solid #eee; padding:6px 8px; text-align:right;">0.0 pp</td>
+    <td>WAN</td>
+    <td>Loss (%)</td>
+    <td class="text-right">0.0</td>
+    <td class="text-right">0.0</td>
+    <td class="text-right">0.0 pp</td>
+    <td class="text-right">0.0 pp</td>
   </tr>
 </tbody>
 
   </table>
 
-  <p style="margin:0.6em 0 0; font-size:0.95em; color:#666;">
+  <p style="margin:0.6em 0 0; font-size:0.95em; color:var(--dim-text);">
     Percentages are computed as (Vanilla - Modified) / Vanilla. Positive means Modified is better (lower latency/jitter).
   </p>
 </div>
@@ -815,147 +893,61 @@ In that previous post, I only attached a ping test, but now I am sharing an iPer
 ### Raw
 When running test 112620, public IPerf3's response was broken for 4 attempts.
 This shows a behavior when network quality is poor.
-<style>
-  .bbr-comparison-box, .bbr-results {
-    width: 100%;
-    border-collapse: collapse;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    margin: 25px 0;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-    font-size: 0.9em;
-    background-color: white;
-    color: black;
-  }
 
-  .bbr-comparison-box th, .bbr-results th {
-    background-color: #1a202c;
-    color: #ffffff;
-    padding: 12px 8px;
-    text-align: center;
-    border: 1px solid #2d3748;
-  }
-
-  .bbr-comparison-box td, .bbr-results td {
-    padding: 10px 8px;
-    border: 1px solid #e2e8f0;
-    text-align: center;
-  }
-
-  .bbr-comparison-box .metric-label, .bbr-results .case-label {
-    background-color: #f7fafc;
-    font-weight: 600;
-    text-align: left;
-    color: #2d3748;
-  }
-
-  .highlight-positive {
-    color: #38a169;
-    font-weight: bold;
-  }
-  @media (prefers-color-scheme: dark) {
-    .bbr-comparison-box, .bbr-results { background-color: #1e1e1e; color: #e0e0e0; }
-    .bbr-comparison-box th, .bbr-results th { background-color: #2d3748; border-color: #4a5568; }
-    .bbr-comparison-box td, .bbr-results td { border-color: #4a5568; }
-    .bbr-comparison-box .metric-label, .bbr-results .case-label { background-color: #2d3748; color: #e2e8f0; }
-    .highlight-positive { color: #48bb78; }
-  }
-</style>
-<table class="bbr-results">
+<table class="custom-table">
   <thead>
     <tr>
       <th>Case</th>
-      <th>Forward<br>recv (Mbps)</th>
-      <th>Reverse<br>recv (Mbps)</th>
-      <th>Forward<br>retrans</th>
-      <th>Reverse<br>retrans</th>
-      <th>Ping fwd<br>avg (ms)</th>
-      <th>Ping fwd<br>max (ms)</th>
-      <th>Ping rev<br>avg (ms)</th>
-      <th>Ping rev<br>max (ms)</th>
+      <th class="text-center">Forward<br>recv (Mbps)</th>
+      <th class="text-center">Reverse<br>recv (Mbps)</th>
+      <th class="text-center">Forward<br>retrans</th>
+      <th class="text-center">Reverse<br>retrans</th>
+      <th class="text-center">Ping fwd<br>avg (ms)</th>
+      <th class="text-center">Ping fwd<br>max (ms)</th>
+      <th class="text-center">Ping rev<br>avg (ms)</th>
+      <th class="text-center">Ping rev<br>max (ms)</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td class="case-label">bbr3_112401</td>
-      <td>84.99</td>
-      <td>87.31</td>
-      <td>342</td>
-      <td>35734</td>
-      <td>25.96</td>
-      <td>43.69</td>
-      <td>27.49</td>
-      <td>65.29</td>
+      <td class="section-header">bbr3_112401</td>
+      <td class="text-center">84.99</td>
+      <td class="text-center">87.31</td>
+      <td class="text-center">342</td>
+      <td class="text-center">35734</td>
+      <td class="text-center">25.96</td>
+      <td class="text-center">43.69</td>
+      <td class="text-center">27.49</td>
+      <td class="text-center">65.29</td>
     </tr>
     <tr>
-      <td class="case-label">bbr3_112620<br>(worst case)</td>
-      <td>84.01</td>
-      <td>87.90</td>
-      <td>671</td>
-      <td>43481</td>
-      <td>27.69</td>
-      <td>46.41</td>
-      <td>26.82</td>
-      <td>46.99</td>
+      <td class="section-header">bbr3_112620<br>(worst case)</td>
+      <td class="text-center">84.01</td>
+      <td class="text-center">87.90</td>
+      <td class="text-center">671</td>
+      <td class="text-center">43481</td>
+      <td class="text-center">27.69</td>
+      <td class="text-center">46.41</td>
+      <td class="text-center">26.82</td>
+      <td class="text-center">46.99</td>
     </tr>
     <tr>
-      <td class="case-label">bbr3vanilla_112511</td>
-      <td>81.23</td>
-      <td>87.80</td>
-      <td>580</td>
-      <td>42012</td>
-      <td>28.71</td>
-      <td>73.05</td>
-      <td>29.17</td>
-      <td>46.19</td>
+      <td class="section-header">bbr3vanilla_112511</td>
+      <td class="text-center">81.23</td>
+      <td class="text-center">87.80</td>
+      <td class="text-center">580</td>
+      <td class="text-center">42012</td>
+      <td class="text-center">28.71</td>
+      <td class="text-center">73.05</td>
+      <td class="text-center">29.17</td>
+      <td class="text-center">46.19</td>
     </tr>
   </tbody>
 </table>
 
 ### Analysis
-<style>
-  .bbr-comparison-box {
-    width: 100%;
-    border-collapse: collapse;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    margin: 25px 0;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-    background-color: white;
-    color: black;
-  }
-  .bbr-comparison-box th {
-    background-color: #1a202c;
-    color: #ffffff;
-    padding: 15px;
-    text-align: center;
-    border: 1px solid #2d3748;
-  }
-  .bbr-comparison-box td {
-    padding: 14px;
-    border: 1px solid #e2e8f0;
-    text-align: center;
-  }
-  .bbr-comparison-box .metric-label {
-    background-color: #f7fafc;
-    font-weight: 600;
-    text-align: left;
-    color: #2d3748;
-  }
-  .bbr-comparison-box .highlight-positive {
-    color: #38a169;
-    font-weight: bold;
-  }
-  .bbr-comparison-box .vanilla-val { color: #718096; }
-  @media (prefers-color-scheme: dark) {
-    .bbr-comparison-box { background-color: #1e1e1e; color: #e0e0e0; }
-    .bbr-comparison-box th { background-color: #2d3748; border-color: #4a5568; }
-    .bbr-comparison-box td { border-color: #4a5568; }
-    .bbr-comparison-box .metric-label { background-color: #2d3748; color: #e2e8f0; }
-    .bbr-comparison-box .highlight-positive { color: #48bb78; }
-    .bbr-comparison-box .vanilla-val { color: #cbd5e0; }
-  }
-</style>
 
-<table class="bbr-comparison-box">
+<table class="custom-table">
   <thead>
     <tr>
       <th>Metric (Forward)</th>
@@ -966,28 +958,28 @@ This shows a behavior when network quality is poor.
   </thead>
   <tbody>
     <tr>
-      <td class="metric-label">Throughput (Recv)</td>
-      <td class="vanilla-val">81.23 Mbps</td>
-      <td>84.99 Mbps</td>
-      <td class="highlight-positive">+4.63%</td>
+      <td class="section-header">Throughput (Recv)</td>
+      <td class="dim-text text-center">81.23 Mbps</td>
+      <td class="text-center">84.99 Mbps</td>
+      <td class="highlight-positive text-center">+4.63%</td>
     </tr>
     <tr>
-      <td class="metric-label">TCP Retransmissions</td>
-      <td class="vanilla-val">580</td>
-      <td>342</td>
-      <td class="highlight-positive">+41.03% (Reduced)</td>
+      <td class="section-header">TCP Retransmissions</td>
+      <td class="dim-text text-center">580</td>
+      <td class="text-center">342</td>
+      <td class="highlight-positive text-center">+41.03% (Reduced)</td>
     </tr>
     <tr>
-      <td class="metric-label">Avg Latency (Ping)</td>
-      <td class="vanilla-val">28.71 ms</td>
-      <td>25.96 ms</td>
-      <td class="highlight-positive">+9.58% (Reduced)</td>
+      <td class="section-header">Avg Latency (Ping)</td>
+      <td class="dim-text text-center">28.71 ms</td>
+      <td class="text-center">25.96 ms</td>
+      <td class="highlight-positive text-center">+9.58% (Reduced)</td>
     </tr>
     <tr>
-      <td class="metric-label">Max Latency (Jitter)</td>
-      <td class="vanilla-val">73.05 ms</td>
-      <td>43.69 ms</td>
-      <td class="highlight-positive">+40.19% (Reduced)</td>
+      <td class="section-header">Max Latency (Jitter)</td>
+      <td class="dim-text text-center">73.05 ms</td>
+      <td class="text-center">43.69 ms</td>
+      <td class="highlight-positive text-center">+40.19% (Reduced)</td>
     </tr>
   </tbody>
 </table>

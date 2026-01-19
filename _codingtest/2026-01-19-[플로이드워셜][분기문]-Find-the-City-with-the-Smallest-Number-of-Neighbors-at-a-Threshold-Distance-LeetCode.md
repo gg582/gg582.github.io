@@ -41,7 +41,7 @@ Notice that the distance of a path connecting cities `i` and `j` is equal to the
 **Input:** `n = 4`, `edges = [[0,1,3],[1,2,1],[1,3,4],[2,3,1]]`, `distanceThreshold = 4`
 **Output:** `3`
 
-<div style="background-color: white; padding: 20px; text-align: center; border-radius: 8px; border: 1px solid #ddd; margin: 20px 0;">
+<div>
 <svg width="260" height="180" viewBox="0 0 260 180" xmlns="http://www.w3.org/2000/svg">
   <line x1="50" y1="130" x2="130" y2="50" stroke="#999" stroke-width="2"/>
   <line x1="130" y1="50" x2="210" y2="130" stroke="#999" stroke-width="2"/>
@@ -74,7 +74,7 @@ Cities 0 and 3 have 2 neighboring cities at a `distanceThreshold = 4`, but we ha
 **Input:** `n = 5`, `edges = [[0,1,2],[0,4,8],[1,2,3],[1,4,2],[2,3,1],[3,4,1]]`, `distanceThreshold = 2`
 **Output:** `0`
 
-<div style="background-color: white; padding: 20px; text-align: center; border-radius: 8px; border: 1px solid #ddd; margin: 20px 0;">
+<div>
 <svg width="260" height="180" viewBox="0 0 260 180" xmlns="http://www.w3.org/2000/svg">
   <line x1="40" y1="40" x2="110" y2="40" stroke="#999" stroke-width="2"/>
   <line x1="40" y1="40" x2="40" y2="140" stroke="#999" stroke-width="2"/>
