@@ -1,8 +1,19 @@
 ---
-layout: post
+layout: knowledge-base
 title: "Incuspeed-Init레벨 가상화 컨테이너를 손쉽게"
 date: 2025-07-13 23:33:00 +0900
-categories: [blog]
+categories: [cloud]
+taxonomy:
+  category: cloud
+  subcategory: virtualization
+  order: 1
+difficulty: advanced
+keywords:
+  - Virtualization
+  - LXC
+  - Incus
+  - Python
+  - Go
 ---
 
 ---

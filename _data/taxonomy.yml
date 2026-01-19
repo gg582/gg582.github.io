@@ -22,6 +22,21 @@ categories:
         description: SOCKMAP, 스플라이싱, eBPF
         weight: 3
 
+  - id: cloud
+    name: 클라우드 컴퓨팅
+    name_ko: 클라우드 컴퓨팅
+    name_en: Cloud Computing
+    description: 쿠버네티스, 가상화, 컨테이너 오케스트레이션
+    subcategories:
+      - id: kubernetes
+        name: 쿠버네티스
+        description: K8s 아키텍처, 디플로이먼트, 오케스트레이션
+        weight: 1
+      - id: virtualization
+        name: 가상화 기술
+        description: LXC/LXD, Incus, VM 관리
+        weight: 2
+
   - id: embedded
     name: 임베디드 시스템
     name_ko: 임베디드 시스템
@@ -67,6 +82,14 @@ categories:
         name: 플로이드 워셜
         description: Floyd-Warshall Algorithm
         weight: 5
+      - id: algorithm-greedy
+        name: 그리디 알고리즘
+        description: 탐욕법, 최적화 문제
+        weight: 6
+      - id: algorithm-sorting
+        name: 정렬 알고리즘
+        description: 정렬, 이분 탐색
+        weight: 7
 
   - id: general
     name: 종합 기술

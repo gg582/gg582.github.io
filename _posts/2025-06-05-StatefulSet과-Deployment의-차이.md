@@ -1,8 +1,18 @@
 ---
-layout: post
+layout: knowledge-base
 title: "StatefulSet과 Deployment의 차이"
 date: 2025-06-05 14:39:20 +0900
-categories: [blog]
+categories: [cloud]
+taxonomy:
+  category: cloud
+  subcategory: kubernetes
+  order: 2
+difficulty: beginner
+keywords:
+  - Kubernetes
+  - StatefulSet
+  - Deployment
+  - K8s Concepts
 ---
 # StatefulSet이란?
 
