@@ -100,7 +100,7 @@ title: 전체 문헌 목록
         {% assign no_subcat_docs = category_docs | where_exp: "doc", "doc.taxonomy.subcategory == nil" | sort: "date" | reverse %}
         {% if no_subcat_docs.size > 0 %}
         <div class="subcategory-group">
-          <h3 class="subcategory-heading">其他 ({{ no_subcat_docs.size }})</h3>
+          <h3 class="subcategory-heading">기타 ({{ no_subcat_docs.size }})</h3>
           
           <div class="document-grid">
             {% for doc in no_subcat_docs %}
