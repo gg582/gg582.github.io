@@ -1,314 +1,49 @@
-name: Auto-Classify New Posts
+name: Auto Classify Posts
 
 on:
   push:
     branches:
       - master
-      - main
     paths:
-      - '_network/**/*.md'
-      - '_embedded/**/*.md'
-      - '_codingtest/**/*.md'
-      - '_posts/**/*.md'
-
-permissions:
-  contents: write
-  pull-requests: write
+      - '_posts/**'
 
 jobs:
-  classify-posts:
+  classify:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
     steps:
-      - name: Checkout repository
+      - name: Checkout Repository
         uses: actions/checkout@v4
         with:
+          # Reference the secret variable instead of the actual token string
+          token: ${{ secrets.ACTION_TOKEN }}
           fetch-depth: 0
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v4
         with:
-          python-version: '3.11'
+          python-version: '3.x'
 
-      - name: Install dependencies
+      - name: Run Classification Script
         run: |
-          pip install PyYAML
-
-      - name: Detect new or modified posts
-        id: detect_posts
-        run: |
-          # Get list of changed markdown files in the last commit
-          CHANGED_FILES=$(git diff --name-only HEAD~1 HEAD | grep -E '^_(network|embedded|codingtest|posts)/.*\.md$' || true)
-          
-          if [ -z "$CHANGED_FILES" ]; then
-            echo "no_changes=true" >> $GITHUB_OUTPUT
-            echo "No new posts detected"
+          if [ -f ".github/scripts/classify.py" ]; then
+            python3 .github/scripts/classify.py
           else
-            echo "no_changes=false" >> $GITHUB_OUTPUT
-            echo "changed_files<<EOF" >> $GITHUB_OUTPUT
-            echo "$CHANGED_FILES" >> $GITHUB_OUTPUT
-            echo "EOF" >> $GITHUB_OUTPUT
-            echo "New/modified posts:"
-            echo "$CHANGED_FILES"
+            echo "Script not found. Check your file path."
+            exit 1
           fi
 
-      - name: Classify and update posts
-        if: steps.detect_posts.outputs.no_changes == 'false'
+      - name: Commit and Push Changes
         run: |
-          python3 << 'PYTHON_SCRIPT'
-          import os
-          import re
-          import yaml
-          from pathlib import Path
-
-          def extract_frontmatter(content):
-              """Extract YAML frontmatter from markdown content"""
-              if not content.startswith('---'):
-                  return None, content
-              
-              parts = content.split('---', 2)
-              if len(parts) < 3:
-                  return None, content
-              
-              try:
-                  frontmatter = yaml.safe_load(parts[1])
-                  body = parts[2]
-                  return frontmatter, body
-              except yaml.YAMLError:
-                  return None, content
-
-          def infer_category_from_path(filepath):
-              """Infer category from file path"""
-              if '/_network/' in filepath:
-                  return 'network'
-              elif '/_embedded/' in filepath:
-                  return 'embedded'
-              elif '/_codingtest/' in filepath:
-                  return 'codingtest'
-              else:
-                  return 'general'
-
-          def infer_subcategory(category, title, content):
-              """Infer subcategory based on category and content"""
-              subcategory_map = {
-                  'network': {
-                      'keywords': {
-                          'network-protocol': ['TCP', 'IP', 'BBR', '혼잡', 'protocol'],
-                          'network-performance': ['튜닝', '성능', '최적화', 'performance', 'tuning'],
-                          'network-kernel': ['커널', 'SOCKMAP', 'eBPF', 'kernel', 'splice']
-                      },
-                      'default': 'network-kernel'
-                  },
-                  'embedded': {
-                      'keywords': {
-                          'embedded-hardware': ['라즈베리', '센서', 'sensor', 'raspberry'],
-                          'embedded-projects': ['프로젝트', '자동차', 'project', 'robot'],
-                          'embedded-linux': ['커널', '드라이버', 'driver', 'kernel', 'linux']
-                      },
-                      'default': 'embedded-linux'
-                  },
-                  'codingtest': {
-                      'keywords': {
-                          'algorithm-graph': ['그래프', 'BFS', 'DFS', 'graph'],
-                          'algorithm-dp': ['다이내믹', 'DP', 'dynamic'],
-                          'algorithm-recursion': ['재귀', 'recursion', 'backtrack'],
-                          'algorithm-data-structure': ['스택', 'stack', 'queue', 'tree', 'hash']
-                      },
-                      'default': 'algorithm-data-structure'
-                  }
-              }
-              
-              if category not in subcategory_map:
-                  return None
-              
-              text = (title + ' ' + content).lower()
-              category_info = subcategory_map[category]
-              
-              for subcat, keywords in category_info.get('keywords', {}).items():
-                  if any(keyword.lower() in text for keyword in keywords):
-                      return subcat
-              
-              return category_info.get('default')
-
-          def infer_difficulty(content):
-              """Infer difficulty level from content"""
-              # Simple heuristic based on content
-              if '초급' in content or 'beginner' in content.lower():
-                  return 'beginner'
-              elif '전문가' in content or 'expert' in content.lower():
-                  return 'expert'
-              elif '고급' in content or 'advanced' in content.lower():
-                  return 'advanced'
-              else:
-                  return 'intermediate'
-
-          def extract_keywords(title, content):
-              """Extract keywords from title and content"""
-              # Extract from title
-              keywords = []
-              
-              # Common patterns in titles
-              tag_pattern = r'\[([^\]]+)\]'
-              tags = re.findall(tag_pattern, title)
-              keywords.extend(tags)
-              
-              # Add technology-specific keywords
-              tech_keywords = {
-                  'network': ['네트워크', '커널', 'TCP', 'BBR', 'SOCKMAP'],
-                  'embedded': ['임베디드', '디바이스', '드라이버', 'I2C'],
-                  'algorithm': ['알고리즘', 'DP', 'BFS', 'DFS', '그래프']
-              }
-              
-              content_lower = content.lower()
-              for category, words in tech_keywords.items():
-                  for word in words:
-                      if word.lower() in content_lower and word not in keywords:
-                          keywords.append(word)
-                          if len(keywords) >= 5:
-                              break
-              
-              return keywords[:5] if keywords else [title.split()[0]] if title else []
-
-          def process_post(filepath):
-              """Process a single post and update its frontmatter"""
-              print(f"Processing: {filepath}")
-              
-              with open(filepath, 'r', encoding='utf-8') as f:
-                  content = f.read()
-              
-              frontmatter, body = extract_frontmatter(content)
-              
-              if frontmatter is None:
-                  print(f"  ⚠ No valid frontmatter found, skipping")
-                  return False
-              
-              # Check if already has knowledge-base layout
-              if frontmatter.get('layout') == 'knowledge-base':
-                  print(f"  ✓ Already has knowledge-base layout")
-                  return False
-              
-              # Infer metadata
-              category = infer_category_from_path(filepath)
-              title = frontmatter.get('title', '')
-              subcategory = infer_subcategory(category, title, body)
-              difficulty = infer_difficulty(body)
-              keywords = extract_keywords(title, body)
-              
-              # Update frontmatter
-              frontmatter['layout'] = 'knowledge-base'
-              
-              if 'subtitle' not in frontmatter:
-                  # Don't auto-generate subtitle if not present
-                  pass
-              
-              if 'taxonomy' not in frontmatter:
-                  frontmatter['taxonomy'] = {}
-              
-              frontmatter['taxonomy']['category'] = category
-              if subcategory:
-                  frontmatter['taxonomy']['subcategory'] = subcategory
-              if 'order' not in frontmatter.get('taxonomy', {}):
-                  frontmatter['taxonomy']['order'] = 1
-              
-              if 'difficulty' not in frontmatter:
-                  frontmatter['difficulty'] = difficulty
-              
-              if 'keywords' not in frontmatter or not frontmatter['keywords']:
-                  frontmatter['keywords'] = keywords
-              
-              if 'relationships' not in frontmatter:
-                  frontmatter['relationships'] = {
-                      'related': [],
-                      'references': [],
-                      'prerequisite': [],
-                      'extends': [],
-                      'comparison': []
-                  }
-              
-              # Write back
-              new_content = '---\n' + yaml.dump(frontmatter, allow_unicode=True, sort_keys=False) + '---' + body
-              
-              with open(filepath, 'w', encoding='utf-8') as f:
-                  f.write(new_content)
-              
-              print(f"  ✓ Updated: category={category}, subcategory={subcategory}, difficulty={difficulty}")
-              return True
-
-          # Get changed files from environment
-          changed_files_str = os.environ.get('CHANGED_FILES', '').strip()
-          if not changed_files_str:
-              print("No files to process")
-              exit(0)
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
           
-          changed_files = [f.strip() for f in changed_files_str.split('\n') if f.strip()]
-          
-          if not changed_files:
-              print("No files to process")
-              exit(0)
-          
-          updated_count = 0
-          for filepath in changed_files:
-              if os.path.exists(filepath):
-                  if process_post(filepath):
-                      updated_count += 1
-          
-          print(f"\nSummary: Updated {updated_count} post(s)")
-          
-          # Save count for later steps
-          with open('update_count.txt', 'w') as f:
-              f.write(str(updated_count))
-          PYTHON_SCRIPT
-        env:
-          CHANGED_FILES: ${{ steps.detect_posts.outputs.changed_files }}
-
-      - name: Check if updates were made
-        id: check_updates
-        if: steps.detect_posts.outputs.no_changes == 'false'
-        run: |
-          if [ -f update_count.txt ]; then
-            COUNT=$(cat update_count.txt)
-            if [ "$COUNT" -gt 0 ]; then
-              echo "has_updates=true" >> $GITHUB_OUTPUT
-              echo "update_count=$COUNT" >> $GITHUB_OUTPUT
-            else
-              echo "has_updates=false" >> $GITHUB_OUTPUT
-            fi
+          if [ -n "$(git status --porcelain)" ]; then
+            git add .
+            git commit -m "chore: auto-classify posts [skip ci]"
+            git push origin master
           else
-            echo "has_updates=false" >> $GITHUB_OUTPUT
+            echo "No changes to commit"
           fi
-
-      - name: Create Pull Request
-        if: steps.check_updates.outputs.has_updates == 'true'
-        uses: peter-evans/create-pull-request@v6
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          commit-message: "Auto-classify and update knowledge base metadata for new posts"
-          branch: auto-classify-kb-updates
-          delete-branch: true
-          title: "Auto-classify Knowledge Base: ${{ steps.check_updates.outputs.update_count }} post(s) updated"
-          body: |
-            ## Automated Knowledge Base Update
-            
-            This PR was automatically created by the knowledge base auto-classification workflow.
-            
-            ### Changes
-            - **Posts updated**: ${{ steps.check_updates.outputs.update_count }}
-            - **Action**: Added/updated knowledge-base metadata
-            
-            ### Updated Metadata
-            - ✅ Layout changed to `knowledge-base`
-            - ✅ Taxonomy (category/subcategory) inferred
-            - ✅ Difficulty level assigned
-            - ✅ Keywords extracted
-            - ✅ Relationships structure added
-            
-            ### What to review
-            - Check that the inferred categories and subcategories are correct
-            - Verify difficulty levels are appropriate
-            - Add related documents to the relationships section if needed
-            - Update subtitle if the auto-generated one is not suitable
-            
-            **Note**: This is an automated PR. Please review carefully before merging.
-          labels: |
-            automated
-            knowledge-base
-            metadata
