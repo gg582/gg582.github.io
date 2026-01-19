@@ -1,0 +1,294 @@
+---
+layout: default
+---
+
+<!-- Subcategory Page -->
+<div class="subcategory-page-container">
+  
+  <!-- Header -->
+  <header class="subcategory-header">
+    <div class="breadcrumb-nav">
+      <a href="{{ '/' | relative_url }}">Knowledge Base</a>
+      <span class="separator">›</span>
+      <a href="{{ site.baseurl }}/분류/{{ page.category_id }}.html">{{ page.category_name }}</a>
+      <span class="separator">›</span>
+      <span class="current">{{ page.subcategory_name }}</span>
+    </div>
+    
+    <h1 class="subcategory-title">
+      {{ page.subcategory_name }}
+    </h1>
+    
+    {% if page.subcategory_description %}
+    <p class="subcategory-description">{{ page.subcategory_description }}</p>
+    {% endif %}
+    
+    <div class="subcategory-stats">
+      {% assign subcat_docs = site.documents | where_exp: "doc", "doc.taxonomy.subcategory == page.subcategory_id" %}
+      <span class="stat-item">{{ subcat_docs.size }} documents</span>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <div class="subcategory-content">
+    
+    <!-- All Documents in Subcategory -->
+    <section class="documents-section">
+      <h2 class="section-heading">Documents</h2>
+      
+      <div class="document-list">
+        {% assign subcat_docs = site.documents | where_exp: "doc", "doc.taxonomy.subcategory == page.subcategory_id" | sort: "taxonomy.order" %}
+        
+        {% if subcat_docs.size > 0 %}
+          {% for doc in subcat_docs %}
+          <article class="document-item">
+            <div class="document-meta">
+              <span class="doc-date">{{ doc.date | date: "%Y-%m-%d" }}</span>
+              {% if doc.difficulty %}
+              {% assign level = site.data.taxonomy.difficulty_levels | where: "id", doc.difficulty | first %}
+              {% if level %}
+              <span class="doc-difficulty difficulty-{{ doc.difficulty }}" style="background: {{ level.color }};">
+                {{ level.name_ko }}
+              </span>
+              {% endif %}
+              {% endif %}
+            </div>
+            
+            <h4 class="document-title">
+              <a href="{{ doc.url | relative_url }}">{{ doc.title }}</a>
+            </h4>
+            
+            {% if doc.subtitle %}
+            <p class="document-subtitle">{{ doc.subtitle }}</p>
+            {% endif %}
+            
+            {% if doc.keywords %}
+            <div class="document-keywords">
+              {% for keyword in doc.keywords limit: 5 %}
+              <span class="keyword-tag">{{ keyword }}</span>
+              {% endfor %}
+            </div>
+            {% endif %}
+          </article>
+          {% endfor %}
+        {% else %}
+          <p class="no-documents">No documents found in this subcategory.</p>
+        {% endif %}
+      </div>
+    </section>
+  </div>
+
+  <!-- Document End Marker -->
+  <div class="document-end-marker">
+    <span>── 하략 ──</span>
+  </div>
+</div>
+
+<style>
+.subcategory-page-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 100px 2rem 4rem;
+}
+
+.subcategory-header {
+  margin-bottom: 4rem;
+  padding-bottom: 2rem;
+  border-bottom: 2px solid #e0e0e0;
+  
+  .breadcrumb-nav {
+    font-size: 0.9rem;
+    margin-bottom: 1.5rem;
+    color: #718096;
+    
+    a {
+      color: #4a5568;
+      text-decoration: none;
+      
+      &:hover {
+        color: #3182ce;
+      }
+    }
+    
+    .separator {
+      margin: 0 0.5rem;
+    }
+    
+    .current {
+      color: #2d3748;
+      font-weight: 600;
+    }
+  }
+  
+  .subcategory-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin: 0 0 1rem 0;
+    color: #2d3748;
+  }
+  
+  .subcategory-description {
+    font-size: 1.1rem;
+    color: #718096;
+    margin: 0 0 1.5rem 0;
+  }
+  
+  .subcategory-stats {
+    font-size: 1rem;
+    color: #4a5568;
+    
+    .stat-item {
+      margin-right: 1.5rem;
+    }
+  }
+}
+
+.section-heading {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin: 0 0 2rem 0;
+  color: #2d3748;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #e0e0e0;
+}
+
+.documents-section {
+  margin-bottom: 4rem;
+}
+
+.document-list {
+  .document-item {
+    padding: 1.5rem;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    margin-bottom: 1rem;
+    background: white;
+    transition: all 0.2s;
+    
+    &:hover {
+      border-color: #3182ce;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+    
+    .document-meta {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 0.8rem;
+      align-items: center;
+      
+      .doc-date {
+        font-size: 0.85rem;
+        color: #718096;
+        font-weight: 600;
+      }
+      
+      .doc-difficulty {
+        font-size: 0.75rem;
+        padding: 0.2rem 0.6rem;
+        border-radius: 3px;
+        color: white;
+        font-weight: 600;
+      }
+    }
+    
+    .document-title {
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin: 0 0 0.5rem 0;
+      
+      a {
+        color: #2d3748;
+        text-decoration: none;
+        
+        &:hover {
+          color: #3182ce;
+        }
+      }
+    }
+    
+    .document-subtitle {
+      font-size: 0.95rem;
+      color: #718096;
+      margin: 0 0 1rem 0;
+    }
+    
+    .document-keywords {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      
+      .keyword-tag {
+        font-size: 0.8rem;
+        padding: 0.3rem 0.6rem;
+        background: #e6fffa;
+        color: #234e52;
+        border-radius: 3px;
+      }
+    }
+  }
+  
+  .no-documents {
+    padding: 2rem;
+    text-align: center;
+    color: #718096;
+    font-style: italic;
+  }
+}
+
+.document-end-marker {
+  text-align: center;
+  margin-top: 3rem;
+  padding: 1rem;
+  color: #cbd5e0;
+  font-size: 0.9rem;
+  
+  span {
+    display: inline-block;
+    padding: 0 2rem;
+  }
+}
+
+body.dark-mode {
+  .subcategory-header {
+    border-bottom-color: #4a5568;
+    
+    .subcategory-title {
+      color: #f7fafc;
+    }
+    
+    .breadcrumb-nav .current {
+      color: #e2e8f0;
+    }
+  }
+  
+  .section-heading {
+    color: #f7fafc;
+    border-bottom-color: #4a5568;
+  }
+  
+  .document-item {
+    background: #2d3748;
+    border-color: #4a5568;
+    
+    &:hover {
+      border-color: #4299e1;
+    }
+  }
+  
+  .document-title a {
+    color: #e2e8f0;
+    
+    &:hover {
+      color: #63b3ed;
+    }
+  }
+  
+  .no-documents {
+    color: #a0aec0;
+  }
+  
+  .document-end-marker {
+    color: #4a5568;
+  }
+}
+</style>
