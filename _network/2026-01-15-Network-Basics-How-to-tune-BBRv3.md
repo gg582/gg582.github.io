@@ -7,7 +7,7 @@ categories:
 - network
 taxonomy:
   category: network
-  subcategory: network-performance
+  subcategory: network-protocol
   order: 2
 difficulty: expert
 keywords:
