@@ -3,6 +3,9 @@ layout: default
 ---
 
 <!-- Subcategory Page -->
+<!-- Cache filtered documents to avoid redundant filtering -->
+{% assign subcat_docs = site.documents | where_exp: "doc", "doc.taxonomy.subcategory == page.subcategory_id" | sort: "taxonomy.order" %}
+
 <div class="subcategory-page-container">
   
   <!-- Header -->
@@ -24,7 +27,6 @@ layout: default
     {% endif %}
     
     <div class="subcategory-stats">
-      {% assign subcat_docs = site.documents | where_exp: "doc", "doc.taxonomy.subcategory == page.subcategory_id" %}
       <span class="stat-item">{{ subcat_docs.size }} documents</span>
     </div>
   </header>
@@ -37,7 +39,6 @@ layout: default
       <h2 class="section-heading">Documents</h2>
       
       <div class="document-list">
-        {% assign subcat_docs = site.documents | where_exp: "doc", "doc.taxonomy.subcategory == page.subcategory_id" | sort: "taxonomy.order" %}
         
         {% if subcat_docs.size > 0 %}
           {% for doc in subcat_docs %}
