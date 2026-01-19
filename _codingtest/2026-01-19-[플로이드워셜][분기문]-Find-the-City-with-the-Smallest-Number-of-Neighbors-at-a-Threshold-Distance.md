@@ -1,7 +1,7 @@
 ---
 layout: knowledge-base
-title: "[플로이드워셜][분기문]-Find the City with the Smallest Number of Neighbors at a Threshold Distance"
-subtitle: "플로이드 워셜의 기초를 익히고 제약 조건에서 분기문을 도출하자"
+title: "[플로이드워셜][분기문]-Find-the-City-with-the-Smallest-Number-of-Neighbors-at-a-Threshold-Distance"
+subtitle: "플로이드-워셜 알고리즘과 조건 분기를 활용한 최단 경로 문제"
 date: 2026-01-19 12:53 +0900
 categories: [codingtest]
 taxonomy:
