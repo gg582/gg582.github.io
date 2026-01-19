@@ -221,22 +221,22 @@ article {
   margin-bottom: 2rem;
   position: relative;
   
-  // Functional margin for side notes (using CSS custom property for consistency)
-  &::before {
-    content: '';
-    position: absolute;
-    left: calc(-1 * var(--document-side-margin));
-    top: 0;
-    bottom: 0;
-    width: var(--document-side-note-width);
-    border-right: 0.5px solid rgba($divider, 0.3);
-  }
+  // Functional margin for side notes - REMOVED to eliminate vertical line
+  // &::before {
+  //   content: '';
+  //   position: absolute;
+  //   left: calc(-1 * var(--document-side-margin));
+  //   top: 0;
+  //   bottom: 0;
+  //   width: var(--document-side-note-width);
+  //   border-right: 0.5px solid rgba($divider, 0.3);
+  // }
   
-  @media (max-width: 992px) {
-    &::before {
-      display: none;
-    }
-  }
+  // @media (max-width: 992px) {
+  //   &::before {
+  //     display: none;
+  //   }
+  // }
 }
 
 
