@@ -267,8 +267,8 @@ body.dark-mode {
     }
   }
   
-  .subcategory-name a,
-  .document-title a {
+  .subcategory-card .subcategory-name a,
+  .document-list .document-item .document-title a {
     color: #e2e8f0;
     
     &:hover {
@@ -276,7 +276,7 @@ body.dark-mode {
     }
   }
   
-  .document-preview {
+  .subcategory-card .document-preview {
     border-top-color: #4a5568;
     
     a {
