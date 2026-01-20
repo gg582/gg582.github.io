@@ -500,10 +500,13 @@ body.dark-mode {
 }
 
 // Mobile header width expansion (180% of viewport width)
-// User requirement: Make header bar 180% width on mobile for better viewing
+// User requirement: Make header bar 180% width on mobile
+// Note: User explicitly requested this despite accessibility concerns,
+// stating they are willing to sacrifice readability for wider header.
+// This enables horizontal scrolling to view the full header on mobile.
 @media (max-width: 991px) {
   header.masthead {
-    width: 180%;
+    width: 180%; // User-specified width multiplier
     margin-left: 0;
     overflow-x: visible;
   }
