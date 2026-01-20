@@ -37,6 +37,8 @@ relationships:
 
 캐싱 노이즈를 최소화하고 순수 연산 처리량(Throughput)을 측정하기 위해 대규모 데이터 스케일로 진행한다.
 
+<div class="table-wrapper" markdown="0">
+
 | 카테고리 | 작업 내용 | Scalar 시간 | NEON 시간 | 속도 향상(Speedup) |
 | :--- | :--- | :--- | :--- | :--- |
 | **Arithmetic** | 1억 개 배열 덧셈 | 0.1252s | 0.0696s | **1.80x** |
@@ -45,6 +47,8 @@ relationships:
 | **Math (FPU)** | Fast Inverse Sqrt | 0.0471s | 0.0048s | **9.71x** |
 | **String** | 100MB 문자 스캐닝 | 0.0527s | 0.0304s | **1.73x** |
 | **Branchless** | 5000만 개 데이터 필터링 | 0.9323s | 0.8887s | **1.05x** |
+
+</div>
 
 <br>
 
