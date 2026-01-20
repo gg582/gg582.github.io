@@ -70,29 +70,34 @@ categories:
         name: 동적 프로그래밍
         description: DP, 메모이제이션
         weight: 2
-      - id: algorithm-recursion
-        name: 재귀 알고리즘
-        description: 분할정복, 백트래킹
-        weight: 3
-      - id: algorithm-string
-        name: 문자열
-        description: 파싱
       - id: algorithm-data-structure
         name: 자료구조
         description: 트리, 그래프, 해시
+        weight: 3
+      - id: algorithm-recursion
+        name: 재귀 알고리즘
+        description: 분할정복, 백트래킹
         weight: 4
-      - id: algorithm-floyd-warshall
-        name: 플로이드 워셜
-        description: Floyd-Warshall Algorithm
+      - id: algorithm-string
+        name: 문자열
+        description: 파싱
         weight: 5
       - id: algorithm-dijkstra
         name: 다익스트라
         description: 다익스트라 알고리즘
-        weight: 5
+        weight: 6
+      - id: algorithm-floyd-warshall
+        name: 플로이드 워셜
+        description: Floyd-Warshall Algorithm
+        weight: 7
       - id: algorithm-greedy
         name: 그리디 알고리즘
         description: 탐욕법, 최적화 문제
-        weight: 6
+        weight: 8
+      - id: algorithm-bitmask
+        name: 비트마스크
+        description: 비트마스크
+        weight: 9
 
   - id: general
     name: 종합 기술
