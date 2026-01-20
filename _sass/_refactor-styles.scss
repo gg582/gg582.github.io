@@ -427,7 +427,21 @@ p, ul, ol, blockquote {
   text-align: left !important;
 }
 
-// 2. Navbar Hover Effects
+// 2. Navbar Mobile Height Fix
+// Ensure consistent navbar height on mobile devices
+#mainNav {
+  @media (max-width: 991px) {
+    min-height: 56px; // Consistent minimum height for mobile navbar
+  }
+  
+  .navbar-toggler {
+    @media (max-width: 991px) {
+      padding: 13px; // Ensure consistent padding on mobile
+    }
+  }
+}
+
+// 3. Navbar Hover Effects
 .navbar-nav .nav-item .nav-link {
   position: relative;
   
@@ -449,7 +463,7 @@ p, ul, ol, blockquote {
   }
 }
 
-// 3. Post List Hover Effects
+// 4. Post List Hover Effects
 .list-item,
 .featured-card,
 .timeline-item {
@@ -506,7 +520,7 @@ body.dark-mode .ripple {
   }
 }
 
-// 4. Reading Progress Bar
+// 5. Reading Progress Bar
 #progress-bar-container {
   position: fixed;
   top: 0;
@@ -524,7 +538,7 @@ body.dark-mode .ripple {
   transition: width 0.1s;
 }
 
-// 5. Smooth Theme Transition
+// 6. Smooth Theme Transition
 body {
   transition: background-color 0.5s ease, color 0.5s ease;
 }
@@ -533,7 +547,7 @@ body * {
    transition: background-color 0.5s ease, color 0.5s ease, border-color 0.5s ease;
 }
 
-// 6. Code Copy Button
+// 7. Code Copy Button
 div.highlight, pre.highlight {
   position: relative; // Ensure relative positioning for absolute child
 }
