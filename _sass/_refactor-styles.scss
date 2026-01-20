@@ -359,8 +359,8 @@ article,
     }
     
     @media (max-width: 991px) {
-      padding-left: 15px !important; // Match Bootstrap default for consistent alignment
-      padding-right: 15px !important; // Match Bootstrap default for consistent alignment
+      padding-left: 0 !important; // Remove padding, let children handle it
+      padding-right: 0 !important; // Remove padding, let children handle it
     }
   }
   
@@ -380,8 +380,8 @@ article,
   flex: 0 0 100%; // Take full width
   
   @media (max-width: 991px) {
-    padding-left: 0;
-    padding-right: 0;
+    padding-left: 1rem; // Match navbar padding (1rem = 16px)
+    padding-right: 1rem; // Match navbar padding (1rem = 16px)
   }
 }
 
