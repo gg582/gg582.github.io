@@ -354,8 +354,8 @@ article,
   
   &.px-lg-5 {
     @media (min-width: 992px) {
-      padding-left: 5% !important; // Left margin for Korean blog style
-      padding-right: 10% !important; // More space on right for asymmetric Korean style
+      padding-left: 5% !important; // Symmetric padding for balanced layout
+      padding-right: 5% !important; // Balanced right padding (was 10%, causing asymmetry)
     }
     
     @media (max-width: 991px) {
@@ -376,8 +376,7 @@ article,
   text-align: left;
   padding-left: 0;
   padding-right: 0;
-  max-width: 100%; // Ensure full width usage
-  flex: 0 0 100%; // Take full width
+  // REMOVED: max-width: 100%; and flex: 0 0 100%; to preserve Bootstrap grid
   
   @media (max-width: 991px) {
     padding-left: 1rem; // Match navbar padding (1rem = 16px)
@@ -385,14 +384,13 @@ article,
   }
 }
 
-// Mobile: Make post content width match header width
-@media (max-width: 991px) {
-  // Reduce post content container width to match header
-  .container-fluid > .row > .col-12.col-lg-10 {
-    max-width: 55.56%; // Approximately match header width (10/12 * 100 / 1.8)
-    flex: 0 0 55.56%;
-  }
-}
+// Mobile: REMOVED problematic width override that created horizontal mismatch
+// @media (max-width: 991px) {
+//   .container-fluid > .row > .col-12.col-lg-10 {
+//     max-width: 55.56%;
+//     flex: 0 0 55.56%;
+//   }
+// }
 
 // Enhanced left alignment for main content areas
 article,
