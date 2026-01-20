@@ -359,8 +359,8 @@ article,
     }
     
     @media (max-width: 991px) {
-      padding-left: 1rem !important;
-      padding-right: 1rem !important;
+      padding-left: 15px !important; // Match Bootstrap default for consistent alignment
+      padding-right: 15px !important; // Match Bootstrap default for consistent alignment
     }
   }
   
