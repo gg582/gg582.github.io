@@ -399,12 +399,19 @@ p, ul, ol, blockquote {
 .site-heading h1,
 .page-heading h1,
 .post-heading h1 {
-  font-weight: 700 !important;
+  font-weight: 800 !important;
+  font-size: 3.5rem !important;
+  letter-spacing: -0.02em;
+  margin-bottom: 1rem;
 }
 
 .subheading,
 .site-heading .subheading {
-  font-weight: 500 !important;
+  font-weight: 300 !important;
+  font-size: 1.1rem !important;
+  letter-spacing: 0.05em;
+  color: #6c757d; // Muted gray
+  display: block; // Ensure it takes its own line
 }
 
 // 2. Navbar Hover Effects

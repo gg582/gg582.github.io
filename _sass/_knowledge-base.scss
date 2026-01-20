@@ -1443,23 +1443,29 @@ body.dark-mode {
 }
 
 .category-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem; // Increase gap between cards
+
   .category-card {
-    margin-bottom: 1.5rem;
+    margin-bottom: 0; // Handled by gap
     background: white;
-    border: 1px solid #e0e0e0;
-    border-radius: 8px;
+    // border: 1px solid #e0e0e0; // Removed border
+    border: none;
+    border-radius: 12px; // Softer corners
     overflow: hidden;
-    transition: all 0.3s;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04); // Soft shadow
     
     &:hover {
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.08); // Deeper shadow on hover
+      transform: translateY(-4px);
     }
     
     .category-link {
       display: flex;
-      gap: 1rem;
-      padding: 1.5rem;
+      gap: 1.2rem;
+      padding: 2rem; // Increased padding
       text-decoration: none;
       color: inherit;
       
@@ -1471,21 +1477,23 @@ body.dark-mode {
         flex: 1;
         
         .category-name {
-          font-size: 1.3rem;
-          font-weight: 700;
+          font-size: 1.4rem;
+          font-weight: 800;
           margin: 0 0 0.5rem 0;
           color: #111116;
         }
         
         .category-desc {
-          font-size: 0.9rem;
+          font-size: 0.95rem;
           color: #718096;
-          margin: 0 0 0.5rem 0;
+          margin: 0 0 0.8rem 0;
+          line-height: 1.5;
         }
         
         .category-stats {
           font-size: 0.85rem;
           color: #a0aec0;
+          font-weight: 500;
         }
       }
     }
@@ -1494,11 +1502,11 @@ body.dark-mode {
       list-style: none;
       padding: 0;
       margin: 0;
-      background: #f7fafc;
-      border-top: 1px solid #e0e0e0;
+      background: #f8f9fa; // Lighter gray
+      border-top: 1px solid rgba(0,0,0,0.03);
       
       li {
-        border-bottom: 1px solid #e0e0e0;
+        border-bottom: 1px solid rgba(0,0,0,0.03);
         
         &:last-child {
           border-bottom: none;
@@ -1506,21 +1514,41 @@ body.dark-mode {
         
         a {
           display: block;
-          padding: 0.6rem 1.5rem;
+          padding: 0.8rem 2rem; // More padding
           color: #4a5568;
           text-decoration: none;
-          font-size: 0.9rem;
+          font-size: 0.95rem;
           transition: all 0.2s;
           
           &:hover {
             background: #edf2f7;
             color: #111116;
-            padding-left: 2rem;
+            padding-left: 2.5rem; // Subtle movement
           }
         }
       }
     }
   }
+}
+
+// Badge Styles for Title Tags
+.title-tag-badge {
+  display: inline-block;
+  padding: 0.2rem 0.6rem;
+  background-color: #e3f2fd;
+  color: #1565c0;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  margin-right: 0.5rem;
+  vertical-align: middle;
+  transform: translateY(-2px); // Slight optical adjustment
+  letter-spacing: 0.02em;
+}
+
+body.dark-mode .title-tag-badge {
+  background-color: #1e3a8a; // Darker blue for dark mode
+  color: #93c5fd;
 }
 
 .kb-home-main {

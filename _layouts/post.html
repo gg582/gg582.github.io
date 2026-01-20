@@ -40,7 +40,17 @@ layout: default
               <div><span id="busuanzi_container_page_pv"><span id="busuanzi_value_page_pv"></span> 조회</span></div>
             </div>
             
-            <h1>{{ page.title }}</h1>
+            <h1>
+                  {% if page.title contains "]" and page.title contains "[" %}
+                    {% assign title_parts = page.title | split: "]" %}
+                    {% assign tag_content = title_parts[0] | remove: "[" %}
+                    {% assign title_content = page.title | remove: title_parts[0] | remove: "]" | strip %}
+                    <span class="title-tag-badge">{{ tag_content }}</span>
+                    {{ title_content }}
+                  {% else %}
+                    {{ page.title }}
+                  {% endif %}
+            </h1>
             {% if page.subtitle %}
             <h2 class="subheading">{{ page.subtitle }}</h2>
             {% endif %}
