@@ -385,6 +385,15 @@ article,
   }
 }
 
+// Mobile: Make post content width match header width
+@media (max-width: 991px) {
+  // Reduce post content container width to match header
+  .container-fluid > .row > .col-12.col-lg-10 {
+    max-width: 55.56%; // Approximately match header width (10/12 * 100 / 1.8)
+    flex: 0 0 55.56%;
+  }
+}
+
 // Enhanced left alignment for main content areas
 article,
 .post-content,
