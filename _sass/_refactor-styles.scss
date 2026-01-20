@@ -499,6 +499,21 @@ body.dark-mode {
   }
 }
 
+// Mobile header width expansion (180% of viewport width)
+// User requirement: Make header bar 180% width on mobile for better viewing
+@media (max-width: 991px) {
+  header.masthead {
+    width: 180%;
+    margin-left: 0;
+    overflow-x: visible;
+  }
+  
+  header.masthead .container-fluid {
+    width: 100%;
+    max-width: none;
+  }
+}
+
 // Ripple Effect Styles
 .ripple {
   position: absolute;
