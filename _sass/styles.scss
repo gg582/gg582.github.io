@@ -38,11 +38,19 @@ pre, .highlight {
     overflow: hidden; 
     font-family: 'Inconsolata', 'M PLUS 1p', monospace !important;
     /* Theme-independent Code Block Styles */
-    background-color: #2d2d2d; /* Dark gray background */
+    background-color: #111116; /* Dark gray background */
     color: #f8f8f2; /* Light text color */
     border: 1px solid #4a4a4a; /* Consistent border */
     padding: 1em;
     overflow-x: auto; /* Enable horizontal scrolling for long lines */
+}
+
+/* Fix double background: remove from outer wrapper divs/figures that contain pre */
+div.highlight, figure.highlight {
+    background: transparent !important;
+    padding: 0 !important;
+    border: none !important;
+    overflow: visible !important;
 }
 
 /* Targeting code inside blocks to ensure they inherit or use the specific font */
@@ -262,7 +270,7 @@ footer .list-inline .fa-stack .fa-inverse {
 
 /* Default state (when left): Display 'Dark' on the right margin */
 .slider:before {
-  content: "Dark";
+  content: "⬤";
   right: 10px;
 }
 
@@ -286,7 +294,7 @@ input:checked + .slider {
 
 /* When shifted to the right: Display 'Light' on the left margin */
 input:checked + .slider:before {
-  content: "Light";
+  content: "◯";
   left: 10px;
   right: auto;
 }
