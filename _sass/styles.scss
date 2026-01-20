@@ -288,6 +288,7 @@ footer .list-inline .fa-stack .fa-inverse {
 }
 
 /* Disable transitions when the no-transition class is present on body */
+body.no-transition,
 body.no-transition * {
   transition: none !important;
 }
