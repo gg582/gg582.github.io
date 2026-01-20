@@ -45,14 +45,26 @@ hr {
   padding-bottom: 60px;
   position: relative;
 
+  .site-heading, .page-heading {
+    text-align: left;
+    
+    .favicon-logo {
+      display: block;
+      margin-left: 0;
+      margin-right: auto;
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+      transition: transform 0.3s ease;
+      
+      &:hover {
+        transform: scale(1.05);
+      }
+    }
+  }
+
   .site-heading h1, .page-heading h1, .post-heading h1 {
     font-weight: 400; /* Normal weight - no emphasis through font */
     font-size: 2.5rem;
     margin-bottom: 1rem;
-  }
-  
-  .site-heading .subheading, .page-heading .subheading {
-    text-align: left; /* Left-align description text to match blog title */
   }
   
   .subheading, .meta {
