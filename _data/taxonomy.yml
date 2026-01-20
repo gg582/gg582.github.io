@@ -82,6 +82,10 @@ categories:
         name: 플로이드 워셜
         description: Floyd-Warshall Algorithm
         weight: 5
+      - id: algorithm-dijkstra
+        name: 다익스트라
+        description: 다익스트라 알고리즘
+        weight: 5
       - id: algorithm-greedy
         name: 그리디 알고리즘
         description: 탐욕법, 최적화 문제

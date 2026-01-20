@@ -1,7 +1,7 @@
 ---
 layout: knowledge-base
 title: "[스택][문자열]Simplify Path-LeetCode"
-subtitle: "플로이드-워셜 알고리즘과 조건 분기를 활용한 최단 경로 문제"
+subtitle: "유사 유닉스 스타일의 문자열을 파싱하자"
 date: 2026-01-19 12:53 +0900
 categories: [codingtest]
 taxonomy:
