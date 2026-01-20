@@ -437,6 +437,10 @@ p, ul, ol, blockquote {
 // 2. Navbar Mobile Height Fix
 // Ensure consistent navbar height on mobile devices
 #mainNav {
+  left: 0;
+  right: 0;
+  width: 100%;
+
   @media (max-width: 991px) {
     min-height: 56px; // Consistent minimum height for mobile navbar
   }
@@ -609,6 +613,5 @@ body:not(.dark-mode) {
     color: #1a202c;
   }
 }
-
 
 
