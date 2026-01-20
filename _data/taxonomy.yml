@@ -74,6 +74,9 @@ categories:
         name: 재귀 알고리즘
         description: 분할정복, 백트래킹
         weight: 3
+      - id: algorithm-string
+        name: 문자열
+        description: 파싱
       - id: algorithm-data-structure
         name: 자료구조
         description: 트리, 그래프, 해시
