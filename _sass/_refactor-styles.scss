@@ -442,7 +442,18 @@ p, ul, ol, blockquote {
   width: 100%;
 
   @media (max-width: 991px) {
+    position: fixed;
     min-height: 56px; // Consistent minimum height for mobile navbar
+
+    .navbar-collapse {
+      flex-basis: 100%;
+      width: 100%;
+      background-color: #fff;
+    }
+
+    .navbar-nav {
+      width: 100%;
+    }
   }
   
   .navbar-toggler {
@@ -613,5 +624,3 @@ body:not(.dark-mode) {
     color: #1a202c;
   }
 }
-
-
