@@ -15,14 +15,11 @@ $(function () {
     }
   }
 
-  // Check for saved theme in localStorage
-  const savedTheme = localStorage.getItem('theme');
-  if (savedTheme) {
-    setTheme(savedTheme);
+  // Sync checkbox with current body state (applied by inline script)
+  if (body.classList.contains('dark-mode')) {
+    themeToggleCheckbox.checked = true;
   } else {
-    // If no saved theme, check prefers-color-scheme
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    setTheme(prefersDark ? 'dark' : 'light');
+    themeToggleCheckbox.checked = false;
   }
 
   // Toggle theme on checkbox change event

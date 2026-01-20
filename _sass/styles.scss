@@ -287,6 +287,11 @@ footer .list-inline .fa-stack .fa-inverse {
   border-radius: 50%;
 }
 
+/* Disable transitions when the no-transition class is present on body */
+body.no-transition * {
+  transition: none !important;
+}
+
 /* When checked (shifted to the right) */
 input:checked + .slider {
   background-color: #2196F3;

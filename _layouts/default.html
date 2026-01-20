@@ -7,6 +7,31 @@
 {% include head.html %}
 
 <body>
+  <script>
+    (function() {
+      var storageKey = 'theme';
+      var className = 'dark-mode';
+      var noTransitionClass = 'no-transition';
+      
+      var body = document.body;
+      // Add no-transition class immediately
+      body.classList.add(noTransitionClass);
+
+      var theme = localStorage.getItem(storageKey);
+      var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+      if (theme === 'dark' || (!theme && prefersDark)) {
+        body.classList.add(className);
+      }
+
+      // Remove no-transition class after page load
+      window.addEventListener('load', function() {
+        requestAnimationFrame(function() {
+          body.classList.remove(noTransitionClass);
+        });
+      });
+    })();
+  </script>
 
   {% include navbar.html %}
 
