@@ -46,7 +46,7 @@ hr {
   position: relative;
 
   .site-heading, .page-heading {
-    text-align: left;
+    text-align: left !important;
     
     .favicon-logo {
       display: block;
@@ -424,6 +424,7 @@ p, ul, ol, blockquote {
   letter-spacing: 0.05em;
   color: #6c757d; // Muted gray
   display: block; // Ensure it takes its own line
+  text-align: left !important;
 }
 
 // 2. Navbar Hover Effects
