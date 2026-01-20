@@ -385,6 +385,15 @@ article,
   }
 }
 
+// Mobile: Make post content width match header width
+@media (max-width: 991px) {
+  // Reduce post content container width to match header
+  .container-fluid > .row > .col-12.col-lg-10 {
+    max-width: 55.56%; // Approximately match header width (10/12 * 100 / 1.8)
+    flex: 0 0 55.56%;
+  }
+}
+
 // Enhanced left alignment for main content areas
 article,
 .post-content,
@@ -496,24 +505,6 @@ body.dark-mode {
   .featured-card::after,
   .timeline-item::after {
     background-color: rgba(255, 255, 255, 0.2);
-  }
-}
-
-// Mobile header width expansion (180% of viewport width)
-// User requirement: Make header bar 180% width on mobile
-// Note: User explicitly requested this despite accessibility concerns,
-// stating they are willing to sacrifice readability for wider header.
-// This enables horizontal scrolling to view the full header on mobile.
-@media (max-width: 991px) {
-  header.masthead {
-    width: 180%; // User-specified width multiplier
-    margin-left: 0;
-    overflow-x: visible;
-  }
-  
-  header.masthead .container-fluid {
-    width: 100%;
-    max-width: none;
   }
 }
 
