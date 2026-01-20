@@ -110,4 +110,108 @@ $(function () {
       };
     });
   }
+
+  // Ripple Effect
+  document.addEventListener('click', function(e) {
+    // Target .list-item, .featured-card, .timeline-item and their children
+    const target = e.target.closest('.list-item, .featured-card, .timeline-item');
+    
+    if (target) {
+      // Don't create ripple if clicking on a link inside (optional, but usually desired to see ripple on the item)
+      // But if the link is the full item, it's fine.
+      
+      const ripple = document.createElement('span');
+      ripple.classList.add('ripple');
+      
+      const rect = target.getBoundingClientRect();
+      const size = Math.max(rect.width, rect.height);
+      
+      // Calculate click position relative to the element
+      const x = e.clientX - rect.left - size / 2;
+      const y = e.clientY - rect.top - size / 2;
+      
+      ripple.style.width = ripple.style.height = `${size}px`;
+      ripple.style.left = `${x}px`;
+      ripple.style.top = `${y}px`;
+      
+      target.appendChild(ripple);
+      
+      setTimeout(() => {
+        ripple.remove();
+      }, 600);
+    }
+  });
+
+  // Medium Zoom Initialization
+  if (typeof mediumZoom === 'function') {
+    mediumZoom('.post-content img', {
+      margin: 24,
+      background: body.classList.contains('dark-mode') ? '#000' : '#fff',
+      scrollOffset: 0,
+    });
+  }
+
+  // Reading Progress Bar Logic
+  const progressBar = document.getElementById('progress-bar');
+  if (progressBar) {
+    window.addEventListener('scroll', () => {
+      const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+      const scrollHeight = document.documentElement.scrollHeight || document.body.scrollHeight;
+      const clientHeight = document.documentElement.clientHeight || document.body.clientHeight;
+      
+      const scrolled = (scrollTop / (scrollHeight - clientHeight)) * 100;
+      progressBar.style.width = scrolled + '%';
+    });
+  }
+
+  // Code Copy Button Logic
+  // Target both 'pre' and '.highlight' to ensure we catch all code blocks
+  // In Jekyll/Rouge, usually it's div.highlight > pre.highlight > code
+  // We want to attach the button to the wrapper if possible.
+  
+  const codeBlocks = document.querySelectorAll('div.highlight, pre.highlight');
+  
+  codeBlocks.forEach(block => {
+    // Check if button already exists to prevent duplicates
+    if (block.querySelector('.copy-code-btn')) return;
+    
+    // Create button
+    const button = document.createElement('button');
+    button.className = 'copy-code-btn';
+    button.type = 'button';
+    button.innerText = 'Copy';
+    button.ariaLabel = 'Copy to clipboard';
+    
+    // Append to the block
+    block.appendChild(button);
+  });
+
+  // Initialize ClipboardJS
+  const clipboard = new ClipboardJS('.copy-code-btn', {
+    target: function(trigger) {
+      // Find the code element within the parent block
+      // The button is appended to div.highlight or pre.highlight
+      return trigger.parentNode.querySelector('code');
+    }
+  });
+
+  clipboard.on('success', function(e) {
+    e.clearSelection();
+    
+    // Feedback
+    const button = e.trigger;
+    const originalText = button.innerText;
+    button.innerText = 'Copied!';
+    button.classList.add('copied');
+    
+    setTimeout(() => {
+      button.innerText = originalText;
+      button.classList.remove('copied');
+    }, 2000);
+  });
+
+  clipboard.on('error', function(e) {
+    console.error('Action:', e.action);
+    console.error('Trigger:', e.trigger);
+  });
 });

@@ -2,6 +2,11 @@
 layout: default
 ---
 
+<!-- Reading Progress Bar -->
+<div id="progress-bar-container">
+  <div id="progress-bar"></div>
+</div>
+
 <!-- Page Header -->
 {% assign background_image = page.background %}
 {% unless background_image %}
@@ -48,6 +53,95 @@ layout: default
   <div class="container-fluid px-lg-5">
     <div class="row">
       <div class="col-lg-10 col-md-11">
+
+        <!-- Translation Controls -->
+        <div class="translation-controls" style="margin-bottom: 20px; position: relative; z-index: 100;">
+          <div style="position: relative; display: inline-block;">
+            <button id="translate-btn" class="btn btn-sm btn-outline-secondary">TRANSLATE</button>
+            <div id="translate-dropdown" style="display: none; position: absolute; top: 100%; left: 0; z-index: 1000; background: white; border: 1px solid #ccc; max-height: 300px; overflow-y: auto; width: 200px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+              <!-- Options populated by JS -->
+            </div>
+          </div>
+          <button id="translate-reset-btn" class="btn btn-sm btn-outline-danger" style="display: none; margin-left: 5px;">RESET</button>
+        </div>
+        <div id="google_translate_element" style="position: absolute; opacity: 0; z-index: -1; height: 0; overflow: hidden;"></div>
+
+        <script type="text/javascript">
+          function googleTranslateElementInit() {
+            new google.translate.TranslateElement({
+              pageLanguage: 'ko', 
+              layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+              autoDisplay: false
+            }, 'google_translate_element');
+          }
+        </script>
+        <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+        <script>
+          document.addEventListener('DOMContentLoaded', function() {
+            const translateBtn = document.getElementById('translate-btn');
+            const resetBtn = document.getElementById('translate-reset-btn');
+            const dropdown = document.getElementById('translate-dropdown');
+            let googleCombo = null;
+
+            // Wait for Google Translate to initialize
+            const checkGoogle = setInterval(() => {
+              const combo = document.querySelector('.goog-te-combo');
+              if (combo) {
+                googleCombo = combo;
+                clearInterval(checkGoogle);
+                populateDropdown(combo);
+              }
+            }, 500);
+
+            function populateDropdown(select) {
+              dropdown.innerHTML = '';
+              Array.from(select.options).forEach(option => {
+                if (option.value) { // Skip "Select Language" placeholder
+                  const item = document.createElement('div');
+                  item.textContent = option.text;
+                  item.style.padding = '8px 12px';
+                  item.style.cursor = 'pointer';
+                  item.style.fontSize = '14px';
+                  item.style.color = '#333'; // Ensure text color is visible
+                  
+                  item.onmouseover = () => item.style.backgroundColor = '#f0f0f0';
+                  item.onmouseout = () => item.style.backgroundColor = 'white';
+                  
+                  item.onclick = () => {
+                    select.value = option.value;
+                    select.dispatchEvent(new Event('change'));
+                    dropdown.style.display = 'none';
+                    resetBtn.style.display = 'inline-block';
+                    // Update button text to show selected language if desired, or keep "TRANSLATE"
+                  };
+                  dropdown.appendChild(item);
+                }
+              });
+            }
+
+            translateBtn.addEventListener('click', (e) => {
+              e.stopPropagation();
+              dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+            });
+
+            // Close dropdown when clicking outside
+            document.addEventListener('click', () => {
+              dropdown.style.display = 'none';
+            });
+            
+            dropdown.addEventListener('click', (e) => e.stopPropagation());
+
+            resetBtn.addEventListener('click', () => {
+              // Clear the cookie that Google Translate sets
+              document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+              document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; domain=." + document.domain + "; path=/;";
+              
+              // Reload the page to reset the translation
+              location.reload();
+            });
+          });
+        </script>
 
         {{ content }}
 

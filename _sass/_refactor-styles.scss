@@ -390,3 +390,184 @@ h1, h2, h3, h4, h5, h6 {
 p, ul, ol, blockquote {
   text-align: left !important;
 }
+
+
+// User Request Updates (2026-01-20)
+
+// 1. Typography Adjustments
+// Increase boldness for specific header text
+.site-heading h1,
+.page-heading h1,
+.post-heading h1 {
+  font-weight: 700 !important;
+}
+
+.subheading,
+.site-heading .subheading {
+  font-weight: 500 !important;
+}
+
+// 2. Navbar Hover Effects
+.navbar-nav .nav-item .nav-link {
+  position: relative;
+  
+  &::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: 5px; // Gap from text
+    left: 50%;
+    background-color: currentColor; // Matches text color
+    transition: all 0.3s ease-in-out;
+    transform: translateX(-50%);
+    opacity: 0.7;
+  }
+
+  &:hover::after {
+    width: 90%;
+  }
+}
+
+// 3. Post List Hover Effects
+.list-item,
+.featured-card,
+.timeline-item {
+  position: relative;
+  transition: background-color 0.3s ease;
+  overflow: hidden; // For ripple containment
+
+  // Faint underline at the bottom on hover
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background-color: rgba(0, 0, 0, 0.2); // Faint underline
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s ease;
+  }
+
+  &:hover::after {
+    transform: scaleX(1);
+  }
+}
+
+// Dark mode adjustment for the underline
+body.dark-mode {
+  .list-item::after,
+  .featured-card::after,
+  .timeline-item::after {
+    background-color: rgba(255, 255, 255, 0.2);
+  }
+}
+
+// Ripple Effect Styles
+.ripple {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(100, 100, 100, 0.15); // Ghost ripple color
+  transform: scale(0);
+  animation: ripple-animation 0.6s linear;
+  pointer-events: none;
+}
+
+body.dark-mode .ripple {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+@keyframes ripple-animation {
+  to {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
+
+// 4. Reading Progress Bar
+#progress-bar-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 5px;
+  background: transparent;
+  z-index: 9999;
+}
+
+#progress-bar {
+  height: 100%;
+  background: #3b82f6; // Blue color
+  width: 0%;
+  transition: width 0.1s;
+}
+
+// 5. Smooth Theme Transition
+body {
+  transition: background-color 0.5s ease, color 0.5s ease;
+}
+
+body * {
+   transition: background-color 0.5s ease, color 0.5s ease, border-color 0.5s ease;
+}
+
+// 6. Code Copy Button
+div.highlight, pre.highlight {
+  position: relative; // Ensure relative positioning for absolute child
+}
+
+.copy-code-btn {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.75rem;
+  line-height: 1;
+  color: #a0aec0;
+  background-color: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+  cursor: pointer;
+  opacity: 0; // Hidden by default
+  transition: opacity 0.2s ease-in-out, background-color 0.2s, color 0.2s;
+  z-index: 10;
+  font-family: sans-serif; // Use a clean font, not monospace
+}
+
+// Show on hover
+div.highlight:hover > .copy-code-btn,
+pre.highlight:hover > .copy-code-btn {
+  opacity: 1;
+}
+
+.copy-code-btn:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  color: #fff;
+}
+
+// Feedback state
+.copy-code-btn.copied {
+  background-color: #48bb78; // Green
+  color: white;
+  border-color: #48bb78;
+}
+
+// Dark mode adjustments if needed (though the transparent white works well on dark code blocks)
+// If code blocks have light background in light mode:
+body:not(.dark-mode) {
+  .copy-code-btn {
+    color: #4a5568;
+    background-color: rgba(0, 0, 0, 0.05);
+    border-color: rgba(0, 0, 0, 0.1);
+  }
+  
+  .copy-code-btn:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+    color: #1a202c;
+  }
+}
+
+
+
