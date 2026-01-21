@@ -16,7 +16,17 @@
         {% if prereq %}
         <li class="document-item">
           <a href="{{ prereq.url | relative_url }}" class="document-link">
-            <span class="document-title">{{ prereq.title }}</span>
+            <span class="document-title">
+            {% if prereq.title contains "]" and prereq.title contains "[" %}
+              {% assign title_parts = prereq.title | split: "]" %}
+              {% assign tag_content = title_parts[0] | remove: "[" %}
+              {% assign title_content = prereq.title | remove: title_parts[0] | remove: "]" | strip %}
+              <span class="title-tag-badge">{{ tag_content }}</span>
+              {{ title_content }}
+            {% else %}
+              {{ prereq.title }}
+            {% endif %}
+          </span>
             {% if prereq.taxonomy %}
             {% assign cat = site.data.taxonomy.categories | where: "id", prereq.taxonomy.category | first %}
             <span class="document-category">{{ cat.name_ko }}</span>
@@ -41,7 +51,17 @@
         {% if related %}
         <li class="document-item">
           <a href="{{ related.url | relative_url }}" class="document-link">
-            <span class="document-title">{{ related.title }}</span>
+            <span class="document-title">
+            {% if related.title contains "]" and related.title contains "[" %}
+              {% assign title_parts = related.title | split: "]" %}
+              {% assign tag_content = title_parts[0] | remove: "[" %}
+              {% assign title_content = related.title | remove: title_parts[0] | remove: "]" | strip %}
+              <span class="title-tag-badge">{{ tag_content }}</span>
+              {{ title_content }}
+            {% else %}
+              {{ related.title }}
+            {% endif %}
+          </span>
             {% if related.taxonomy %}
             {% assign cat = site.data.taxonomy.categories | where: "id", related.taxonomy.category | first %}
             <span class="document-category">{{ cat.name_ko }}</span>
@@ -66,7 +86,17 @@
         {% if extend %}
         <li class="document-item">
           <a href="{{ extend.url | relative_url }}" class="document-link">
-            <span class="document-title">{{ extend.title }}</span>
+            <span class="document-title">
+            {% if extend.title contains "]" and extend.title contains "[" %}
+              {% assign title_parts = extend.title | split: "]" %}
+              {% assign tag_content = title_parts[0] | remove: "[" %}
+              {% assign title_content = extend.title | remove: title_parts[0] | remove: "]" | strip %}
+              <span class="title-tag-badge">{{ tag_content }}</span>
+              {{ title_content }}
+            {% else %}
+              {{ extend.title }}
+            {% endif %}
+          </span>
             {% if extend.taxonomy %}
             {% assign cat = site.data.taxonomy.categories | where: "id", extend.taxonomy.category | first %}
             <span class="document-category">{{ cat.name_ko }}</span>
@@ -91,7 +121,17 @@
         {% if comp %}
         <li class="document-item">
           <a href="{{ comp.url | relative_url }}" class="document-link">
-            <span class="document-title">{{ comp.title }}</span>
+            <span class="document-title">
+            {% if comp.title contains "]" and comp.title contains "[" %}
+              {% assign title_parts = comp.title | split: "]" %}
+              {% assign tag_content = title_parts[0] | remove: "[" %}
+              {% assign title_content = comp.title | remove: title_parts[0] | remove: "]" | strip %}
+              <span class="title-tag-badge">{{ tag_content }}</span>
+              {{ title_content }}
+            {% else %}
+              {{ comp.title }}
+            {% endif %}
+          </span>
             {% if comp.taxonomy %}
             {% assign cat = site.data.taxonomy.categories | where: "id", comp.taxonomy.category | first %}
             <span class="document-category">{{ cat.name_ko }}</span>
@@ -114,7 +154,17 @@
       {% for doc in related_docs limit: 5 %}
       <li class="document-item">
         <a href="{{ doc.url | relative_url }}" class="document-link">
-          <span class="document-title">{{ doc.title }}</span>
+          <span class="document-title">
+          {% if doc.title contains "]" and doc.title contains "[" %}
+            {% assign title_parts = doc.title | split: "]" %}
+            {% assign tag_content = title_parts[0] | remove: "[" %}
+            {% assign title_content = doc.title | remove: title_parts[0] | remove: "]" | strip %}
+            <span class="title-tag-badge">{{ tag_content }}</span>
+            {{ title_content }}
+          {% else %}
+            {{ doc.title }}
+          {% endif %}
+        </span>
           {% if doc.taxonomy %}
           {% assign cat = site.data.taxonomy.categories | where: "id", doc.taxonomy.category | first %}
           <span class="document-category">{{ cat.name_ko }}</span>

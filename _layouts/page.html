@@ -13,7 +13,17 @@ layout: default
       <div class="row">
         <div class="col-lg-10 col-md-11">
           <div class="page-heading">
-            <h1>{{ page.title }}</h1>
+            <h1>
+              {% if page.title contains "]" and page.title contains "[" %}
+                {% assign title_parts = page.title | split: "]" %}
+                {% assign tag_content = title_parts[0] | remove: "[" %}
+                {% assign title_content = page.title | remove: title_parts[0] | remove: "]" | strip %}
+                <span class="title-tag-badge">{{ tag_content }}</span>
+                {{ title_content }}
+              {% else %}
+                {{ page.title }}
+              {% endif %}
+            </h1>
             {% if page.description %}
             <span class="subheading">{{ page.description }}</span>
             {% endif %}

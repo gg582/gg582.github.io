@@ -1536,7 +1536,7 @@ body.dark-mode {
   display: inline-block;
   padding: 0.2rem 0.6rem;
   background-color: #e3f2fd;
-  color: #1565c0;
+  color: #000000;
   border-radius: 6px;
   font-size: 0.75rem;
   font-weight: 700;
@@ -1547,8 +1547,8 @@ body.dark-mode {
 }
 
 body.dark-mode .title-tag-badge {
-  background-color: #1e3a8a; // Darker blue for dark mode
-  color: #93c5fd;
+  background-color: #1565c0; // Blue background
+  color: #ffffff;
 }
 
 .kb-home-main {

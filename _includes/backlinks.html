@@ -52,7 +52,15 @@
         <li class="backlink-item">
           <div class="backlink-content">
             <a href="{{ doc.url | relative_url }}" class="backlink-title">
-              {{ doc.title }}
+              {% if doc.title contains "]" and doc.title contains "[" %}
+                {% assign title_parts = doc.title | split: "]" %}
+                {% assign tag_content = title_parts[0] | remove: "[" %}
+                {% assign title_content = doc.title | remove: title_parts[0] | remove: "]" | strip %}
+                <span class="title-tag-badge">{{ tag_content }}</span>
+                {{ title_content }}
+              {% else %}
+                {{ doc.title }}
+              {% endif %}
             </a>
             <span class="backlink-type">{{ link_type }}</span>
           </div>

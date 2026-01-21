@@ -18,7 +18,17 @@ layout: default
 
     <!-- Document Header -->
     <header class="kb-document-header">
-      <h1 class="kb-document-title">{{ page.title }}</h1>
+      <h1 class="kb-document-title">
+        {% if page.title contains "]" and page.title contains "[" %}
+          {% assign title_parts = page.title | split: "]" %}
+          {% assign tag_content = title_parts[0] | remove: "[" %}
+          {% assign title_content = page.title | remove: title_parts[0] | remove: "]" | strip %}
+          <span class="title-tag-badge">{{ tag_content }}</span>
+          {{ title_content }}
+        {% else %}
+          {{ page.title }}
+        {% endif %}
+      </h1>
       
       {% if page.subtitle %}
       <p class="kb-document-subtitle">{{ page.subtitle }}</p>
