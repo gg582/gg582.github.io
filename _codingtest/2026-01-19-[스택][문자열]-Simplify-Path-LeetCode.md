@@ -1,6 +1,6 @@
 ---
 layout: knowledge-base
-title: "[스택][문자열]Simplify Path-LeetCode"
+title: "[스택][문자열] Simplify Path-LeetCode"
 subtitle: "유사 유닉스 스타일의 문자열을 파싱하자"
 date: 2026-01-19 12:53 +0900
 categories: [codingtest]

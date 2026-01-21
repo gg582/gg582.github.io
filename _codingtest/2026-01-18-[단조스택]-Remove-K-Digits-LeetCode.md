@@ -1,6 +1,6 @@
 ---
 layout: knowledge-base
-title: "[단조스택]-Remove K Digits-LeetCode"
+title: "[단조스택] Remove K Digits-LeetCode"
 subtitle: "단조 스택을 활용한 숫자 최소화 문제"
 date: 2026-01-18 15:56 +0900
 categories: [codingtest]

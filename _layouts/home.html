@@ -13,7 +13,7 @@ layout: default
       <div class="row">
         <div class="col-lg-10 col-md-11">
           <div class="page-heading">
-            <img src="{{ site.favicon | relative_url }}" width="64" height="64" class="mb-3 favicon-logo" alt="Logo">
+            <img src="{{ site.favicon | relative_url }}" width="72" height="72" class="mb-3 favicon-logo" alt="Logo">
             <h1>{{ site.title }}</h1>
             {% if site.description %}
             <span class="subheading">{{ site.description }}</span>
@@ -41,12 +41,12 @@ layout: default
               <h2 class="post-title">
                   {% if post.title contains "]" and post.title contains "[" %}
                     {% assign title_parts = post.title | split: "]" %}
-                    {% assign tag_content = title_parts[0] | remove: "[" %}
+                    {% assign tag_content = title_parts[0] | remove: "[" | strip %}
                     {% assign title_content = post.title | remove: title_parts[0] | remove: "]" | strip %}
                     <span class="title-tag-badge">{{ tag_content }}</span>
                     {{ title_content }}
                   {% else %}
-                    {{ post.title }}
+                    {{ post.title | strip }}
                   {% endif %}
               </h2>
               {% if post.subtitle %}

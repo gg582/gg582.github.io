@@ -1,6 +1,6 @@
 ---
 layout: knowledge-base
-title: "[다익스트라]Network Delay Time-LeetCode"
+title: "[다익스트라] Network Delay Time-LeetCode"
 subtitle: "다익스트라 알고리즘을 이용하는 그래프 탐색의 기초"
 date: 2026-01-19 12:53 +0900
 categories: [codingtest]

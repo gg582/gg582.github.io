@@ -43,12 +43,12 @@ layout: default
             <h1>
                   {% if page.title contains "]" and page.title contains "[" %}
                     {% assign title_parts = page.title | split: "]" %}
-                    {% assign tag_content = title_parts[0] | remove: "[" %}
+                    {% assign tag_content = title_parts[0] | remove: "[" | strip %}
                     {% assign title_content = page.title | remove: title_parts[0] | remove: "]" | strip %}
                     <span class="title-tag-badge">{{ tag_content }}</span>
                     {{ title_content }}
                   {% else %}
-                    {{ page.title }}
+                    {{ page.title | strip }}
                   {% endif %}
             </h1>
             {% if page.subtitle %}
