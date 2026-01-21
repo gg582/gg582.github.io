@@ -624,3 +624,46 @@ body:not(.dark-mode) {
     color: #1a202c;
   }
 }
+
+
+// 8. Large Button-Sized Tag Icons in List Views (User Request 2026-01-21)
+// "Make tags into icon forms in the post list view too... and make them button-sized"
+
+.list-item .title-tag-badge,
+.timeline-item .title-tag-badge,
+.featured-card .title-tag-badge,
+.category-index-container .document-item .title-tag-badge {
+  font-size: 0.9rem !important; // Larger font size
+  padding: 0.4rem 0.8rem !important; // Button-like padding
+  border-radius: 8px !important; // Soft rounded corners
+  margin-right: 0.6rem !important; // Spacing between tag and title
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  line-height: 1.4;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1); // Icon/Button shadow
+  transform: translateY(-2px); // Lift effect
+  border: 1px solid rgba(0,0,0,0.08); // Subtle border definition
+  font-weight: 700 !important;
+  vertical-align: middle;
+}
+
+// Hover effect for these buttons
+.list-item .title-tag-badge:hover,
+.timeline-item .title-tag-badge:hover,
+.featured-card .title-tag-badge:hover,
+.category-index-container .document-item .title-tag-badge:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+// Dark mode adjustments for list view tags
+body.dark-mode {
+  .list-item .title-tag-badge,
+  .timeline-item .title-tag-badge,
+  .featured-card .title-tag-badge,
+  .category-index-container .document-item .title-tag-badge {
+     box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+     border-color: rgba(255,255,255,0.1);
+  }
+}

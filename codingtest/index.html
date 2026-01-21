@@ -13,7 +13,8 @@ background: '/img/bg-codingtest.jpg'
   <div class="item-content">
     <a href="{{ post.url | prepend: site.baseurl | replace: '//', '/' }}">
       <h2 class="post-title">
-        {{ post.title }}
+        {{ post.title | render_title_tags }}
+        {{ post.title | clean_title_tags }}
       </h2>
       {% if post.subtitle %}
       <h3 class="post-subtitle">
