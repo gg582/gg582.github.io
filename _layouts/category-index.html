@@ -94,15 +94,8 @@ layout: default
               
               <h4 class="document-title">
                 <a href="{{ doc.url | relative_url }}">
-                  {% if doc.title contains "]" and doc.title contains "[" %}
-                    {% assign title_parts = doc.title | split: "]" %}
-                    {% assign tag_content = title_parts[0] | remove: "[" | strip %}
-                    {% assign title_content = doc.title | remove: title_parts[0] | remove: "]" | strip %}
-                    <span class="title-tag-badge">{{ tag_content }}</span>
-                    {{ title_content }}
-                  {% else %}
-                    {{ doc.title | strip }}
-                  {% endif %}
+                  {{ doc.title | render_title_tags }}
+                  {{ doc.title | clean_title_tags }}
                 </a>
               </h4>
               
@@ -142,15 +135,8 @@ layout: default
             
             <h4 class="document-title">
               <a href="{{ doc.url | relative_url }}">
-                {% if doc.title contains "]" and doc.title contains "[" %}
-                  {% assign title_parts = doc.title | split: "]" %}
-                  {% assign tag_content = title_parts[0] | remove: "[" | strip %}
-                  {% assign title_content = doc.title | remove: title_parts[0] | remove: "]" | strip %}
-                  <span class="title-tag-badge">{{ tag_content }}</span>
-                  {{ title_content }}
-                {% else %}
-                  {{ doc.title | strip }}
-                {% endif %}
+                {{ doc.title | render_title_tags }}
+                {{ doc.title | clean_title_tags }}
               </a>
             </h4>
             

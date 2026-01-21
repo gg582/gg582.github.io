@@ -76,15 +76,8 @@ title: 전체 문헌 목록
               
               <h4 class="item-title">
                 <a href="{{ doc.url | relative_url }}">
-                  {% if doc.title contains "]" and doc.title contains "[" %}
-                    {% assign title_parts = doc.title | split: "]" %}
-                    {% assign tag_content = title_parts[0] | remove: "[" | strip %}
-                    {% assign title_content = doc.title | remove: title_parts[0] | remove: "]" | strip %}
-                    <span class="title-tag-badge">{{ tag_content }}</span>
-                    {{ title_content }}
-                  {% else %}
-                    {{ doc.title | strip }}
-                  {% endif %}
+                  {{ doc.title | render_title_tags }}
+                  {{ doc.title | clean_title_tags }}
                 </a>
               </h4>
               
@@ -127,15 +120,8 @@ title: 전체 문헌 목록
               
               <h4 class="item-title">
                 <a href="{{ doc.url | relative_url }}">
-                  {% if doc.title contains "]" and doc.title contains "[" %}
-                    {% assign title_parts = doc.title | split: "]" %}
-                    {% assign tag_content = title_parts[0] | remove: "[" | strip %}
-                    {% assign title_content = doc.title | remove: title_parts[0] | remove: "]" | strip %}
-                    <span class="title-tag-badge">{{ tag_content }}</span>
-                    {{ title_content }}
-                  {% else %}
-                    {{ doc.title | strip }}
-                  {% endif %}
+                  {{ doc.title | render_title_tags }}
+                  {{ doc.title | clean_title_tags }}
                 </a>
               </h4>
               
@@ -165,15 +151,8 @@ title: 전체 문헌 목록
             
             <h4 class="item-title">
               <a href="{{ doc.url | relative_url }}">
-                {% if doc.title contains "]" and doc.title contains "[" %}
-                  {% assign title_parts = doc.title | split: "]" %}
-                  {% assign tag_content = title_parts[0] | remove: "[" | strip %}
-                  {% assign title_content = doc.title | remove: title_parts[0] | remove: "]" | strip %}
-                  <span class="title-tag-badge">{{ tag_content }}</span>
-                  {{ title_content }}
-                {% else %}
-                  {{ doc.title | strip }}
-                {% endif %}
+                {{ doc.title | render_title_tags }}
+                {{ doc.title | clean_title_tags }}
               </a>
             </h4>
             

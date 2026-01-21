@@ -13,15 +13,8 @@ background: '/img/bg-post.jpg'
   <div class="item-content">
     <a href="{{ post.url | prepend: site.baseurl | replace: '//', '/' }}">
       <h2 class="post-title">
-        {% if post.title contains "]" and post.title contains "[" %}
-          {% assign title_parts = post.title | split: "]" %}
-          {% assign tag_content = title_parts[0] | remove: "[" | strip %}
-          {% assign title_content = post.title | remove: title_parts[0] | remove: "]" | strip %}
-          <span class="title-tag-badge">{{ tag_content }}</span>
-          {{ title_content }}
-        {% else %}
-          {{ post.title | strip }}
-        {% endif %}
+        {{ post.title | render_title_tags }}
+        {{ post.title | clean_title_tags }}
       </h2>
       {% if post.subtitle %}
       <h3 class="post-subtitle">

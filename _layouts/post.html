@@ -41,15 +41,8 @@ layout: default
             </div>
             
             <h1>
-                  {% if page.title contains "]" and page.title contains "[" %}
-                    {% assign title_parts = page.title | split: "]" %}
-                    {% assign tag_content = title_parts[0] | remove: "[" | strip %}
-                    {% assign title_content = page.title | remove: title_parts[0] | remove: "]" | strip %}
-                    <span class="title-tag-badge">{{ tag_content }}</span>
-                    {{ title_content }}
-                  {% else %}
-                    {{ page.title | strip }}
-                  {% endif %}
+                  {{ page.title | render_title_tags }}
+                  {{ page.title | clean_title_tags }}
             </h1>
             {% if page.subtitle %}
             <h2 class="subheading">{{ page.subtitle }}</h2>
