@@ -23,13 +23,33 @@ b, strong {
 
 /*
  * Custom Font Overrides
- * UI Font: Pretendard
- * Display Font (headings, navbar, hero text): Gothic A1
+ * UI & Display Font: JeonjuWanpanbon
  * Code Font: Inconsolata (with M PLUS 1p fallback) - Limited to code blocks
  */
 
-$ui-font-stack: 'Gothic A1', 'Pretendard', 'M PLUS 1p', sans-serif;
-$display-font-stack: 'Gothic A1', 'Pretendard', 'M PLUS 1p', sans-serif;
+@font-face {
+    font-family: 'JeonjuWanpanbon';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2102-01@1.0/Jeonju_gakL.woff') format('woff');
+    font-weight: 300;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'JeonjuWanpanbon';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2102-01@1.0/Jeonju_gakR.woff') format('woff');
+    font-weight: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'JeonjuWanpanbon';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2102-01@1.0/Jeonju_gakB.woff') format('woff');
+    font-weight: 700;
+    font-display: swap;
+}
+
+$ui-font-stack: 'JeonjuWanpanbon', 'Pretendard', 'M PLUS 1p', sans-serif;
+$display-font-stack: 'JeonjuWanpanbon', 'Pretendard', 'M PLUS 1p', sans-serif;
 
 body, p, a, .caption, blockquote {
     font-family: $ui-font-stack !important;
