@@ -24,11 +24,34 @@ b, strong {
 /*
  * Custom Font Overrides
  * UI Font: Pretendard
+ * Display Font (headings, navbar, hero text): Gothic A1
  * Code Font: Inconsolata (with M PLUS 1p fallback) - Limited to code blocks
  */
 
-body, p, h1, h2, h3, h4, h5, h6, .section-heading, a, .caption, blockquote {
-    font-family: 'Pretendard', 'M PLUS 1p', sans-serif !important;
+$ui-font-stack: 'Gothic A1', 'Pretendard', 'M PLUS 1p', sans-serif;
+$display-font-stack: 'Gothic A1', 'Pretendard', 'M PLUS 1p', sans-serif;
+
+body, p, a, .caption, blockquote {
+    font-family: $ui-font-stack !important;
+}
+
+h1, h2, h3, h4, h5, h6,
+.section-heading,
+.post-title,
+.masthead .site-heading h1,
+.masthead .page-heading h1,
+.masthead .post-heading h1,
+.masthead .subheading,
+.masthead .meta,
+.site-heading .subheading,
+.page-heading .subheading,
+.post-heading .subheading,
+#mainNav,
+#mainNav .navbar-brand,
+#mainNav .navbar-nav .nav-link,
+.navbar-brand,
+.navbar-nav .nav-link {
+    font-family: $display-font-stack !important;
 }
 
 /* Rounded Code Blocks & Font */
