@@ -23,33 +23,26 @@ b, strong {
 
 /*
  * Custom Font Overrides
- * UI & Display Font: JeonjuWanpanbon
+ * UI & Display Font: DaeguBukseongro
  * Code Font: Inconsolata (with M PLUS 1p fallback) - Limited to code blocks
  */
 
 @font-face {
-    font-family: 'JeonjuWanpanbon';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2102-01@1.0/Jeonju_gakL.woff') format('woff');
+    font-family: 'DaeguBukseongro';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2511-1@1.0/DaeguBukseongro-Light.woff2') format('woff2');
     font-weight: 300;
     font-display: swap;
 }
 
 @font-face {
-    font-family: 'JeonjuWanpanbon';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2102-01@1.0/Jeonju_gakR.woff') format('woff');
-    font-weight: normal;
+    font-family: 'DaeguBukseongro';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2511-1@1.0/DaeguBukseongro-ExtraBold.woff2') format('woff2');
+    font-weight: 800;
     font-display: swap;
 }
 
-@font-face {
-    font-family: 'JeonjuWanpanbon';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2102-01@1.0/Jeonju_gakB.woff') format('woff');
-    font-weight: 700;
-    font-display: swap;
-}
-
-$ui-font-stack: 'JeonjuWanpanbon', 'Pretendard', 'M PLUS 1p', sans-serif;
-$display-font-stack: 'JeonjuWanpanbon', 'Pretendard', 'M PLUS 1p', sans-serif;
+$ui-font-stack: 'DaeguBukseongro', 'Pretendard', 'M PLUS 1p', sans-serif;
+$display-font-stack: 'DaeguBukseongro', 'Pretendard', 'M PLUS 1p', sans-serif;
 
 body, p, a, .caption, blockquote {
     font-family: $ui-font-stack !important;
