@@ -3,6 +3,16 @@ $(function () {
 
   const themeToggleCheckbox = document.getElementById('checkbox'); // Changed ID
   const body = document.body;
+  const addMqListener = (mql, handler) => {
+    if (!mql || !handler) {
+      return;
+    }
+    if (typeof mql.addEventListener === 'function') {
+      mql.addEventListener('change', handler);
+    } else if (typeof mql.addListener === 'function') {
+      mql.addListener(handler);
+    }
+  };
 
   // Function to set the theme
   function setTheme(theme) {
@@ -30,7 +40,8 @@ $(function () {
   });
 
   // Listen for changes in prefers-color-scheme
-  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+  const colorSchemeQuery = window.matchMedia('(prefers-color-scheme: dark)');
+  addMqListener(colorSchemeQuery, (e) => {
     if (!localStorage.getItem('theme')) {
       setTheme(e.matches ? 'dark' : 'light');
     }
@@ -109,33 +120,45 @@ $(function () {
   }
 
   // Ripple Effect
-  document.addEventListener('click', function(e) {
-    // Target .list-item, .featured-card, .timeline-item and their children
-    const target = e.target.closest('.list-item, .featured-card, .timeline-item');
-    
-    if (target) {
-      // Don't create ripple if clicking on a link inside (optional, but usually desired to see ripple on the item)
-      // But if the link is the full item, it's fine.
-      
-      const ripple = document.createElement('span');
-      ripple.classList.add('ripple');
-      
-      const rect = target.getBoundingClientRect();
-      const size = Math.max(rect.width, rect.height);
-      
-      // Calculate click position relative to the element
-      const x = e.clientX - rect.left - size / 2;
-      const y = e.clientY - rect.top - size / 2;
-      
-      ripple.style.width = ripple.style.height = `${size}px`;
-      ripple.style.left = `${x}px`;
-      ripple.style.top = `${y}px`;
-      
-      target.appendChild(ripple);
-      
-      setTimeout(() => {
-        ripple.remove();
-      }, 600);
+  const rippleSelector = '.list-item, .featured-card, .timeline-item';
+  const rippleHandler = (e) => {
+    const target = e.target.closest(rippleSelector);
+    if (!target) {
+      return;
+    }
+
+    const ripple = document.createElement('span');
+    ripple.classList.add('ripple');
+
+    const rect = target.getBoundingClientRect();
+    const size = Math.max(rect.width, rect.height);
+    const x = e.clientX - rect.left - size / 2;
+    const y = e.clientY - rect.top - size / 2;
+
+    ripple.style.width = ripple.style.height = `${size}px`;
+    ripple.style.left = `${x}px`;
+    ripple.style.top = `${y}px`;
+
+    target.appendChild(ripple);
+
+    setTimeout(() => {
+      ripple.remove();
+    }, 600);
+  };
+
+  const rippleMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const bindRipple = () => document.addEventListener('click', rippleHandler);
+  const unbindRipple = () => document.removeEventListener('click', rippleHandler);
+
+  if (!rippleMotionQuery.matches) {
+    bindRipple();
+  }
+
+  addMqListener(rippleMotionQuery, (event) => {
+    if (event.matches) {
+      unbindRipple();
+    } else {
+      bindRipple();
     }
   });
 
@@ -206,14 +229,39 @@ $(function () {
   // Reading Progress Bar Logic
   const progressBar = document.getElementById('progress-bar');
   if (progressBar) {
-    window.addEventListener('scroll', () => {
-      const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
-      const scrollHeight = document.documentElement.scrollHeight || document.body.scrollHeight;
-      const clientHeight = document.documentElement.clientHeight || document.body.clientHeight;
-      
-      const scrolled = (scrollTop / (scrollHeight - clientHeight)) * 100;
-      progressBar.style.width = scrolled + '%';
-    });
+    const reduceMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    let latestScroll = 0;
+    let ticking = false;
+
+    const applyProgress = () => {
+      const doc = document.documentElement;
+      const scrollHeight = doc.scrollHeight - window.innerHeight;
+      const ratio = scrollHeight <= 0 ? 0 : latestScroll / scrollHeight;
+      const clamped = Math.max(0, Math.min(1, ratio));
+      progressBar.style.setProperty('--progress', clamped);
+      progressBar.style.transform = `scaleX(${clamped})`;
+      progressBar.style.width = `${clamped * 100}%`;
+      ticking = false;
+    };
+
+    const requestTick = () => {
+      latestScroll = window.scrollY || document.documentElement.scrollTop || document.body.scrollTop || 0;
+      if (!ticking) {
+        ticking = true;
+        window.requestAnimationFrame(applyProgress);
+      }
+    };
+
+    const handleMotionPreference = (event) => {
+      progressBar.dataset.motion = event.matches ? 'reduced' : 'default';
+    };
+
+    handleMotionPreference(reduceMotionQuery);
+    addMqListener(reduceMotionQuery, handleMotionPreference);
+
+    window.addEventListener('scroll', requestTick, { passive: true });
+    window.addEventListener('resize', requestTick);
+    requestTick();
   }
 
   // Code Copy Button Logic

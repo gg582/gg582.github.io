@@ -3,8 +3,8 @@ layout: default
 ---
 
 <!-- Reading Progress Bar -->
-<div id="progress-bar-container">
-  <div id="progress-bar"></div>
+<div id="progress-bar-container" aria-hidden="true">
+  <div id="progress-bar" role="presentation"></div>
 </div>
 
 <!-- Page Header -->
@@ -148,22 +148,24 @@ layout: default
           });
         </script>
 
-        <article class="post-content">
+        <article class="post-content" data-reading-surface="true">
           {{ content }}
         </article>
 
-        <div class="clearfix">
-
+        <nav class="post-nav" aria-label="Post Navigation">
           {% if page.previous.url %}
-          <a class="btn btn-primary float-left" href="{{ page.previous.url | prepend: site.baseurl | replace: '//', '/' }}" data-toggle="tooltip" data-placement="top" title="{{ page.previous.title }}">&larr; 이전<span class="d-none d-md-inline">
-              글</span></a>
+          <a class="post-nav__link post-nav__prev" href="{{ page.previous.url | prepend: site.baseurl | replace: '//', '/' }}">
+            <span class="post-nav__kicker">이전 글</span>
+            <span class="post-nav__title">{{ page.previous.title }}</span>
+          </a>
           {% endif %}
           {% if page.next.url %}
-          <a class="btn btn-primary float-right" href="{{ page.next.url | prepend: site.baseurl | replace: '//', '/' }}" data-toggle="tooltip" data-placement="top" title="{{ page.next.title }}">다음<span class="d-none d-md-inline">
-              글</span> &rarr;</a>
+          <a class="post-nav__link post-nav__next" href="{{ page.next.url | prepend: site.baseurl | replace: '//', '/' }}">
+            <span class="post-nav__kicker">다음 글</span>
+            <span class="post-nav__title">{{ page.next.title }}</span>
+          </a>
           {% endif %}
-
-        </div>
+        </nav>
 
       </div>
     </div>
