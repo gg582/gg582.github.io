@@ -396,6 +396,11 @@
   line-height: 1.8;
   color: #111116;
 
+  // Reading body text: Increase letter-spacing for readability (10%)
+  p, li, blockquote {
+    letter-spacing: 0.1em;
+  }
+
   // Add section anchors
   h2, h3, h4, h5, h6 {
     position: relative;

@@ -232,6 +232,11 @@ article {
   padding-bottom: 3rem;
   margin-bottom: 2rem;
   position: relative;
+
+  // Reading body text: Increase letter-spacing for readability (10%)
+  p, li, blockquote {
+    letter-spacing: 0.1em;
+  }
 }
 
 // Side note styling (functional margin usage)
