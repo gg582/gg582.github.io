@@ -265,7 +265,9 @@
 .kb-main-content {
   padding: 2rem 3rem;
   background: #ffffff;
+  width: 100%;
   max-width: 900px;
+  min-width: 0; // allow grid item to shrink inside 1fr column on mobile to avoid overflow
 
   @media (max-width: 1200px) {
     padding: 2rem;
@@ -513,6 +515,10 @@
 
   table {
     width: 100%;
+    max-width: 100%;
+    display: block; // keep table from forcing the grid wider on mobile
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
     margin: 2rem 0;
     border-collapse: collapse;
 
