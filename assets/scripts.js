@@ -139,12 +139,67 @@ $(function () {
     }
   });
 
-  // Medium Zoom Initialization
-  if (typeof mediumZoom === 'function') {
-    mediumZoom('.post-content img', {
-      margin: 24,
-      background: body.classList.contains('dark-mode') ? '#000' : '#fff',
-      scrollOffset: 0,
+  // LightGallery Initialization with download support
+  if (typeof lightGallery === 'function') {
+    const targetContainers = document.querySelectorAll('.post-content, .page-content');
+    const plugins = [];
+    if (typeof lgZoom !== 'undefined') {
+      plugins.push(lgZoom);
+    }
+    if (typeof lgDownload !== 'undefined') {
+      plugins.push(lgDownload);
+    }
+
+    targetContainers.forEach(container => {
+      if (!container || container.dataset.lightgallery === 'initialized') {
+        return;
+      }
+
+      const images = container.querySelectorAll('img');
+      if (!images.length) {
+        return;
+      }
+
+      images.forEach(img => {
+        if (img.closest('a')) {
+          return;
+        }
+
+        const link = document.createElement('a');
+        link.href = img.dataset.fullsize || img.currentSrc || img.src;
+        link.classList.add('lg-inline-link');
+        link.setAttribute('data-download-url', link.href);
+
+        img.parentNode.insertBefore(link, img);
+        link.appendChild(img);
+      });
+
+      const manualAnchors = container.querySelectorAll('a[data-lightbox-target="true"]');
+      manualAnchors.forEach(anchor => {
+        if (!anchor.getAttribute('data-download-url')) {
+          anchor.setAttribute('data-download-url', anchor.href);
+        }
+      });
+
+      const selector = 'a.lg-inline-link, a[data-lightbox-target="true"]';
+      if (!container.querySelector(selector)) {
+        return;
+      }
+
+      lightGallery(container, {
+        selector,
+        download: true,
+        plugins,
+        licenseKey: '0000-0000-000-0000',
+        speed: 350,
+        mobileSettings: {
+          controls: true,
+          showCloseIcon: true,
+          download: true,
+        }
+      });
+
+      container.dataset.lightgallery = 'initialized';
     });
   }
 

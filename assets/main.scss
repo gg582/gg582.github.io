@@ -29,3 +29,18 @@
   margin-bottom: 5px;
 }
 
+.lg-inline-link {
+  display: inline-block;
+}
+
+.lg-inline-link img {
+  display: block;
+}
+
+.lg-toolbar {
+  justify-content: flex-end;
+}
+
+.lg-toolbar .lg-download {
+  order: 1;
+}
