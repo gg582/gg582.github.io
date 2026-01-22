@@ -8,7 +8,7 @@ taxonomy:
   category: network
   subcategory: network-kernel
   order: 2
-difficulty: advanced
+difficulty: intermediate
 keywords:
   - SOCKMAP
   - Splicing

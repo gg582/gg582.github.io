@@ -4,7 +4,7 @@
 
 categories:
   - id: network
-    name: 네트워크 기숙
+    name: 네트워크 기술
     name_ko: 네트워크 기술
     name_en: Network Technology
     description: 네트워크 프로토콜, 성능 최적화, 시스템 프로그래밍
@@ -82,22 +82,30 @@ categories:
         name: 문자열
         description: 파싱
         weight: 5
+      - id: algorithm-simulation
+        name: 시뮬레이션
+        description: 시뮬레이션
+        weight: 6
       - id: algorithm-dijkstra
         name: 다익스트라
         description: 다익스트라 알고리즘
-        weight: 6
+        weight: 7
       - id: algorithm-floyd-warshall
         name: 플로이드 워셜
         description: Floyd-Warshall Algorithm
-        weight: 7
+        weight: 8
+      - id: algorithm-sorting
+        name: 정렬
+        description: 힙 정렬, 퀵 정렬 등등
+        weight: 9
       - id: algorithm-greedy
         name: 그리디 알고리즘
         description: 탐욕법, 최적화 문제
-        weight: 8
+        weight: 10
       - id: algorithm-bitmask
         name: 비트마스크
         description: 비트마스크
-        weight: 9
+        weight: 11
 
   - id: general
     name: 종합 기술

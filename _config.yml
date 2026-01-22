@@ -28,6 +28,9 @@ collections:
   codingtest:
     output: true
     permalink: /codingtest/:path/
+  cloud:
+    output: true
+    permalink: /cloud/:path/
   network:
     output: true
     permalink: /network/:path
