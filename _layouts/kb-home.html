@@ -166,13 +166,10 @@ layout: default
 
       </div>
       
-      <!-- Visitor Statistics Widget -->
+      <!-- Posting Statistics Widget -->
       <div class="col-lg-2 d-none d-lg-block">
-        <div class="visitor-widget mt-5 text-center" style="position: sticky; top: 100px;">
-          <h5 class="mb-3" style="font-size: 0.9rem; font-weight: 600; color: #868e96; text-transform: uppercase; letter-spacing: 1px;">Visitors</h5>
-          <a href="https://hits.seeyoufarm.com">
-            <img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgg582.github.io&count_bg=%230085A1&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false" alt="Visitor Count"/>
-          </a>
+        <div class="mt-5" style="position: sticky; top: 100px;">
+          {% include posting_stats_widget.html %}
         </div>
       </div>
 

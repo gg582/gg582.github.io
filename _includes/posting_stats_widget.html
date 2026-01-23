@@ -1,0 +1,77 @@
+<div class="posting-stats-widget text-center">
+  <h5 class="mb-3" style="font-size: 0.9rem; font-weight: 600; color: #868e96; text-transform: uppercase; letter-spacing: 1px;">Posting Trend</h5>
+  <div style="background: white; padding: 10px; border-radius: 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); position: relative; height: 200px;">
+    <canvas id="postingChart"></canvas>
+  </div>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    {% if page.category_id %}
+      {% assign target_docs = site.documents | where_exp: "doc", "doc.taxonomy.category == page.category_id" %}
+    {% else %}
+      {% assign target_docs = site.documents %}
+    {% endif %}
+
+    const postingDates = {};
+
+    {% for doc in target_docs %}
+      {% assign d = doc.date | date: "%Y-%m-%d" %}
+      if (postingDates["{{ d }}"]) {
+        postingDates["{{ d }}"]++;
+      } else {
+        postingDates["{{ d }}"] = 1;
+      }
+    {% endfor %}
+
+    // Sort dates
+    const sortedDates = Object.keys(postingDates).sort();
+    const dataPoints = sortedDates.map(date => postingDates[date]);
+
+    if (sortedDates.length > 0) {
+      const ctx = document.getElementById('postingChart').getContext('2d');
+      new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: sortedDates,
+          datasets: [{
+            label: 'Posts',
+            data: dataPoints,
+            backgroundColor: 'rgba(0, 133, 161, 0.2)',
+            borderColor: 'rgba(0, 133, 161, 1)',
+            borderWidth: 2,
+            pointRadius: 3,
+            fill: true,
+            tension: 0.3
+          }]
+        },
+        options: {
+          maintainAspectRatio: false,
+          scales: {
+            x: {
+              display: false 
+            },
+            y: {
+              beginAtZero: true,
+              ticks: {
+                stepSize: 1,
+                display: true
+              }
+            }
+          },
+          plugins: {
+            legend: {
+              display: false
+            },
+            tooltip: {
+              enabled: true
+            }
+          }
+        }
+      });
+    } else {
+       document.getElementById('postingChart').style.display = 'none';
+       document.querySelector('.posting-stats-widget').innerHTML += '<p class="text-muted small">No posts data available.</p>';
+    }
+  });
+</script>
