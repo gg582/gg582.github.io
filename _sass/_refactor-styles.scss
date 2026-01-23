@@ -965,6 +965,8 @@ body.dark-mode #mainNav.navbar-sticky {
   }
 }
 
+// Adaptive search bar colors: white text/icon for dark backgrounds (auto-detected or manual toggle)
+#mainNav.dark-bg .navbar-search,
 body.dark-mode .navbar-search {
   border-bottom-color: #fff;
 
