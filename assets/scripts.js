@@ -74,6 +74,23 @@ $(function () {
     }
   }
 
+  if (mainNav) {
+    const stickyThreshold = 48;
+    const toggleStickyNav = () => {
+      if (window.scrollY > stickyThreshold) {
+        mainNav.classList.add('navbar-sticky');
+      } else {
+        mainNav.classList.remove('navbar-sticky');
+      }
+    };
+
+    window.addEventListener('scroll', toggleStickyNav, { passive: true });
+    toggleStickyNav();
+  }
+
+  initPageTransitions();
+  initFeaturedLightbox();
+
   /**
    * Analyzes an image URL and determines if it is 'light' or 'dark'.
    * @param {string} imageUrl The URL of the image to analyze.
@@ -116,6 +133,112 @@ $(function () {
       img.onerror = function () {
         reject('Could not load image');
       };
+    });
+  }
+
+  function initPageTransitions() {
+    const bodyEl = document.body;
+    if (!bodyEl) {
+      return;
+    }
+
+    requestAnimationFrame(() => bodyEl.classList.add('page-loaded'));
+
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    if (prefersReducedMotion.matches) {
+      return;
+    }
+
+    const eligibleLinks = document.querySelectorAll('a[href]:not([data-transition="false"])');
+    eligibleLinks.forEach(link => {
+      link.addEventListener('click', event => {
+        if (event.defaultPrevented) {
+          return;
+        }
+        if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) {
+          return;
+        }
+        if (link.target && link.target !== '_self') {
+          return;
+        }
+        const href = link.getAttribute('href');
+        if (!href || href.startsWith('#') || href.startsWith('mailto:') || href.startsWith('tel:') || href.startsWith('javascript:')) {
+          return;
+        }
+        const destination = new URL(href, window.location.href);
+        if (destination.origin !== window.location.origin) {
+          return;
+        }
+
+        event.preventDefault();
+        bodyEl.classList.add('page-exiting');
+        setTimeout(() => {
+          window.location.href = destination.href;
+        }, 200);
+      });
+    });
+  }
+
+  function initFeaturedLightbox() {
+    const lightbox = document.getElementById('featuredLightbox');
+    if (!lightbox) {
+      return;
+    }
+
+    const imageEl = lightbox.querySelector('.featured-lightbox__image');
+    const captionEl = lightbox.querySelector('.featured-lightbox__caption');
+    const downloadEl = lightbox.querySelector('.featured-lightbox__download');
+    const closeBtn = lightbox.querySelector('.featured-lightbox__close');
+    const backdrop = lightbox.querySelector('.featured-lightbox__backdrop');
+
+    const closeLightbox = () => {
+      lightbox.classList.remove('is-active');
+      document.body.classList.remove('lightbox-open');
+    };
+
+    const openLightbox = (src, downloadSrc, titleText) => {
+      if (imageEl) {
+        imageEl.src = src;
+        imageEl.alt = titleText || '확대 이미지';
+      }
+      if (captionEl) {
+        captionEl.textContent = titleText || '미리보기';
+      }
+      if (downloadEl) {
+        downloadEl.href = downloadSrc || src;
+        const sanitized = (titleText || 'featured-image').replace(/\s+/g, '_');
+        downloadEl.setAttribute('download', sanitized);
+      }
+
+      lightbox.classList.add('is-active');
+      document.body.classList.add('lightbox-open');
+    };
+
+    document.querySelectorAll('.featured-thumb-link').forEach(link => {
+      link.addEventListener('click', event => {
+        event.preventDefault();
+        const full = link.getAttribute('data-full') || link.href;
+        const download = link.getAttribute('data-download') || full;
+        const title = link.getAttribute('data-title') || link.getAttribute('aria-label');
+        openLightbox(full, download, title);
+      });
+    });
+
+    [closeBtn, backdrop].forEach(el => {
+      if (!el) return;
+      el.addEventListener('click', closeLightbox);
+    });
+
+    lightbox.addEventListener('click', event => {
+      if (event.target === lightbox) {
+        closeLightbox();
+      }
+    });
+
+    document.addEventListener('keydown', event => {
+      if (event.key === 'Escape' && lightbox.classList.contains('is-active')) {
+        closeLightbox();
+      }
     });
   }
 

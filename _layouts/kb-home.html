@@ -85,52 +85,13 @@ layout: default
           {% assign featured = site.documents | where: "featured", true | sort: "date" | reverse %}
           {% if featured.size > 0 %}
             {% for doc in featured limit: 3 %}
-            <article class="featured-card">
-              <div class="featured-header">
-                {% if doc.taxonomy %}
-                {% assign cat = site.data.taxonomy.categories | where: "id", doc.taxonomy.category | first %}
-                <span class="featured-category">{{ cat.name_ko }}</span>
-                {% endif %}
-                {% if doc.difficulty %}
-                {% assign level = site.data.taxonomy.difficulty_levels | where: "id", doc.difficulty | first %}
-                <span class="featured-difficulty" style="background: {{ level.color }};">{{ level.name_ko }}</span>
-                {% endif %}
-              </div>
-              <h3 class="featured-title">
-                <a href="{{ doc.url | relative_url }}">
-                  {{ doc.title | render_title_tags }}
-                  {{ doc.title | clean_title_tags }}
-                </a>
-              </h3>
-              {% if doc.subtitle %}
-              <p class="featured-subtitle">{{ doc.subtitle }}</p>
-              {% endif %}
-              <div class="featured-meta">
-                <span>{{ doc.date | date: "%Y-%m-%d" }}</span>
-              </div>
-            </article>
+              {% include featured-card.html doc=doc %}
             {% endfor %}
           {% else %}
             <!-- Fallback: show recent documents -->
             {% assign recent = site.documents | sort: "date" | reverse %}
             {% for doc in recent limit: 3 %}
-            <article class="featured-card">
-              <div class="featured-header">
-                {% if doc.taxonomy %}
-                {% assign cat = site.data.taxonomy.categories | where: "id", doc.taxonomy.category | first %}
-                <span class="featured-category">{{ cat.name_ko }}</span>
-                {% endif %}
-              </div>
-              <h3 class="featured-title">
-                <a href="{{ doc.url | relative_url }}">
-                  {{ doc.title | render_title_tags }}
-                  {{ doc.title | clean_title_tags }}
-                </a>
-              </h3>
-              <div class="featured-meta">
-                <span>{{ doc.date | date: "%Y-%m-%d" }}</span>
-              </div>
-            </article>
+              {% include featured-card.html doc=doc %}
             {% endfor %}
           {% endif %}
         </div>
@@ -207,4 +168,3 @@ layout: default
     </div>
   </div>
 </div>
-

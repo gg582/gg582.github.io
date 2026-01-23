@@ -50,6 +50,26 @@ body {
   font-feature-settings: "kern", "liga";
   margin: 0;
   padding: 0;
+  opacity: 0;
+  transition: opacity 0.4s ease, filter 0.35s ease;
+}
+
+body.page-loaded {
+  opacity: 1;
+}
+
+body.page-exiting {
+  opacity: 0;
+  filter: blur(4px);
+}
+
+body.no-transition {
+  transition: none !important;
+  filter: none !important;
+}
+
+body.lightbox-open {
+  overflow: hidden;
 }
 
 // General components
@@ -813,6 +833,8 @@ p, ul, ol, blockquote {
   left: 0;
   right: 0;
   width: 100%;
+  z-index: 1100;
+  transition: background-color 0.25s ease, box-shadow 0.25s ease, transform 0.2s ease;
 
   @media (max-width: 991px) {
     position: fixed;
@@ -828,11 +850,38 @@ p, ul, ol, blockquote {
       width: 100%;
     }
   }
+
+  &.navbar-sticky {
+    position: fixed;
+    top: 0;
+    background: rgba(255, 255, 255, 0.95);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    box-shadow: 0 20px 45px rgba(15, 15, 15, 0.08);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+
+    .navbar-brand,
+    .navbar-nav .nav-link {
+      color: #1f2933 !important;
+      text-shadow: none;
+    }
+  }
   
   .navbar-toggler {
     @media (max-width: 991px) {
       padding: 13px; // Ensure consistent padding on mobile
     }
+  }
+}
+
+body.dark-mode #mainNav.navbar-sticky {
+  background: rgba(16, 16, 22, 0.92);
+  border-bottom-color: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 18px 36px rgba(0, 0, 0, 0.45);
+
+  .navbar-brand,
+  .navbar-nav .nav-link {
+    color: #f8fafc !important;
   }
 }
 
@@ -936,6 +985,164 @@ body.dark-mode .ripple {
   background: linear-gradient(90deg, $dongchae, lighten($dongchae, 7%));
   will-change: transform;
   transition: transform 0.15s ease-out;
+}
+
+// Interactive featured lightbox
+.featured-lightbox {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(1.5rem, 4vw, 3rem);
+  background: rgba(3, 5, 10, 0.78);
+  opacity: 0;
+  pointer-events: none;
+  visibility: hidden;
+  transition: opacity 0.3s ease;
+  z-index: 1200;
+}
+
+.featured-lightbox.is-active {
+  opacity: 1;
+  pointer-events: auto;
+  visibility: visible;
+}
+
+.featured-lightbox__backdrop {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at top, rgba(255, 255, 255, 0.1), transparent 55%);
+  mix-blend-mode: screen;
+}
+
+.featured-lightbox__dialog {
+  position: relative;
+  z-index: 1;
+  background: rgba(7, 10, 18, 0.85);
+  border-radius: 18px;
+  padding: clamp(1rem, 2vw, 2rem);
+  max-width: min(960px, 90vw);
+  width: 100%;
+  box-shadow: 0 40px 120px rgba(0, 0, 0, 0.45);
+  overflow: hidden;
+}
+
+.featured-lightbox__image {
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  display: block;
+  box-shadow: 0 18px 40px rgba(7, 10, 18, 0.6);
+}
+
+.featured-lightbox__caption {
+  margin-top: 1rem;
+  font-size: 1rem;
+  color: #e5edff;
+  letter-spacing: 0.04em;
+}
+
+.featured-lightbox__close {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  z-index: 2;
+  border: none;
+  background: rgba(0, 0, 0, 0.35);
+  color: #fff;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.featured-lightbox__close:hover,
+.featured-lightbox__close:focus-visible {
+  transform: rotate(6deg) scale(1.05);
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.featured-lightbox__download-zone {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: clamp(180px, 28%, 240px);
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: auto;
+  background: linear-gradient(270deg, rgba(10, 12, 24, 0.75), transparent 65%);
+}
+
+.featured-lightbox__download {
+  pointer-events: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.75rem 1.6rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.12);
+  color: #f7fafc;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  font-weight: 600;
+  text-decoration: none;
+  transform: translateX(40px);
+  opacity: 0;
+  transition: opacity 0.3s ease, transform 0.3s ease, background 0.2s ease;
+}
+
+.featured-lightbox__download-zone:hover .featured-lightbox__download,
+.featured-lightbox__download:focus-visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.featured-lightbox__download:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+.featured-lightbox__download-hint {
+  position: absolute;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.6);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+body.lightbox-open .featured-lightbox {
+  backdrop-filter: blur(8px);
+}
+
+@media (max-width: 768px) {
+  .featured-lightbox__dialog {
+    padding: 1rem;
+  }
+
+  .featured-lightbox__download-zone {
+    position: static;
+    width: 100%;
+    height: auto;
+    margin-top: 1rem;
+    justify-content: flex-end;
+    background: none;
+  }
+
+  .featured-lightbox__download {
+    opacity: 1;
+    transform: none;
+    width: 100%;
+    justify-content: center;
+  }
+
+  .featured-lightbox__download-hint {
+    display: none;
+  }
 }
 
 // 6. Smooth Theme Transition

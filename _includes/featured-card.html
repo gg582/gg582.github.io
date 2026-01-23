@@ -1,0 +1,72 @@
+{% assign doc = include.doc %}
+{% assign thumb_source = doc.thumbnail | default: site.default_thumbnail %}
+{% assign full_source = doc.thumbnail_full | default: thumb_source %}
+{% assign download_source = doc.thumbnail_download | default: full_source %}
+
+{% if thumb_source contains '://' %}
+  {% assign thumb_url = thumb_source %}
+{% else %}
+  {% assign thumb_url = thumb_source | relative_url %}
+{% endif %}
+
+{% if full_source contains '://' %}
+  {% assign full_url = full_source %}
+{% else %}
+  {% assign full_url = full_source | relative_url %}
+{% endif %}
+
+{% if download_source contains '://' %}
+  {% assign download_url = download_source %}
+{% else %}
+  {% assign download_url = download_source | relative_url %}
+{% endif %}
+
+{% assign doc_url = doc.url | relative_url %}
+{% assign category_label = nil %}
+{% assign level_badge = nil %}
+{% if doc.taxonomy and doc.taxonomy.category %}
+  {% assign matching_category = site.data.taxonomy.categories | where: "id", doc.taxonomy.category | first %}
+  {% if matching_category %}
+    {% assign category_label = matching_category.name_ko %}
+  {% endif %}
+  {% if matching_category and doc.taxonomy.subcategory %}
+    {% assign subcat = matching_category.subcategories | where: "id", doc.taxonomy.subcategory | first %}
+    {% if subcat %}
+      {% assign category_label = category_label | append: " · " | append: subcat.name %}
+    {% endif %}
+  {% endif %}
+{% endif %}
+{% if doc.difficulty %}
+  {% assign level_badge = site.data.taxonomy.difficulty_levels | where: "id", doc.difficulty | first %}
+{% endif %}
+
+<article class="featured-card">
+  <a class="featured-thumb-link" href="{{ doc_url }}" aria-label="{{ doc.title | strip_html }}" data-transition="false" data-full="{{ full_url }}" data-download="{{ download_url }}" data-title="{{ doc.title | strip_html | escape }}">
+    <span class="sr-only">{{ doc.title | strip_html }}</span>
+    <div class="featured-thumb" style="background-image: url('{{ thumb_url }}');"></div>
+  </a>
+
+  <div class="featured-header">
+    {% if category_label %}
+    <span class="featured-category">{{ category_label }}</span>
+    {% endif %}
+    {% if level_badge %}
+    <span class="featured-difficulty" style="background: {{ level_badge.color }};">{{ level_badge.name_ko }}</span>
+    {% endif %}
+  </div>
+
+  <h3 class="featured-title">
+    <a href="{{ doc_url }}">
+      {{ doc.title | render_title_tags }}
+      {{ doc.title | clean_title_tags }}
+    </a>
+  </h3>
+
+  {% if doc.subtitle %}
+  <p class="featured-subtitle">{{ doc.subtitle }}</p>
+  {% endif %}
+
+  <div class="featured-meta">
+    <span>{{ doc.date | date: "%Y-%m-%d" }}</span>
+  </div>
+</article>
