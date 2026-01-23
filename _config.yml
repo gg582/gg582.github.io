@@ -3,7 +3,7 @@ email:              gzblues61@daum.net
 description:        Network, Kubernetes, etc...
 author:             이윤진(Lee Yunjin)<gzblues61@daum.net>
 favicon:            /img/favicon.ico
-default_thumbnail:  /assets/images/default-featured.svg
+default_thumbnail:  /img/default-fetured.jpg
 baseurl:            ""
 url:                "https://gg582.github.io"
 markdown: kramdown
