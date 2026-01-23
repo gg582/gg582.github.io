@@ -1317,17 +1317,19 @@ body.dark-mode {
         border-color: #4ade80;
       }
 
-      .backlink-title {
-        color: #ffffff;
+      .backlink-content {
+        .backlink-title {
+          color: #e2e8f0;
 
-        &:hover {
-          color: #86efac;
+          &:hover {
+            color: #86efac;
+          }
         }
-      }
 
-      .backlink-type {
-        background: #166534;
-        color: #dcfce7;
+        .backlink-type {
+          background: #166534;
+          color: #dcfce7;
+        }
       }
 
       .backlink-meta {
