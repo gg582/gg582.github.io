@@ -5,9 +5,19 @@ background: '/img/bg-cloud.jpg'
 posting_chart_collection: cloud
 ---
 
-<div class="list-container">
+<div class="post-search-status" id="collectionSearchStatus" aria-live="polite">
+  총 {{ site.cloud | size }}개의 게시물이 있습니다.
+</div>
+
+<div class="list-container" data-collection-search="true">
 {% for post in site.cloud %}
-<div class="list-item">
+{% capture search_text -%}
+{{ post.title | strip_html }}
+{{ post.subtitle | default: '' | strip_html }}
+{% if post.tags %}{{ post.tags | join: ' ' }}{% endif %}
+{% if post.categories %}{{ post.categories | join: ' ' }}{% endif %}
+{%- endcapture %}
+<div class="list-item" data-search-text="{{ search_text | strip | replace: '\"', '' }}">
   <div class="item-meta">
     <span>{{ post.date | date: '%Y-%m-%d' }}</span>
   </div>

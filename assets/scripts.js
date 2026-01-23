@@ -284,7 +284,7 @@ $(function () {
   }
 
   function initPostListSearch() {
-    const searchableContainer = document.querySelector('[data-post-search="true"]');
+    const searchableContainer = document.querySelector('[data-collection-search="true"]');
     if (!searchableContainer) {
       return;
     }
@@ -298,7 +298,7 @@ $(function () {
       return;
     }
 
-    const statusEl = document.getElementById('postSearchStatus');
+    const statusEl = document.getElementById('collectionSearchStatus');
     const documentEndEl = document.querySelector('.document-end');
     const input = document.getElementById('navbarSearchInput');
     const params = new URLSearchParams(window.location.search);

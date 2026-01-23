@@ -5,11 +5,11 @@ background: '/img/bg-post.jpg'
 posting_chart_collection: posts
 ---
 
-<div class="post-search-status" id="postSearchStatus" aria-live="polite">
+<div class="post-search-status" id="collectionSearchStatus" aria-live="polite">
   총 {{ site.posts | size }}개의 게시물이 있습니다.
 </div>
 
-<div class="list-container" data-post-search="true">
+<div class="list-container" data-collection-search="true">
 {% for post in site.posts %}
 {% capture search_text -%}
 {{ post.title | strip_html }}
