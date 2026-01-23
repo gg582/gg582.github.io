@@ -3,6 +3,10 @@ $(function () {
 
   const themeToggleCheckbox = document.getElementById('checkbox'); // Changed ID
   const body = document.body;
+  const storageKey = 'theme';
+  const colorSchemeQuery = typeof window.matchMedia === 'function'
+    ? window.matchMedia('(prefers-color-scheme: dark)')
+    : null;
   const addMqListener = (mql, handler) => {
     if (!mql || !handler) {
       return;
@@ -14,35 +18,34 @@ $(function () {
     }
   };
 
-  // Function to set the theme
   function setTheme(theme) {
     if (theme === 'dark') {
       body.classList.add('dark-mode');
-      themeToggleCheckbox.checked = true; // Set checked property
     } else {
       body.classList.remove('dark-mode');
-      themeToggleCheckbox.checked = false; // Unset checked property
+    }
+    if (themeToggleCheckbox) {
+      themeToggleCheckbox.checked = theme === 'dark';
     }
   }
 
-  // Sync checkbox with current body state (applied by inline script)
-  if (body.classList.contains('dark-mode')) {
-    themeToggleCheckbox.checked = true;
-  } else {
-    themeToggleCheckbox.checked = false;
+  const getStoredTheme = () => localStorage.getItem(storageKey);
+  const getPreferredTheme = () => (colorSchemeQuery && colorSchemeQuery.matches) ? 'dark' : 'light';
+  const inlineInitialTheme = body ? body.getAttribute('data-initial-theme') : null;
+  const initialTheme = getStoredTheme() || inlineInitialTheme || getPreferredTheme();
+
+  setTheme(initialTheme);
+
+  if (themeToggleCheckbox) {
+    themeToggleCheckbox.addEventListener('change', () => {
+      const newTheme = themeToggleCheckbox.checked ? 'dark' : 'light'; // Determine new theme based on checked state
+      setTheme(newTheme);
+      localStorage.setItem(storageKey, newTheme);
+    });
   }
 
-  // Toggle theme on checkbox change event
-  themeToggleCheckbox.addEventListener('change', () => { // Changed event listener to 'change'
-    const newTheme = themeToggleCheckbox.checked ? 'dark' : 'light'; // Determine new theme based on checked state
-    setTheme(newTheme);
-    localStorage.setItem('theme', newTheme);
-  });
-
-  // Listen for changes in prefers-color-scheme
-  const colorSchemeQuery = window.matchMedia('(prefers-color-scheme: dark)');
   addMqListener(colorSchemeQuery, (e) => {
-    if (!localStorage.getItem('theme')) {
+    if (!getStoredTheme()) {
       setTheme(e.matches ? 'dark' : 'light');
     }
   });

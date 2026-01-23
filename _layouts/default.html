@@ -19,10 +19,15 @@
 
       var theme = localStorage.getItem(storageKey);
       var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      var initialTheme = theme || (prefersDark ? 'dark' : 'light');
 
-      if (theme === 'dark' || (!theme && prefersDark)) {
+      if (initialTheme === 'dark') {
         body.classList.add(className);
+      } else {
+        body.classList.remove(className);
       }
+
+      body.setAttribute('data-initial-theme', initialTheme);
 
       // Remove no-transition class after page load
       window.addEventListener('load', function() {
