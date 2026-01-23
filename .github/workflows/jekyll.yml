@@ -43,6 +43,9 @@ jobs:
           export CHANGED_FILES=$(eval $CHANGED_FILES)
           python3 .github/scripts/classify_kb.py
 
+      - name: Generate Global Search Index
+        run: python3 .github/scripts/generate_search_index.py
+
       # Sync metadata changes back to repository
       - name: Commit Updated Metadata
         run: |

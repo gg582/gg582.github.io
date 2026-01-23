@@ -41,12 +41,23 @@ layout: default
     <!-- All Documents in Subcategory -->
     <section class="documents-section">
       <h2 class="section-heading">Documents</h2>
+
+      <div class="post-search-status" id="collectionSearchStatus" aria-live="polite">
+        총 {{ subcat_docs.size }}개의 문서가 있습니다.
+      </div>
       
-      <div class="document-list">
+      <div class="document-list list-container" data-collection-search="true" data-search-item-selector=".document-item" data-search-status-target="collectionSearchStatus">
         
         {% if subcat_docs.size > 0 %}
           {% for doc in subcat_docs %}
-          <article class="document-item">
+          {% capture search_text %}
+          {{ doc.title | strip_html }}
+          {{ doc.subtitle | default: '' | strip_html }}
+          {% if doc.keywords %}{{ doc.keywords | join: ' ' }}{% endif %}
+          {% if doc.taxonomy %}{{ doc.taxonomy.category | default: '' }} {{ doc.taxonomy.subcategory | default: '' }}{% endif %}
+          {% if doc.description %}{{ doc.description | strip_html }}{% endif %}
+          {% endcapture %}
+          <article class="document-item" data-search-text="{{ search_text | strip | replace: '"', '' }}">
             <div class="document-meta">
               <span class="doc-date">{{ doc.date | date: "%Y-%m-%d" }}</span>
               {% if doc.difficulty %}

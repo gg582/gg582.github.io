@@ -32,6 +32,21 @@ layout: default
     <div class="row">
       <div class="col-lg-10 col-md-11">
   
+  <!-- Global Search Surface -->
+  <section class="global-search-panel" data-global-search="true" data-total-docs="{{ site.documents | size }}">
+    <div class="global-search-header">
+      <div>
+        <h2>Global Knowledge Search</h2>
+        <p>홈 상단 검색창에서 전체 문서를 빠르게 찾아보세요.</p>
+      </div>
+      <span class="global-search-count">총 {{ site.documents | size }}개 문서</span>
+    </div>
+    <div class="global-search-status" id="globalSearchStatus" aria-live="polite">
+      검색어를 입력하면 전체 문서에서 즉시 결과를 보여드립니다.
+    </div>
+    <div class="global-search-results" id="globalSearchResults" aria-live="polite"></div>
+  </section>
+  
   <!-- Main Grid Layout -->
   <div class="kb-home-grid">
     

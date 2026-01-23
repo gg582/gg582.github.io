@@ -113,6 +113,7 @@ $(function () {
   initFeaturedLightbox();
   initNavSearch();
   initPostListSearch();
+  initGlobalSearch();
 
   /**
    * Analyzes an image URL and determines if it is 'light' or 'dark'.
@@ -272,6 +273,28 @@ $(function () {
     }
 
     const input = document.getElementById('navbarSearchInput');
+    const collectionSearchEl = document.querySelector('[data-collection-search="true"]');
+    const globalSearchEl = document.querySelector('[data-global-search="true"]');
+
+    const normalizePath = (path) => {
+      const sanitized = path.replace(/index\.html$/, '');
+      if (!sanitized) {
+        return '/';
+      }
+      return sanitized.endsWith('/') ? sanitized : `${sanitized}/`;
+    };
+
+    if (globalSearchEl && typeof window !== 'undefined' && window.location && typeof window.location.pathname === 'string') {
+      searchForm.setAttribute('action', normalizePath(window.location.pathname || '/'));
+      searchForm.dataset.mode = 'global';
+    } else if (collectionSearchEl && typeof window !== 'undefined' && window.location && typeof window.location.pathname === 'string') {
+      const scopedPath = normalizePath(window.location.pathname || '/');
+      searchForm.setAttribute('action', scopedPath);
+      searchForm.dataset.mode = 'collection';
+    } else {
+      searchForm.dataset.mode = 'default';
+    }
+
     searchForm.addEventListener('submit', (event) => {
       if (!input || !input.value.trim()) {
         event.preventDefault();
@@ -293,13 +316,16 @@ $(function () {
       return;
     }
 
-    const items = Array.from(searchableContainer.querySelectorAll('.list-item'));
+    const itemSelector = searchableContainer.dataset.searchItemSelector || '.list-item';
+    const items = Array.from(searchableContainer.querySelectorAll(itemSelector));
     if (!items.length) {
       return;
     }
 
-    const statusEl = document.getElementById('collectionSearchStatus');
-    const documentEndEl = document.querySelector('.document-end');
+    const statusTargetId = searchableContainer.dataset.searchStatusTarget || 'collectionSearchStatus';
+    const statusEl = document.getElementById(statusTargetId);
+    const defaultStatusText = statusEl ? statusEl.textContent : '';
+    const documentEndEl = document.querySelector('.document-end, .document-end-marker');
     const input = document.getElementById('navbarSearchInput');
     const params = new URLSearchParams(window.location.search);
     const initialQuery = (params.get('q') || '').trim();
@@ -345,10 +371,10 @@ $(function () {
 
       if (statusEl) {
         if (!normalizedTerm) {
-          statusEl.textContent = `${items.length}개의 게시물이 있습니다.`;
+          statusEl.textContent = defaultStatusText || `${items.length}개의 결과가 있습니다.`;
           statusEl.dataset.state = 'idle';
         } else if (matchCount) {
-          statusEl.textContent = "'" + trimmedTerm + "' 검색 결과 " + matchCount + "개의 게시물을 찾았습니다.";
+          statusEl.textContent = "'" + trimmedTerm + "' 검색 결과 " + matchCount + "건을 찾았습니다.";
           statusEl.dataset.state = 'results';
         } else {
           statusEl.textContent = "'" + trimmedTerm + "' 검색 결과가 없습니다.";
@@ -366,6 +392,162 @@ $(function () {
     }
 
     applyFilter(initialQuery);
+  }
+
+  function initGlobalSearch() {
+    const globalRoot = document.querySelector('[data-global-search="true"]');
+    if (!globalRoot) {
+      return;
+    }
+
+    if (typeof window.fetch !== 'function') {
+      return;
+    }
+
+    const input = document.getElementById('navbarSearchInput');
+    const statusEl = document.getElementById('globalSearchStatus');
+    const resultsEl = document.getElementById('globalSearchResults');
+    const searchForm = document.getElementById('navbarSearchForm');
+    if (!input || !statusEl || !resultsEl) {
+      return;
+    }
+
+    const indexUrl = document.documentElement && document.documentElement.dataset
+      ? document.documentElement.dataset.searchIndex || '/assets/search-index.json'
+      : '/assets/search-index.json';
+    const totalDocs = parseInt(globalRoot.getAttribute('data-total-docs'), 10) || 0;
+    const initialStatus = statusEl.textContent || `총 ${totalDocs}개의 문서를 검색합니다.`;
+    const fetchOptions = { cache: 'no-store' };
+    let documents = [];
+    let indexPromise = null;
+    let hasError = false;
+
+    const escapeHtml = (value) => {
+      if (value === null || value === undefined) {
+        return '';
+      }
+      return String(value)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    };
+
+    const updateStatus = (text, state) => {
+      statusEl.textContent = text;
+      statusEl.dataset.state = state || 'idle';
+    };
+
+    const renderPlaceholder = (message, className) => {
+      resultsEl.innerHTML = `<p class="${className}">${escapeHtml(message)}</p>`;
+    };
+
+    const ensureIndex = () => {
+      if (documents.length || hasError) {
+        return indexPromise || Promise.resolve();
+      }
+
+      if (!indexPromise) {
+        updateStatus('통합 문서를 불러오는 중입니다…', 'loading');
+        indexPromise = fetch(indexUrl, fetchOptions)
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error('Failed to load search index');
+            }
+            return response.json();
+          })
+          .then((data) => {
+            if (Array.isArray(data)) {
+              documents = data;
+            } else if (Array.isArray(data.documents)) {
+              documents = data.documents;
+            } else {
+              documents = [];
+            }
+            const docCount = (data && data.document_count) || documents.length;
+            updateStatus(`총 ${docCount}개의 문서에서 검색합니다.`, 'ready');
+            return documents;
+          })
+          .catch((error) => {
+            console.error('Global search index error:', error);
+            hasError = true;
+            updateStatus('검색 인덱스를 불러오지 못했습니다.', 'error');
+            renderPlaceholder('검색 인덱스를 불러오지 못했습니다. 잠시 후 다시 시도해 주세요.', 'global-search-error');
+            return [];
+          });
+      }
+
+      return indexPromise;
+    };
+
+    const renderResults = (matches, rawQuery) => {
+      if (!matches.length) {
+        renderPlaceholder(`'${rawQuery}' 검색 결과가 없습니다.`, 'global-search-empty');
+        return;
+      }
+
+      const markup = matches.map((doc) => {
+        const collectionLabel = escapeHtml(doc.collection || 'documents');
+        const taxonomy = doc.taxonomy || {};
+        const taxonomyLabel = taxonomy.subcategory || taxonomy.category || '';
+        const dateLabel = doc.date ? new Date(doc.date).toISOString().split('T')[0] : '';
+        const excerpt = (doc.excerpt || '').trim();
+        const targetUrl = doc.url || '#';
+
+        return `
+          <article class="global-search-card">
+            <div class="global-search-card__meta">
+              <span class="badge">${collectionLabel}</span>
+              ${taxonomyLabel ? `<span>${escapeHtml(taxonomyLabel)}</span>` : ''}
+              ${dateLabel ? `<span>${escapeHtml(dateLabel)}</span>` : ''}
+            </div>
+            <a class="global-search-card__title" href="${escapeHtml(targetUrl)}">${escapeHtml(doc.title || targetUrl)}</a>
+            ${excerpt ? `<p class="global-search-card__excerpt">${escapeHtml(excerpt)}</p>` : ''}
+          </article>
+        `;
+      }).join('');
+
+      resultsEl.innerHTML = markup;
+    };
+
+    const handleQuery = () => {
+      const rawTerm = input.value.trim();
+      if (!rawTerm) {
+        resultsEl.innerHTML = '';
+        updateStatus(initialStatus, 'idle');
+        return;
+      }
+
+      ensureIndex()?.then(() => {
+        if (hasError || !documents.length) {
+          return;
+        }
+        const normalizedTerm = rawTerm.replace(/\s+/g, ' ').toLowerCase();
+        const matches = documents.filter((doc) => {
+          return (doc.search_text || '').includes(normalizedTerm);
+        }).slice(0, 50);
+
+        if (matches.length) {
+          updateStatus(`'${rawTerm}' 검색 결과 ${matches.length}건을 찾았습니다.`, 'results');
+        } else {
+          updateStatus(`'${rawTerm}' 검색 결과가 없습니다.`, 'empty');
+        }
+
+        renderResults(matches, rawTerm);
+      });
+    };
+
+    input.addEventListener('input', () => {
+      handleQuery();
+    });
+
+    if (searchForm && searchForm.dataset.mode === 'global') {
+      searchForm.addEventListener('submit', (event) => {
+        event.preventDefault();
+        handleQuery();
+      });
+    }
   }
 
   // Ripple Effect

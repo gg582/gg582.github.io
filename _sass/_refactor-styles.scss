@@ -919,18 +919,18 @@ body.dark-mode #mainNav.navbar-sticky {
   .navbar-search__input {
     width: 100%;
     border: 1px solid rgba(15, 23, 42, 0.16);
-    border-radius: 12px;
-    background: rgba(255, 255, 255, 0.95);
+    border-radius: 0;
+    background: #f8fafc;
     color: #0f172a;
     padding: 0.6rem 1rem;
     font-size: 0.95rem;
     min-height: 44px;
-    box-shadow: 0 8px 20px rgba(15, 23, 42, 0.08);
+    box-shadow: none;
     transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
 
     &:focus {
       border-color: rgba(37, 99, 235, 0.6);
-      box-shadow: 0 10px 24px rgba(37, 99, 235, 0.2);
+      box-shadow: none;
       background-color: #fff;
       outline: none;
     }
@@ -952,7 +952,7 @@ body.dark-mode .navbar-search {
 
     &:focus {
       border-color: rgba(96, 165, 250, 0.7);
-      box-shadow: 0 12px 28px rgba(37, 99, 235, 0.25);
+      box-shadow: none;
       background-color: rgba(15, 23, 42, 0.95);
     }
   }

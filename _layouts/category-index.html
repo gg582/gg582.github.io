@@ -73,19 +73,80 @@ layout: default
     <!-- All Documents in Category -->
     <section class="documents-section">
       <h2 class="section-heading">Document List</h2>
-      
-      <!-- Group by subcategory if available -->
-      {% if page.subcategories %}
-        {% for subcat in page.subcategories %}
-        {% assign subcat_docs = site.documents | where_exp: "doc", "doc.taxonomy.subcategory == subcat.id" | sort: "taxonomy.order" %}
-        
-        {% if subcat_docs.size > 0 %}
-        <div class="document-group">
-          <h3 class="group-heading">{{ subcat.name }}</h3>
+
+      {% assign category_docs = site.documents | where_exp: "doc", "doc.taxonomy.category == page.category_id" %}
+      <div class="post-search-status" id="collectionSearchStatus" aria-live="polite">
+        총 {{ category_docs.size }}개의 문서가 있습니다.
+      </div>
+
+      <div class="list-container" data-collection-search="true" data-search-item-selector=".document-item" data-search-status-target="collectionSearchStatus">
+        <!-- Group by subcategory if available -->
+        {% if page.subcategories %}
+          {% for subcat in page.subcategories %}
+          {% assign subcat_docs = site.documents | where_exp: "doc", "doc.taxonomy.subcategory == subcat.id" | sort: "taxonomy.order" %}
           
+          {% if subcat_docs.size > 0 %}
+          <div class="document-group">
+            <h3 class="group-heading">{{ subcat.name }}</h3>
+            
+            <div class="document-list">
+              {% for doc in subcat_docs %}
+              {% capture search_text %}
+              {{ doc.title | strip_html }}
+              {{ doc.subtitle | default: '' | strip_html }}
+              {% if doc.keywords %}{{ doc.keywords | join: ' ' }}{% endif %}
+              {% if doc.taxonomy %}{{ doc.taxonomy.category | default: '' }} {{ doc.taxonomy.subcategory | default: '' }}{% endif %}
+              {% if doc.description %}{{ doc.description | strip_html }}{% endif %}
+              {% endcapture %}
+              <article class="document-item" data-search-text="{{ search_text | strip | replace: '"', '' }}">
+                <div class="document-meta">
+                  <span class="doc-date">{{ doc.date | date: "%Y-%m-%d" }}</span>
+                  {% if doc.difficulty %}
+                  {% assign level = site.data.taxonomy.difficulty_levels | where: "id", doc.difficulty | first %}
+                  <span class="doc-difficulty difficulty-{{ doc.difficulty }}" style="background: {{ level.color }};">
+                    {{ level.name_ko }}
+                  </span>
+                  {% endif %}
+                </div>
+                
+                <h4 class="document-title">
+                  <a href="{{ doc.url | relative_url }}">
+                    {{ doc.title | render_title_tags }}
+                    {{ doc.title | clean_title_tags }}
+                  </a>
+                </h4>
+                
+                {% if doc.subtitle %}
+                <p class="document-subtitle">{{ doc.subtitle }}</p>
+                {% endif %}
+                
+                {% if doc.keywords %}
+                <div class="document-keywords">
+                  {% for keyword in doc.keywords limit: 5 %}
+                  <span class="keyword-tag">{{ keyword }}</span>
+                  {% endfor %}
+                </div>
+                {% endif %}
+              </article>
+              {% endfor %}
+            </div>
+          </div>
+          {% endif %}
+          {% endfor %}
+        {% else %}
+          <!-- No subcategories, list all documents -->
           <div class="document-list">
-            {% for doc in subcat_docs %}
-            <article class="document-item">
+            {% assign all_docs = site.documents | where_exp: "doc", "doc.taxonomy.category == page.category_id" | sort: "date" | reverse %}
+            
+            {% for doc in all_docs %}
+            {% capture search_text %}
+            {{ doc.title | strip_html }}
+            {{ doc.subtitle | default: '' | strip_html }}
+            {% if doc.keywords %}{{ doc.keywords | join: ' ' }}{% endif %}
+            {% if doc.taxonomy %}{{ doc.taxonomy.category | default: '' }} {{ doc.taxonomy.subcategory | default: '' }}{% endif %}
+            {% if doc.description %}{{ doc.description | strip_html }}{% endif %}
+            {% endcapture %}
+            <article class="document-item" data-search-text="{{ search_text | strip | replace: '"', '' }}">
               <div class="document-meta">
                 <span class="doc-date">{{ doc.date | date: "%Y-%m-%d" }}</span>
                 {% if doc.difficulty %}
@@ -117,48 +178,8 @@ layout: default
             </article>
             {% endfor %}
           </div>
-        </div>
         {% endif %}
-        {% endfor %}
-      {% else %}
-        <!-- No subcategories, list all documents -->
-        <div class="document-list">
-          {% assign all_docs = site.documents | where_exp: "doc", "doc.taxonomy.category == page.category_id" | sort: "date" | reverse %}
-          
-          {% for doc in all_docs %}
-          <article class="document-item">
-            <div class="document-meta">
-              <span class="doc-date">{{ doc.date | date: "%Y-%m-%d" }}</span>
-              {% if doc.difficulty %}
-              {% assign level = site.data.taxonomy.difficulty_levels | where: "id", doc.difficulty | first %}
-              <span class="doc-difficulty difficulty-{{ doc.difficulty }}" style="background: {{ level.color }};">
-                {{ level.name_ko }}
-              </span>
-              {% endif %}
-            </div>
-            
-            <h4 class="document-title">
-              <a href="{{ doc.url | relative_url }}">
-                {{ doc.title | render_title_tags }}
-                {{ doc.title | clean_title_tags }}
-              </a>
-            </h4>
-            
-            {% if doc.subtitle %}
-            <p class="document-subtitle">{{ doc.subtitle }}</p>
-            {% endif %}
-            
-            {% if doc.keywords %}
-            <div class="document-keywords">
-              {% for keyword in doc.keywords limit: 5 %}
-              <span class="keyword-tag">{{ keyword }}</span>
-              {% endfor %}
-            </div>
-            {% endif %}
-          </article>
-          {% endfor %}
-        </div>
-      {% endif %}
+      </div>
     </section>
   </div>
 
