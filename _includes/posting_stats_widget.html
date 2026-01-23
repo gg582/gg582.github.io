@@ -40,13 +40,18 @@
             backgroundColor: 'rgba(0, 133, 161, 0.2)',
             borderColor: 'rgba(0, 133, 161, 1)',
             borderWidth: 2,
-            pointRadius: 3,
+            pointRadius: 0,
+            pointHoverRadius: 6,
             fill: true,
             tension: 0.3
           }]
         },
         options: {
           maintainAspectRatio: false,
+          interaction: {
+            mode: 'index',
+            intersect: false,
+          },
           scales: {
             x: {
               display: false 
