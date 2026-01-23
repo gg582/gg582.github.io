@@ -910,28 +910,58 @@ body.dark-mode #mainNav.navbar-sticky {
 .navbar-search {
   width: 100%;
   max-width: 360px;
-  transition: transform 0.2s ease;
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 0.25rem 0.35rem;
+  border: 1px solid rgba(15, 23, 42, 0.2);
+  background: linear-gradient(135deg, rgba(248, 250, 252, 0.98), rgba(226, 232, 240, 0.96));
+  box-shadow: 0 14px 32px rgba(15, 23, 42, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.85);
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0.1rem;
+    border: 1px solid rgba(255, 255, 255, 0.55);
+    pointer-events: none;
+  }
 
   &:focus-within {
     transform: translateY(-1px);
+    border-color: rgba(37, 99, 235, 0.5);
+    box-shadow: 0 18px 36px rgba(15, 23, 42, 0.28), 0 0 0 1px rgba(59, 130, 246, 0.2);
   }
 
   .navbar-search__input {
     width: 100%;
-    border: 1px solid rgba(15, 23, 42, 0.16);
+    flex: 1;
+    border: none;
     border-radius: 0;
-    background: #f8fafc;
+    background: transparent;
     color: #0f172a;
-    padding: 0.6rem 1rem;
+    padding: 0.85rem 1rem 0.85rem 2.75rem;
     font-size: 0.95rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
     min-height: 44px;
     box-shadow: none;
-    transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+    position: relative;
+    z-index: 1;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cline x1='16.5' y1='16.5' x2='21' y2='21'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: 1rem 50%;
+    background-size: 16px;
+    transition: color 0.2s ease, padding 0.2s ease;
+
+    &::placeholder {
+      color: #94a3b8;
+      letter-spacing: 0.05em;
+      font-weight: 500;
+    }
 
     &:focus {
-      border-color: rgba(37, 99, 235, 0.6);
-      box-shadow: none;
-      background-color: #fff;
       outline: none;
     }
   }
@@ -945,15 +975,25 @@ body.dark-mode #mainNav.navbar-sticky {
 }
 
 body.dark-mode .navbar-search {
-  .navbar-search__input {
-    background-color: rgba(15, 23, 42, 0.9);
-    border-color: rgba(226, 232, 240, 0.25);
-    color: #f1f5f9;
+  border-color: rgba(148, 163, 184, 0.3);
+  background: linear-gradient(135deg, rgba(15, 23, 42, 0.92), rgba(30, 41, 59, 0.94));
+  box-shadow: 0 10px 26px rgba(2, 6, 23, 0.8), inset 0 1px 0 rgba(148, 163, 184, 0.2);
 
-    &:focus {
-      border-color: rgba(96, 165, 250, 0.7);
-      box-shadow: none;
-      background-color: rgba(15, 23, 42, 0.95);
+  &::before {
+    border-color: rgba(148, 163, 184, 0.3);
+  }
+
+  &:focus-within {
+    border-color: rgba(96, 165, 250, 0.6);
+    box-shadow: 0 18px 36px rgba(2, 6, 23, 0.9), 0 0 0 1px rgba(96, 165, 250, 0.25);
+  }
+
+  .navbar-search__input {
+    color: #f1f5f9;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23cbd5f5' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cline x1='16.5' y1='16.5' x2='21' y2='21'/%3E%3C/svg%3E");
+
+    &::placeholder {
+      color: #cbd5f5;
     }
   }
 }
