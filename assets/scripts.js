@@ -53,6 +53,18 @@ $(function () {
   // New: Adaptive Masthead Text Color
   const masthead = document.querySelector('.masthead');
   const mainNav = document.getElementById('mainNav'); // Get the mainNav element
+  let navBaseBgClass = null;
+
+  const setNavBaseBgClass = (newClass) => {
+    if (!mainNav) {
+      return;
+    }
+    mainNav.classList.remove('light-bg', 'dark-bg');
+    navBaseBgClass = newClass || null;
+    if (!mainNav.classList.contains('navbar-sticky') && navBaseBgClass) {
+      mainNav.classList.add(navBaseBgClass);
+    }
+  };
 
   if (masthead) {
     const imageUrl = getComputedStyle(masthead).backgroundImage.slice(4, -1).replace(/"/g, "");
@@ -61,20 +73,22 @@ $(function () {
         .then(brightness => {
           if (brightness === 'light') {
             masthead.classList.add('light-bg');
-            if (mainNav) mainNav.classList.add('light-bg'); // Apply to mainNav
+            setNavBaseBgClass('light-bg'); // Apply to mainNav
           } else {
             masthead.classList.add('dark-bg');
-            if (mainNav) mainNav.classList.add('dark-bg'); // Apply to mainNav
+            setNavBaseBgClass('dark-bg'); // Apply to mainNav
           }
         })
         .catch(() => {
           masthead.classList.add('dark-bg'); // Default to dark background on error
-          if (mainNav) mainNav.classList.add('dark-bg'); // Apply to mainNav
+          setNavBaseBgClass('dark-bg'); // Apply to mainNav
         });
     } else {
       masthead.classList.add('dark-bg'); // Default if no image
-      if (mainNav) mainNav.classList.add('dark-bg'); // Apply to mainNav
+      setNavBaseBgClass('dark-bg'); // Apply to mainNav
     }
+  } else if (mainNav) {
+    setNavBaseBgClass('dark-bg'); // Fallback when there is no masthead
   }
 
   if (mainNav) {
@@ -82,8 +96,12 @@ $(function () {
     const toggleStickyNav = () => {
       if (window.scrollY > stickyThreshold) {
         mainNav.classList.add('navbar-sticky');
+        mainNav.classList.remove('light-bg', 'dark-bg');
       } else {
         mainNav.classList.remove('navbar-sticky');
+        if (navBaseBgClass) {
+          mainNav.classList.add(navBaseBgClass);
+        }
       }
     };
 
