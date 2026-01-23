@@ -111,6 +111,8 @@ $(function () {
 
   initPageTransitions();
   initFeaturedLightbox();
+  initNavSearch();
+  initPostListSearch();
 
   /**
    * Analyzes an image URL and determines if it is 'light' or 'dark'.
@@ -261,6 +263,109 @@ $(function () {
         closeLightbox();
       }
     });
+  }
+
+  function initNavSearch() {
+    const searchForm = document.getElementById('navbarSearchForm');
+    if (!searchForm) {
+      return;
+    }
+
+    const input = document.getElementById('navbarSearchInput');
+    searchForm.addEventListener('submit', (event) => {
+      if (!input || !input.value.trim()) {
+        event.preventDefault();
+        if (input) {
+          input.value = '';
+          input.focus();
+        }
+      }
+    });
+  }
+
+  function initPostListSearch() {
+    const searchableContainer = document.querySelector('[data-post-search="true"]');
+    if (!searchableContainer) {
+      return;
+    }
+
+    if (typeof URLSearchParams === 'undefined') {
+      return;
+    }
+
+    const items = Array.from(searchableContainer.querySelectorAll('.list-item'));
+    if (!items.length) {
+      return;
+    }
+
+    const statusEl = document.getElementById('postSearchStatus');
+    const documentEndEl = document.querySelector('.document-end');
+    const input = document.getElementById('navbarSearchInput');
+    const params = new URLSearchParams(window.location.search);
+    const initialQuery = (params.get('q') || '').trim();
+    const supportsHistory = typeof window.history !== 'undefined' && typeof window.history.replaceState === 'function';
+    const canUseURL = typeof window.URL === 'function';
+
+    if (input && initialQuery) {
+      input.value = initialQuery;
+    }
+
+    const syncQueryParam = (term) => {
+      if (!supportsHistory || !canUseURL) {
+        return;
+      }
+      const url = new URL(window.location.href);
+      if (term) {
+        url.searchParams.set('q', term);
+      } else {
+        url.searchParams.delete('q');
+      }
+      window.history.replaceState({}, '', url);
+    };
+
+    const applyFilter = (term) => {
+      const trimmedTerm = term.trim();
+      const normalizedTerm = trimmedTerm.replace(/\s+/g, ' ').toLowerCase();
+      let matchCount = 0;
+
+      items.forEach((item) => {
+        const haystack = (item.dataset.searchText || item.textContent || '')
+          .toLowerCase()
+          .replace(/\s+/g, ' ');
+        const isMatch = !normalizedTerm || haystack.includes(normalizedTerm);
+        item.hidden = !isMatch;
+        if (isMatch) {
+          matchCount += 1;
+        }
+      });
+
+      if (documentEndEl) {
+        documentEndEl.style.display = matchCount === 0 ? 'none' : '';
+      }
+
+      if (statusEl) {
+        if (!normalizedTerm) {
+          statusEl.textContent = `${items.length}개의 게시물이 있습니다.`;
+          statusEl.dataset.state = 'idle';
+        } else if (matchCount) {
+          statusEl.textContent = "'" + trimmedTerm + "' 검색 결과 " + matchCount + "개의 게시물을 찾았습니다.";
+          statusEl.dataset.state = 'results';
+        } else {
+          statusEl.textContent = "'" + trimmedTerm + "' 검색 결과가 없습니다.";
+          statusEl.dataset.state = 'empty';
+        }
+      }
+    };
+
+    if (input) {
+      input.addEventListener('input', () => {
+        const currentValue = input.value;
+        applyFilter(currentValue);
+        syncQueryParam(currentValue.trim());
+      });
+    }
+
+    applyFilter(initialQuery);
   }
 
   // Ripple Effect
