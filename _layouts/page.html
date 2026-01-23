@@ -34,15 +34,19 @@ layout: default
           {{ content }}
         </article>
 
-        {% if page.posting_chart_collection or page.posting_chart_category or page.posting_chart_subcategory %}
-        <section class="page-posting-chart my-5">
+      </div>
+      
+      <!-- Posting Statistics Widget -->
+      {% if page.posting_chart_collection or page.posting_chart_category or page.posting_chart_subcategory %}
+      <div class="col-lg-2 d-none d-lg-block">
+        <div class="mt-5" style="position: sticky; top: 100px;">
           {% include posting_stats_widget.html
             collection=page.posting_chart_collection
             category_id=page.posting_chart_category
             subcategory_id=page.posting_chart_subcategory %}
-        </section>
-        {% endif %}
-
+        </div>
       </div>
+      {% endif %}
+
     </div>
   </div>
