@@ -217,7 +217,7 @@ Add this to `bbr_set_cwnd`:
 ```
 ## Materials
 
-A router is 100M full-duplex router (Ssamji Electronics, P405N).
+A router is 100M full-duplex router (Ssamji Electronics, P405N), and 1000M full-duplex router(ipTime BE3600QCA) on 500M full duplex WAN.
 BBRv3 baseline commit hash is `90210de4b779d40496dee0b89081780eeddf2a60`.
 The modified algorithm was ported from the base commit to Linux 6.18(6.18.0 based, Released as Mountain Kernel v0.3) and published at `https://github.com/gg582/linux-mountain` commit `c62bcddd7a829dec76ae2ef52b540cb86073e9c5`. The relevant sources are `net/ipv4/tcp_bbr3.c` and `net/ipv4/tcp_bbr3vanilla.c`.
 QDisc was forced to fq.
@@ -271,11 +271,21 @@ The two test groups are not mixed; each is used for what it measures best. Ping 
 
 Below are the concrete conditions used when producing the numbers shown in this post. These are listed to make the results reproducible and to clarify what was (and was not) controlled.
 
+### 1000M Full Duplex
+
+* Targets:
+  * LAN: ping 127.0.0.1
+      ... all same
+
+
+
+
+### 100M Full Duplex
 #### Ping measurements (absolute values)
 
 * Targets:
 
-  * LAN: ping 192.168.168.102
+  * LAN: ping 127.0.0.1
   * WAN: ping 1.1.1.1
 * Sample size: n = 1000 (per target)
 * Metrics reported: Avg RTT, mdev, p99, p99.9, Max RTT, Loss
@@ -805,11 +815,118 @@ This can still be a good metric to measure bufferbloat.
     Percentages are computed as (Vanilla - Modified) / Vanilla. Positive means Modified is better (lower latency/jitter).
   </p>
 
+### 1000M Full Duplex
+
+<table>
+    <thead>
+      <tr>
+        <th>Path</th>
+        <th>Metric</th>
+        <th>Vanilla BBRv3</th>
+        <th>Modified BBRv3</th>
+        <th>Δ (Mod-Van)</th>
+        <th>Improvement (↓ better)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th colspan="6">
+          LAN (ping 127.0.0.1, n=1000)
+        </th>
+      </tr>
+      <tr>
+        <td>LAN</td>
+        <td>Avg RTT (ms)</td>
+        <td>0.01985</td>
+        <td>0.01770</td>
+        <td>-0.00215</td>
+        <td>+10.8%</td>
+      </tr>
+      <tr>
+        <td>LAN</td>
+        <td>mdev (ms)</td>
+        <td>4.010</td>
+        <td>2.318</td>
+        <td>-1.692</td>
+        <td>+42.2%</td>
+      </tr>
+      <tr>
+        <td>LAN</td>
+        <td>Max RTT (ms)</td>
+        <td>4.020</td>
+        <td>2.330</td>
+        <td>-1.690</td>
+        <td>+42.0%</td>
+      </tr>
+      <tr>
+        <th colspan="6">
+          WAN (ping 1.1.1.1, n=1000)
+        </th>
+      </tr>
+      <tr>
+        <td>WAN</td>
+        <td>Avg RTT (ms)</td>
+        <td>5.784</td>
+        <td>5.764</td>
+        <td>-0.020</td>
+        <td>+0.35%</td>
+      </tr>
+      <tr>
+        <td>WAN</td>
+        <td>mdev (ms)</td>
+        <td>1.640</td>
+        <td>1.440</td>
+        <td>-0.200</td>
+        <td>+12.2%</td>
+      </tr>
+      <tr>
+        <td>WAN</td>
+        <td>Max RTT (ms)</td>
+        <td>6.560</td>
+        <td>6.540</td>
+        <td>-0.020</td>
+        <td>+0.30%</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p>
+    Percentages are computed as (Vanilla - Modified) / Vanilla. Positive means Modified is better (lower latency/jitter).
+  </p>
+
 As a result, RTT has improved significantly--something that would not happen if we only tweaked user-space applications.
 Now, let's move on to the iPerf test, since BBRv3 does a lot more than BBRv1/v2, which I posted about before.
 In that previous post, I only attached a ping test, but now I am sharing an iPerf3 test for you.
 
 ## IPerf3 Test
+The server was fixed to `ping.online.net:5200`.
+### 1000M Full Duplex
+The server was fixed to `ping.online.net:5200`. The test was conducted on a 1000M Full Duplex router with a 500Mbps WAN link.
+
+### Raw
+
+| Case | Forward<br>throughput (Mbps) | Reverse<br>throughput (Mbps) | Reverse<br>retrans | Fwd Latency<br>avg (ms) | Rev Latency<br>avg (ms) |
+|---|---|---|---|---|---|
+| bbr3_135852 | 332.85 | 401.77 | 93,315 | 23.50 | 25.62 |
+| bbr3_140147 | 334.20 | 426.41 | 152,655 | 23.50 | 26.95 |
+| bbr3vanilla (Baseline) | 252.71 | 428.47 | 188,474 | 23.56 | 27.38 |
+
+### Analysis
+
+| Metric (Forward) | Vanilla (BBR3 Baseline) | Modified (BBR3 Optimized) | Improvement |
+|---|---|---|---|
+| Throughput (Recv) | 252.71 Mbps | 334.20 Mbps | +32.25% |
+| Latency (Avg) | 23.56 ms | 23.50 ms | +0.25% (Reduced) |
+
+| Metric (Reverse) | Vanilla (BBR3 Baseline) | Modified (BBR3 Optimized) | Improvement |
+|---|---|---|---|
+| TCP Retransmissions | 188,474 | 93,315 | +50.49% (Reduced) |
+
+As you can see, forward throughput increased by roughly 32% while reverse retransmissions decreased by over 50%.
+This indicates that the tuning effectively balances the congestion window, preventing excessive packet loss without sacrificing (and even improving) forward throughput in this scenario.
+This result suggests that the "brake pedal" logic works well even in higher bandwidth environments, maintaining stability and efficiency.
+
+### 100M Full Duplex
 ### Raw
 When running test 112620, public IPerf3's response was broken for 4 attempts.
 This shows a behavior when network quality is poor.
