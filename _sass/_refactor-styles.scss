@@ -932,7 +932,7 @@ body.dark-mode #mainNav.navbar-sticky {
     border-radius: 0;
     background: transparent;
     color: #000;
-    padding: 0.4rem 0.6rem 0.4rem 1.8rem;
+    padding: 0.4rem 0.6rem 0.4rem 2rem;
     font-size: 0.875rem;
     font-weight: 400;
     letter-spacing: 0.01em;
@@ -942,7 +942,7 @@ body.dark-mode #mainNav.navbar-sticky {
     z-index: 1;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cline x1='16.5' y1='16.5' x2='21' y2='21'/%3E%3C/svg%3E");
     background-repeat: no-repeat;
-    background-position: 0.2rem 50%;
+    background-position: 0.4rem 50%;
     background-size: 14px;
     transition: color 0.3s ease;
 
