@@ -34,6 +34,15 @@ layout: default
           {{ content }}
         </article>
 
+        {% if page.posting_chart_collection or page.posting_chart_category or page.posting_chart_subcategory %}
+        <section class="page-posting-chart my-5">
+          {% include posting_stats_widget.html
+            collection=page.posting_chart_collection
+            category_id=page.posting_chart_category
+            subcategory_id=page.posting_chart_subcategory %}
+        </section>
+        {% endif %}
+
       </div>
     </div>
   </div>

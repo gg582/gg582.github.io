@@ -1,41 +1,80 @@
+{% assign chart_id = include.chart_id | default: 'postingChart' %}
+{% assign dataset_label = include.label | default: 'Posts' %}
+
+{% assign target_docs = nil %}
+
+{% assign subcategory_scope = include.subcategory_id | default: page.subcategory_id %}
+{% if subcategory_scope == nil and page.taxonomy and page.taxonomy.subcategory %}
+  {% assign subcategory_scope = page.taxonomy.subcategory %}
+{% endif %}
+
+{% if subcategory_scope %}
+  {% assign target_docs = site.documents | where_exp: "doc", "doc.taxonomy.subcategory == subcategory_scope" %}
+{% endif %}
+
+{% if target_docs == nil %}
+  {% assign category_scope = include.category_id | default: page.category_id %}
+  {% if category_scope == nil and page.taxonomy and page.taxonomy.category %}
+    {% assign category_scope = page.taxonomy.category %}
+  {% endif %}
+  {% if category_scope %}
+    {% assign target_docs = site.documents | where_exp: "doc", "doc.taxonomy.category == category_scope" %}
+  {% endif %}
+{% endif %}
+
+{% if target_docs == nil %}
+  {% assign collection_scope = include.collection | default: page.posting_chart_collection %}
+  {% if collection_scope == nil and page.collection %}
+    {% assign collection_scope = page.collection %}
+  {% endif %}
+  {% if collection_scope %}
+    {% assign scoped_collection = site.collections | where: "label", collection_scope | first %}
+    {% if scoped_collection %}
+      {% assign target_docs = scoped_collection.docs %}
+    {% endif %}
+  {% endif %}
+{% endif %}
+
+{% if target_docs == nil %}
+  {% assign target_docs = site.documents %}
+{% endif %}
+
 <div class="posting-stats-widget text-center">
   <h5 class="mb-3" style="font-size: 0.9rem; font-weight: 600; color: #868e96; text-transform: uppercase; letter-spacing: 1px;">Posting Trend</h5>
   <div style="background: white; padding: 10px; border-radius: 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); position: relative; height: 200px;">
-    <canvas id="postingChart"></canvas>
+    <canvas id="{{ chart_id }}"></canvas>
   </div>
 </div>
 
 <script>
   document.addEventListener("DOMContentLoaded", function() {
-    {% if page.category_id %}
-      {% assign target_docs = site.documents | where_exp: "doc", "doc.taxonomy.category == page.category_id" %}
-    {% else %}
-      {% assign target_docs = site.documents %}
-    {% endif %}
-
     const postingDates = {};
 
     {% for doc in target_docs %}
-      {% assign d = doc.date | date: "%Y-%m-%d" %}
-      if (postingDates["{{ d }}"]) {
-        postingDates["{{ d }}"]++;
-      } else {
-        postingDates["{{ d }}"] = 1;
-      }
+      {% if doc.date %}
+        {% assign d = doc.date | date: "%Y-%m-%d" %}
+        if (postingDates["{{ d }}"]) {
+          postingDates["{{ d }}"]++;
+        } else {
+          postingDates["{{ d }}"] = 1;
+        }
+      {% endif %}
     {% endfor %}
 
-    // Sort dates
     const sortedDates = Object.keys(postingDates).sort();
     const dataPoints = sortedDates.map(date => postingDates[date]);
 
-    if (sortedDates.length > 0) {
-      const ctx = document.getElementById('postingChart').getContext('2d');
+    const canvas = document.getElementById('{{ chart_id }}');
+    const widgetContainer = canvas ? canvas.closest('.posting-stats-widget') : null;
+
+    if (canvas && sortedDates.length > 0) {
+      const ctx = canvas.getContext('2d');
       new Chart(ctx, {
         type: 'line',
         data: {
           labels: sortedDates,
           datasets: [{
-            label: 'Posts',
+            label: '{{ dataset_label }}',
             data: dataPoints,
             backgroundColor: 'rgba(0, 133, 161, 0.2)',
             borderColor: 'rgba(0, 133, 161, 1)',
@@ -74,9 +113,11 @@
           }
         }
       });
-    } else {
-       document.getElementById('postingChart').style.display = 'none';
-       document.querySelector('.posting-stats-widget').innerHTML += '<p class="text-muted small">No posts data available.</p>';
+    } else if (canvas) {
+       canvas.style.display = 'none';
+       if (widgetContainer) {
+         widgetContainer.innerHTML += '<p class="text-muted small mb-0">No posts data available.</p>';
+       }
     }
   });
 </script>

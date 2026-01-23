@@ -29,6 +29,10 @@ layout: default
     <div class="subcategory-stats">
       <span class="stat-item">{{ subcat_docs.size }} documents</span>
     </div>
+
+    <div class="subcategory-chart mt-4" style="max-width: 600px; margin: 0 auto;">
+      {% include posting_stats_widget.html subcategory_id=page.subcategory_id %}
+    </div>
   </header>
 
   <!-- Main Content -->
