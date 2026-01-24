@@ -1,7 +1,61 @@
 {
-  "generated_at": "2026-01-24T04:24:11.404686+00:00",
-  "document_count": 36,
+  "generated_at": "2026-01-24T06:23:27.345900+00:00",
+  "document_count": 38,
   "documents": [
+    {
+      "title": "[벨만포드] 벨만포드 알고리즘을 외워 보자",
+      "subtitle": "코드 암기는 언제나 구조적으로",
+      "description": null,
+      "url": "/codingtest/2026-01-24-[벨만포드]-벨만포드-알고리즘을-외워보자/",
+      "collection": "codingtest",
+      "relative_path": "2026-01-24-[벨만포드]-벨만포드-알고리즘을-외워보자",
+      "date": "2026-01-24T14:35:00+09:00",
+      "updated": null,
+      "keywords": [
+        "벨만포드",
+        "그래프 탐색",
+        "백준",
+        "알고리즘"
+      ],
+      "categories": [
+        "codingtest"
+      ],
+      "taxonomy": {
+        "category": "codingtest",
+        "subcategory": "algorithm-bellman-ford",
+        "order": 1
+      },
+      "difficulty": "intermediate",
+      "excerpt": "--- 왜 암기를 하죠? 물론 필자는 수학 공부를 그렇게 열심히 하지는 않았으나, 중고등학교 수학에 비유해 보도록 하겠다. 이 글을 읽는 사람들 대부분이 과정을 따라가면 피타고라스 정리의 공식을 구할 수 있다. 그러나 한 번 도출된 공식이 있으면 그것을 암기해서 사용하지 삼각형부터 그리고 보지는 않는다. 여기서 보통 사람들은 정석적인 유클리드의 방식을 따라가서 피타고라스 정리를 외운다. 그런 방식으로 외우는 것이 정석이니까 다들 그렇게 하였다. 그러나 필자는 수학에 아주 약하기 때문에 직관적으로…",
+      "search_text": "[벨만포드] 벨만포드 알고리즘을 외워 보자 코드 암기는 언제나 구조적으로 벨만포드 그래프 탐색 백준 알고리즘 codingtest codingtest algorithm-bellman-ford --- 왜 암기를 하죠? 물론 필자는 수학 공부를 그렇게 열심히 하지는 않았으나, 중고등학교 수학에 비유해 보도록 하겠다. 이 글을 읽는 사람들 대부분이 과정을 따라가면 피타고라스 정리의 공식을 구할 수 있다. 그러나 한 번 도출된 공식이 있으면 그것을 암기해서 사용하지 삼각형부터 그리고 보지는 않는다. 여기서 보통 사람들은 정석적인 유클리드의 방식을 따라가서 피타고라스 정리를 외운다. 그런 방식으로 외우는 것이 정석이니까 다들 그렇게 하였다. 그러나 필자는 수학에 아주 약하기 때문에 직관적으로… \n\n---\n\n## 왜 암기를 하죠?\n\n물론 필자는 수학 공부를 그렇게 열심히 하지는 않았으나, 중고등학교 수학에 비유해 보도록 하겠다.\n이 글을 읽는 사람들 대부분이 과정을 따라가면 피타고라스 정리의 공식을 구할 수 있다.\n그러나 한 번 도출된 공식이 있으면 그것을 암기해서 사용하지 삼각형부터 그리고 보지는 않는다.\n\n여기서 보통 사람들은 정석적인 유클리드의 방식을 따라가서 피타고라스 정리를 외운다.\n\n그런 방식으로 외우는 것이 정석이니까 다들 그렇게 하였다.\n그러나 필자는 수학에 아주 약하기 때문에 직관적으로 이해할 수 있는 방식으로 바스카라의 정리(바스카라에 정리되기 전부터 인도에 널리 퍼져 있던 방식이고, 후일 중국에서도 구고현의 정리가 같은 방식으로 이 공식을 증명한다)를 사용했다.\n\n그러나 거시적인 내용은 비슷한 시기의 서로 다른 대륙들의 정리 역시 같고, 결국 `a^2 + b^2 == c^2`으로 귀결된다.\n\n이것과 정확히 동일하게 여기서는 **아주 쉽게** 단일 소스 최소 경로(sssp) 문제를 위한 벨만포드 알고리즘을 구현하고 외우도록 하겠다.\n\n## 구조화해서 외우자\n\n### 삼항연산자는 죄가 없다\n\n의외로 한 번 정도의 간단한 조건을 암기할 때 삼항연산자는 크게 도움이 되고, 블럭 형태로 잘 들여쓰기하면 가독성도 무난하다.\n\n\n예를 들어서, `a+b < c`일 때 `c = a+b`를 한다고 해 보자. 여기서 자연어에 대응하면서 비교해 볼 것이다.\n\n### if문\n\n```c\n\n```\n\n한국어로 하면 아래와 같다.\n**만약** *a + b* 가 c*보다 작다면* **c는 a+b이다.**\n\n너무 말을 풀어 쓰니 조건 반영이 눈에 띄게 구조적이지 못하다.\n\n### 삼항연산자\n\n```c\nc = (a + b) < c ?\n    (a + b) : c ;\n```\n\nc는 ** a + b **보다 c가 작을 때** **a + b**, 아니면 **c값 그대로이다.**\n\n말이 길어 보이지만 확실히 구조적으로 인지 가능하고, 부등호 조건에서 min일 때 **a < b**꼴로, max일 때 **a > b** 꼴로 쓰면 아래가 기억이 안 나도 **a : b;**로 끝내 버리면 된다.\n**즉 외워야 할 포인트가 반토막난다.**\n\n### 삼항연산자 + 매크로\n\n```c\n#define min(x, y) (((x) < (y)) ? \\\n                   (x) :  (y))\n#define max(x, y) (((x) > (y)) ? \\\n                   (x) :  (y))\n\nc = min(a + b, c);\n```\n\n\n상단에 매크로만 추가하고 나면 아주 명료하다,\n\nc는 **a + b와 c 중에 작은 것이다**.\n\n그야말로 더 불평할 것이 없는 수준에 이르렀다.\n\n이제 이와 같이 코드 작성을 해 보자. 아래의 벨만포드는 최대한 암기하기 쉽게 정리했으니 잘 생각하고 외워야 한다.\n\n\n##벨만 포드 알고리즘\n\n```c\n#include <stdio.h>\n#include <stdlib.h>\n#include <limits.h>\n\n#define min(x, y) (((x) < (y)) ? (x) : (y))\n\ntypedef long long ll;\n\ntypedef struct {\n    int u, v;\n    ll w;\n} edge;\n\n#define inf (llong_max / 4)\n\nint bellman_ford_sssp(int n, int m, const edge *edges, int src, ll *dist) {\n    for (int i = 0; i < n; i++) dist[i] = inf;\n    dist[src] = 0;\n\n    for (int i = 0; i < n - 1; i++) {\n        int updated = 0;\n        for (int j = 0; j < m; j++) {\n\n            if (dist[edges[j].u] == inf) continue;\n\n            int current_update = (int)((_bool)((dist[edges[j].u] + edges[j].w) < dist[edges[j].v]));\n\n            updated |= current_update;\n\n            dist[edges[j].v] = min(\n                dist[edges[j].u] + edges[j].w,\n                dist[edges[j].v]\n            );\n        }\n        if (!updated) break;\n    }\n\n    // negative cycle detection (usually unnecessary in coding tests)\n    for (int k = 0; k < m; k++) {\n        if (dist[edges[k].u] == inf) continue;\n        if (dist[edges[k].u] + edges[k].w < dist[edges[k].v]) {\n            return 0; // negative cycle reachable\n        }\n    }\n    return 1;\n}\n\nint main(void) {\n    int n, m;\n    if (scanf(\"%d %d\", &n, &m) != 2) return 0;\n\n    edge *edges = (edge *)malloc((size_t)m * sizeof(edge));\n    if (!edges) return 0;\n\n    for (int i = 0; i < m; i++) {\n        scanf(\"%d %d %lld\", &edges[i].u, &edges[i].v, &edges[i].w);\n    }\n\n    int src;\n    scanf(\"%d\", &src);\n\n    ll *dist = (ll *)malloc((size_t)n * sizeof(ll));\n    if (!dist) {\n        free(edges);\n        return 0;\n    }\n\n    if (!bellman_ford_sssp(n, m, edges, src, dist)) {\n        puts(\"negative_cycle\");\n    } else {\n        for (int i = 0; i < n; i++) {\n            if (dist[i] >= inf / 2) printf(\"inf\\n\");\n            else printf(\"%lld\\n\", dist[i]);\n        }\n    }\n\n    free(dist);\n    free(edges);\n    return 0;\n}\n```\n\n이 방식대로 외우면 플로이드 워셜로 풀 수 없으나 다익스트라를 잊어먹어도 풀 수 있는 문제들에서 꽤 효율적이다.\nn이 500-800 사이인 그래프 탐색 문제에서 푼다면 아슬아슬하게 공간복잡도와 시간복잡도 역시 통과할 수 있다.\n"
+    },
+    {
+      "title": "[다익스트라] 다익스트라 알고리즘을 외워 보자",
+      "subtitle": "중견 기업 코딩 테스트까지 노려 보자",
+      "description": null,
+      "url": "/codingtest/2026-01-24-[다익스트라]-다익스트라-알고리즘을-외워보자/",
+      "collection": "codingtest",
+      "relative_path": "2026-01-24-[다익스트라]-다익스트라-알고리즘을-외워보자",
+      "date": "2026-01-24T13:00:00+09:00",
+      "updated": null,
+      "keywords": [
+        "다익스트라",
+        "그래프 탐색",
+        "백준",
+        "알고리즘"
+      ],
+      "categories": [
+        "codingtest"
+      ],
+      "taxonomy": {
+        "category": "codingtest",
+        "subcategory": "algorithm-dijkstra",
+        "order": 1
+      },
+      "difficulty": "intermediate",
+      "excerpt": "--- 이 게시물부터 보는 사람은 반드시 스크롤을 내려서 이전 게시물의 \"왜 암기를 하죠?\" 부분을 잘 읽고 오기 바란다. 다익스트라를 암기해 보자 드디어 정리해도 어렵고 또 어려운 대망의 다익스트라이다. 대기업이나 중견기업 코딩 테스트에서 수험자를 죽이려고 마구마구 찍어내는 지옥 난이도 문제들은 보통 \"다익스트라 + 비트마스킹 + DP + 그리디 + 파싱\"같은 조합을 쓰고, 일단 다익스트라부터 구현하고 DP나 그리디 구조 파악, 비트마스킹/파싱같은 자잘한 디테일을 잡아가는 방식을 취한다. 물론…",
+      "search_text": "[다익스트라] 다익스트라 알고리즘을 외워 보자 중견 기업 코딩 테스트까지 노려 보자 다익스트라 그래프 탐색 백준 알고리즘 codingtest codingtest algorithm-dijkstra --- 이 게시물부터 보는 사람은 반드시 스크롤을 내려서 이전 게시물의 \"왜 암기를 하죠?\" 부분을 잘 읽고 오기 바란다. 다익스트라를 암기해 보자 드디어 정리해도 어렵고 또 어려운 대망의 다익스트라이다. 대기업이나 중견기업 코딩 테스트에서 수험자를 죽이려고 마구마구 찍어내는 지옥 난이도 문제들은 보통 \"다익스트라 + 비트마스킹 + dp + 그리디 + 파싱\"같은 조합을 쓰고, 일단 다익스트라부터 구현하고 dp나 그리디 구조 파악, 비트마스킹/파싱같은 자잘한 디테일을 잡아가는 방식을 취한다. 물론… \n\n---\n\n*이 게시물부터 보는 사람은 반드시 스크롤을 내려서 이전 게시물의 \"왜 암기를 하죠?\" 부분을 잘 읽고 오기 바란다.*\n\n## 다익스트라를 암기해 보자\n\n드디어 정리해도 어렵고 또 어려운 대망의 다익스트라이다.\n대기업이나 중견기업 코딩 테스트에서 수험자를 죽이려고 마구마구 찍어내는 지옥 난이도 문제들은 보통 \"다익스트라 + 비트마스킹 + dp + 그리디 + 파싱\"같은 조합을 쓰고, 일단 다익스트라부터 구현하고 dp나 그리디 구조 파악, 비트마스킹/파싱같은 자잘한 디테일을 잡아가는 방식을 취한다. 물론 내가 풀 수 있는 유형은 아니지만 보통은 그렇다. 그도 그럴 것이 그걸 풀 수 있었으면 인생이 달랐을지도 모르니까 말이다.\n\n어디까지나 나의 방법론은 **범부를 위한 코더 가이드**에 가깝다. 현학적이고 학구적인 태도에 내 방식은 정면으로 배치되는 것을 알아 뒀으면 좋겠다.\n\n## 암기 포인트\n\n- 애써서 힙을 구현하려 하지 말자\n  - 만약 당신이 고지능의 수재라면 직접 구현해서 성능을 뽑아도 된다\n- 현재 노드를 거쳐서 다음 노드로 가는게 기존 방법보다 빠르면\n  - 그 방식의 가중치로 업데이트한다.\n  - 이것을 `min`을 쓴다고 생각해서 단순하게 외우자\n- v, w같은 추상적인 축약은 쓰면 안 된다\n  - 반드시 vertex, weight로 다 써서 헷갈림을 방지하자\n\n지능이 높은 사람들의 특징이 추상화에 강한 것이다. 그러한 사람들은 u, v, w가 편하겠지만 우리에게는 아니다.\n이것은 평범하거나 그보다 못한 재능에서 출발한 내가 지키는 3원칙이다.\n\n- 변수명은 반드시 구체적이어야 한다\n- 코드에서 주석을 떼도 어느 정도 이해되어야 한다\n- 주석은 코드의 흐름을 따라야 한다\n\n이러한 3원칙을 어느 정도 지키며 작성된 다익스트라 알고리즘의 코드를 **주석을 잘 보면서** 따라오길 바란다.\n\n## 코드\n\n```cpp\n#include <iostream>\n#include <vector>\n#include <queue>\n#include <climits>\n#include <algorithm>\n\ntypedef long long ll;\n\ntypedef struct {\n    int vertex;\n    ll  weight;\n} edge;\n\ntypedef std::pair<ll,int> pll;\ntypedef std::priority_queue<pll, std::vector<pll>, std::greater<pll>> pq_ll; // do not manually implement heap!!\n                                                                             // since importing external libraries in c is not allowed, using c++ instead, is much better for coding test\n\n#define inf (llong_max / 4)\n\nvoid dijkstra_sssp(int n, const std::vector<std::vector<edge>> &g, int src, std::vector<ll> &dist) {\n    dist.assign(n, inf);\n    dist[src] = 0;\n\n    pq_ll pq;\n    pq.push(pll(0, src)); // current distance is zero(before start: status zero), starting point is src\n\n    while (!pq.empty()) {\n        ll current_dist = pq.top().first;\n        int current_node = pq.top().second;\n        pq.pop(); // till here, same as bfs\n \n        if (current_dist != dist[current_node]) continue; // something like softer version of assert(current_dist == dist[currunt_size]), so current_dist must be dist[current_size] to apply for distance recheck/calculation\n\n        for (int i = 0; i < (int)g[current_node].size(); i++) {\n            // be sure to memorize this part\n            int next_node = g[current_node][i].vertex;\n            ll edge_weight = g[current_node][i].weight;\n\n            //  if getting next_node through current_node, update distance to current_dist + edge_weight;\n            int current_update = (int)((current_dist + edge_weight) < dist[next_node]);\n            dist[next_node] = std::min(current_dist + edge_weight, dist[next_node])   ;\n\n            if (current_update) pq.push(pll(dist[next_node], next_node)); // only if it is an update target\n        }\n    }\n}\n\nint main() {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n\n    int n, m;\n    std::cin >> n >> m;\n\n    std::vector<std::vector<edge>> g(n);\n\n    for (int i = 0; i < m; i++) {\n        int a, b;\n        ll c;\n        std::cin >> a >> b >> c;     // 0-indexed: a -> b with weight c\n        g[a].push_back((edge){b, c}); // if directed, it's fine with this single line; but\n                                      // if undirected, also add below\n     // g[b].push_back((edge){a, c});\n    }\n\n    int src;\n    std::cin >> src;\n\n    std::vector<ll> dist;\n    dijkstra_sssp(n, g, src, dist);\n\n    for (int i = 0; i < n; i++) {\n        if (dist[i] >= inf / 2) std::cout << \"-1\\n\"; // no ways to arrive dist[i]\n        else std::cout << dist[i] << \"\\n\";\n    }\n    return 0;\n}\n```\n**주석 친 포인트가 중요하다. 확실히 보고 기억해야 한다.**\n\n## 소감\n\n이걸 외울 수 있을지 모르겠다. 빌 게이츠가 코드 검수할 때 종이에 출력해서 했다던데, 프린트해서 봐야 하나?\n책 10쪽을 외우는 것보다 이것 하나를 외우는 것이 더 고통스러울지도 모르는 일이다.\n열심히 해 보는 수밖에는 없지 않을까.\n"
+    },
     {
       "title": "[시뮬레이션] 스위치 켜고 끄기-백준 1244번",
       "subtitle": "방심하지 말고 출력에 주의하자",
