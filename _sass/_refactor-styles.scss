@@ -843,6 +843,7 @@ p, ul, ol, blockquote {
   @media (max-width: 991px) {
     position: fixed;
     min-height: 56px; // Consistent minimum height for mobile navbar
+    background-color: #fff !important; // Force light background on mobile
 
     .navbar-collapse {
       flex-basis: 100%;
@@ -855,11 +856,13 @@ p, ul, ol, blockquote {
       
       .nav-link {
         color: #000 !important;
+        text-shadow: none !important;
       }
     }
     
     .navbar-brand {
       color: #000 !important;
+      text-shadow: none !important;
     }
     
     .navbar-toggler {
@@ -880,6 +883,19 @@ p, ul, ol, blockquote {
     .navbar-nav .nav-link {
       color: #1f2933 !important;
       text-shadow: none;
+    }
+    
+    // Force light mode styles on mobile even when sticky
+    @media (max-width: 991px) {
+      background: rgba(255, 255, 255, 0.95) !important;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.08) !important;
+      box-shadow: 0 20px 45px rgba(15, 15, 15, 0.08) !important;
+      
+      .navbar-brand,
+      .navbar-nav .nav-link {
+        color: #1f2933 !important;
+        text-shadow: none !important;
+      }
     }
   }
   
@@ -981,6 +997,20 @@ p, ul, ol, blockquote {
   .navbar-search {
     max-width: none;
     margin-left: 0 !important;
+    border-bottom-color: #000 !important;
+    
+    &:focus-within {
+      border-bottom-color: #333 !important;
+    }
+    
+    .navbar-search__input {
+      color: #000 !important;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cline x1='16.5' y1='16.5' x2='21' y2='21'/%3E%3C/svg%3E") !important;
+      
+      &::placeholder {
+        color: #666 !important;
+      }
+    }
   }
 }
 
