@@ -152,6 +152,13 @@ layout: default
           {{ content }}
         </article>
 
+        <!-- Back Button -->
+        <div class="post-back-nav">
+          <button type="button" onclick="history.back()" class="btn btn-outline-secondary" aria-label="이전 페이지로 돌아가기">
+            ← 뒤로가기
+          </button>
+        </div>
+
         <nav class="post-nav" aria-label="Post Navigation">
           {% if page.previous.url %}
           <a class="post-nav__link post-nav__prev" href="{{ page.previous.url | prepend: site.baseurl | replace: '//', '/' }}">

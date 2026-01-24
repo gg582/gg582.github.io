@@ -686,6 +686,10 @@ article.page-content {
   border-top: 1px solid rgba($chulhwa, 0.2);
 }
 
+.post-back-nav {
+  margin-bottom: 2rem;
+}
+
 .post-nav__link {
   display: flex;
   flex-direction: column;
@@ -875,7 +879,7 @@ p, ul, ol, blockquote {
 }
 
 body.dark-mode #mainNav.navbar-sticky {
-  background: rgba(16, 16, 22, 0.92);
+  background: rgba(16, 16, 22, 1);
   border-bottom-color: rgba(255, 255, 255, 0.1);
   box-shadow: 0 18px 36px rgba(0, 0, 0, 0.45);
 
