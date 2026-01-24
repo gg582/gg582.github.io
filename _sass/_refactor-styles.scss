@@ -328,6 +328,21 @@ h5, h6 {
 }
 
 body.dark-mode {
+  // Post metadata dark mode support
+  .post-heading .meta,
+  .masthead .meta {
+    color: $dark-mode-meta-text !important;
+    
+    div {
+      color: $dark-mode-meta-text;
+    }
+    
+    #busuanzi_container_page_pv,
+    #busuanzi_value_page_pv {
+      color: $dark-mode-meta-text;
+    }
+  }
+
   .post-content a,
   .page-content a {
     color: #9cbcff;
