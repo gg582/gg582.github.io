@@ -169,13 +169,28 @@ $(function () {
     requestAnimationFrame(() => bodyEl.classList.add('page-loaded'));
 
     // Handle back/forward navigation - force redraw when page is restored from cache
-    window.addEventListener('pageshow', function(event) {
-      if (event.persisted || (window.performance && window.performance.navigation.type === 2)) {
-        // Page was restored from cache (back/forward navigation)
+    const handlePageShow = function(event) {
+      // Check if page was restored from bfcache (back/forward cache)
+      let isBackForward = event.persisted;
+      
+      // Fallback check for back/forward navigation using Navigation Timing API
+      if (!isBackForward && window.performance) {
+        const navEntries = performance.getEntriesByType('navigation');
+        if (navEntries.length > 0 && navEntries[0].type === 'back_forward') {
+          isBackForward = true;
+        }
+      }
+      
+      if (isBackForward) {
+        // Page was restored from cache - force redraw
         bodyEl.classList.remove('page-exiting');
         bodyEl.classList.add('page-loaded');
       }
-    });
+    };
+    
+    // Remove any existing listener before adding to prevent duplicates
+    window.removeEventListener('pageshow', handlePageShow);
+    window.addEventListener('pageshow', handlePageShow);
 
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
     if (prefersReducedMotion.matches) {
