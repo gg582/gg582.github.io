@@ -328,6 +328,21 @@ h5, h6 {
 }
 
 body.dark-mode {
+  // Post metadata dark mode support
+  .post-heading .meta,
+  .masthead .meta {
+    color: rgba(241, 241, 241, 0.75) !important;
+    
+    div {
+      color: rgba(241, 241, 241, 0.75);
+    }
+    
+    #busuanzi_container_page_pv,
+    #busuanzi_value_page_pv {
+      color: rgba(241, 241, 241, 0.75);
+    }
+  }
+
   .post-content a,
   .page-content a {
     color: #9cbcff;
