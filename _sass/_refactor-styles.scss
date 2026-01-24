@@ -844,6 +844,7 @@ p, ul, ol, blockquote {
     position: fixed;
     min-height: 56px; // Consistent minimum height for mobile navbar
     background-color: #fff !important; // Force light background on mobile
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08) !important;
 
     .navbar-collapse {
       flex-basis: 100%;
@@ -854,19 +855,34 @@ p, ul, ol, blockquote {
     .navbar-nav {
       width: 100%;
       
-      .nav-link {
-        color: #000 !important;
-        text-shadow: none !important;
+      .nav-item {
+        .nav-link {
+          color: #000 !important;
+          text-shadow: none !important;
+          
+          &:hover,
+          &:focus {
+            color: #000 !important;
+            text-shadow: none !important;
+          }
+        }
       }
     }
     
     .navbar-brand {
       color: #000 !important;
       text-shadow: none !important;
+      
+      &:hover,
+      &:focus {
+        color: #000 !important;
+        text-shadow: none !important;
+      }
     }
     
     .navbar-toggler {
       color: #000 !important;
+      border-color: rgba(0, 0, 0, 0.1) !important;
     }
   }
 
@@ -891,10 +907,28 @@ p, ul, ol, blockquote {
       border-bottom: 1px solid rgba(0, 0, 0, 0.08) !important;
       box-shadow: 0 20px 45px rgba(15, 15, 15, 0.08) !important;
       
-      .navbar-brand,
-      .navbar-nav .nav-link {
-        color: #1f2933 !important;
+      .navbar-brand {
+        color: #000 !important;
         text-shadow: none !important;
+        
+        &:hover,
+        &:focus {
+          color: #000 !important;
+        }
+      }
+      
+      .navbar-nav {
+        .nav-item {
+          .nav-link {
+            color: #000 !important;
+            text-shadow: none !important;
+            
+            &:hover,
+            &:focus {
+              color: #000 !important;
+            }
+          }
+        }
       }
     }
   }
