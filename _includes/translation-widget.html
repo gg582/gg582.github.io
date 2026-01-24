@@ -1,0 +1,229 @@
+<!-- Translation Controls -->
+<div class="translation-controls" style="margin-bottom: 20px; position: relative; z-index: 100;">
+  <div style="position: relative; display: inline-block;">
+    <button id="translate-btn" class="btn btn-sm btn-outline-secondary" aria-label="번역 언어 선택">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" style="margin-right: 5px; vertical-align: text-bottom;">
+        <path d="M4.545 6.714 4.11 8H3l1.862-5h1.284L8 8H6.833l-.435-1.286H4.545zm1.634-.736L5.5 3.956h-.049l-.679 2.022H6.18z"/>
+        <path d="M0 2a2 2 0 0 1 2-2h7a2 2 0 0 1 2 2v3h3a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-3H2a2 2 0 0 1-2-2V2zm2-1a1 1 0 0 0-1 1v7a1 1 0 0 0 1 1h7a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H2zm7.138 9.995c.193.301.402.583.63.846-.748.575-1.673 1.001-2.768 1.292.178.217.451.635.555.867 1.125-.359 2.08-.844 2.886-1.494.777.665 1.739 1.165 2.93 1.472.133-.254.414-.673.629-.89-1.125-.253-2.057-.694-2.82-1.284.681-.747 1.222-1.651 1.621-2.757H14V8h-3v1.047h.765c-.318.844-.74 1.546-1.272 2.13a6.066 6.066 0 0 1-.415-.492 1.988 1.988 0 0 1-.94.31z"/>
+      </svg>
+      TRANSLATE
+    </button>
+    <div id="translate-dropdown" style="display: none; position: absolute; top: 100%; left: 0; z-index: 1000; background: white; border: 1px solid #ddd; border-radius: 4px; max-height: 400px; overflow-y: auto; min-width: 220px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); margin-top: 2px;">
+      <div style="padding: 10px; border-bottom: 1px solid #eee; background: #f8f9fa; font-weight: 600; font-size: 13px; color: #495057;">
+        Select Language
+      </div>
+      <!-- Options populated by JS -->
+    </div>
+  </div>
+  <button id="translate-reset-btn" class="btn btn-sm btn-outline-danger" style="display: none; margin-left: 8px;" aria-label="번역 초기화">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" style="margin-right: 5px; vertical-align: text-bottom;">
+      <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z"/>
+      <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z"/>
+    </svg>
+    RESET
+  </button>
+</div>
+
+<!-- Hidden Google Translate Element -->
+<div id="google_translate_element" style="position: absolute; opacity: 0; z-index: -1; height: 0; overflow: hidden; pointer-events: none;"></div>
+
+<script type="text/javascript">
+  // Initialize Google Translate
+  function googleTranslateElementInit() {
+    new google.translate.TranslateElement({
+      pageLanguage: 'ko',
+      includedLanguages: 'en,ja,zh-CN,zh-TW,es,fr,de,ru,pt,it,ar,hi,th,vi',
+      layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+      autoDisplay: false
+    }, 'google_translate_element');
+  }
+</script>
+<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const translateBtn = document.getElementById('translate-btn');
+    const resetBtn = document.getElementById('translate-reset-btn');
+    const dropdown = document.getElementById('translate-dropdown');
+    let googleCombo = null;
+    let isPopulated = false;
+
+    // Wait for Google Translate to initialize and populate dropdown
+    const checkGoogle = setInterval(() => {
+      const combo = document.querySelector('.goog-te-combo');
+      if (combo && combo.options.length > 1 && !isPopulated) {
+        googleCombo = combo;
+        clearInterval(checkGoogle);
+        populateDropdown(combo);
+        isPopulated = true;
+        
+        // Check if already translated
+        const currentLang = getCookie('googtrans');
+        if (currentLang && currentLang !== '/ko/ko' && currentLang !== '') {
+          resetBtn.style.display = 'inline-block';
+        }
+      }
+    }, 100);
+
+    // Stop checking after 10 seconds to avoid infinite loop
+    setTimeout(() => {
+      clearInterval(checkGoogle);
+      if (!isPopulated) {
+        console.warn('Google Translate failed to load within 10 seconds');
+      }
+    }, 10000);
+
+    function populateDropdown(select) {
+      const languageNames = {
+        'en': '🇬🇧 English',
+        'ja': '🇯🇵 日本語 (Japanese)',
+        'zh-CN': '🇨🇳 简体中文 (Simplified Chinese)',
+        'zh-TW': '🇹🇼 繁體中文 (Traditional Chinese)',
+        'es': '🇪🇸 Español (Spanish)',
+        'fr': '🇫🇷 Français (French)',
+        'de': '🇩🇪 Deutsch (German)',
+        'ru': '🇷🇺 Русский (Russian)',
+        'pt': '🇵🇹 Português (Portuguese)',
+        'it': '🇮🇹 Italiano (Italian)',
+        'ar': '🇸🇦 العربية (Arabic)',
+        'hi': '🇮🇳 हिन्दी (Hindi)',
+        'th': '🇹🇭 ไทย (Thai)',
+        'vi': '🇻🇳 Tiếng Việt (Vietnamese)'
+      };
+
+      dropdown.innerHTML = '<div style="padding: 10px; border-bottom: 1px solid #eee; background: #f8f9fa; font-weight: 600; font-size: 13px; color: #495057;">Select Language</div>';
+      
+      Array.from(select.options).forEach(option => {
+        if (option.value && option.value !== 'ko') { // Skip "Select Language" placeholder and Korean
+          const item = document.createElement('div');
+          const langCode = option.value;
+          item.textContent = languageNames[langCode] || option.text;
+          item.style.padding = '10px 15px';
+          item.style.cursor = 'pointer';
+          item.style.fontSize = '14px';
+          item.style.color = '#333';
+          item.style.transition = 'background-color 0.2s';
+          item.setAttribute('data-lang', langCode);
+          
+          item.onmouseover = () => {
+            item.style.backgroundColor = '#007bff';
+            item.style.color = 'white';
+          };
+          item.onmouseout = () => {
+            item.style.backgroundColor = 'white';
+            item.style.color = '#333';
+          };
+          
+          item.onclick = () => {
+            select.value = option.value;
+            select.dispatchEvent(new Event('change'));
+            dropdown.style.display = 'none';
+            resetBtn.style.display = 'inline-block';
+            
+            // Update button text to show selected language
+            const selectedLangName = languageNames[langCode] || option.text;
+            translateBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" style="margin-right: 5px; vertical-align: text-bottom;">
+              <path d="M4.545 6.714 4.11 8H3l1.862-5h1.284L8 8H6.833l-.435-1.286H4.545zm1.634-.736L5.5 3.956h-.049l-.679 2.022H6.18z"/>
+              <path d="M0 2a2 2 0 0 1 2-2h7a2 2 0 0 1 2 2v3h3a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-3H2a2 2 0 0 1-2-2V2zm2-1a1 1 0 0 0-1 1v7a1 1 0 0 0 1 1h7a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H2zm7.138 9.995c.193.301.402.583.63.846-.748.575-1.673 1.001-2.768 1.292.178.217.451.635.555.867 1.125-.359 2.08-.844 2.886-1.494.777.665 1.739 1.165 2.93 1.472.133-.254.414-.673.629-.89-1.125-.253-2.057-.694-2.82-1.284.681-.747 1.222-1.651 1.621-2.757H14V8h-3v1.047h.765c-.318.844-.74 1.546-1.272 2.13a6.066 6.066 0 0 1-.415-.492 1.988 1.988 0 0 1-.94.31z"/>
+            </svg>${selectedLangName.split(' ')[0]}`;
+          };
+          dropdown.appendChild(item);
+        }
+      });
+    }
+
+    if (translateBtn) {
+      translateBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+      });
+    }
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', (e) => {
+      if (dropdown && !dropdown.contains(e.target) && e.target !== translateBtn) {
+        dropdown.style.display = 'none';
+      }
+    });
+    
+    dropdown.addEventListener('click', (e) => e.stopPropagation());
+
+    if (resetBtn) {
+      resetBtn.addEventListener('click', () => {
+        // Clear the cookie that Google Translate sets
+        document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+        document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; domain=." + document.domain + "; path=/;";
+        
+        // Also try to clear without domain
+        const cookies = document.cookie.split(";");
+        for (let i = 0; i < cookies.length; i++) {
+          const cookie = cookies[i];
+          const eqPos = cookie.indexOf("=");
+          const name = eqPos > -1 ? cookie.substr(0, eqPos).trim() : cookie.trim();
+          if (name.indexOf('googtrans') !== -1) {
+            document.cookie = name + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+            document.cookie = name + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; domain=." + document.domain + "; path=/;";
+          }
+        }
+        
+        // Reload the page to reset the translation
+        location.reload();
+      });
+    }
+
+    function getCookie(name) {
+      const value = `; ${document.cookie}`;
+      const parts = value.split(`; ${name}=`);
+      if (parts.length === 2) return parts.pop().split(';').shift();
+      return '';
+    }
+  });
+</script>
+
+<style>
+  /* Dark mode support for translation dropdown */
+  body.dark-mode #translate-dropdown {
+    background: #2d3748 !important;
+    border-color: #4a5568 !important;
+  }
+  
+  body.dark-mode #translate-dropdown > div:first-child {
+    background: #1a202c !important;
+    color: #e2e8f0 !important;
+    border-bottom-color: #4a5568 !important;
+  }
+  
+  body.dark-mode #translate-dropdown > div[data-lang] {
+    color: #e2e8f0 !important;
+  }
+  
+  body.dark-mode #translate-dropdown > div[data-lang]:hover {
+    background: #4299e1 !important;
+    color: white !important;
+  }
+  
+  /* Ensure dropdown is above other elements */
+  #translate-dropdown {
+    box-sizing: border-box;
+  }
+  
+  #translate-dropdown > div[data-lang] {
+    box-sizing: border-box;
+  }
+  
+  /* Improve button styling */
+  #translate-btn,
+  #translate-reset-btn {
+    font-size: 13px;
+    font-weight: 600;
+    padding: 6px 12px;
+    border-radius: 4px;
+    transition: all 0.2s;
+  }
+  
+  #translate-btn:hover,
+  #translate-reset-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+</style>
