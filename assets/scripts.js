@@ -160,6 +160,9 @@ $(function () {
     });
   }
 
+  // Store pageshow handler reference to allow proper cleanup
+  let pageShowHandler = null;
+
   function initPageTransitions() {
     const bodyEl = document.body;
     if (!bodyEl) {
@@ -167,6 +170,31 @@ $(function () {
     }
 
     requestAnimationFrame(() => bodyEl.classList.add('page-loaded'));
+
+    // Handle back/forward navigation - force redraw when page is restored from cache
+    if (!pageShowHandler) {
+      pageShowHandler = function(event) {
+        // Check if page was restored from bfcache (back/forward cache)
+        let isBackForward = event.persisted;
+        
+        // Fallback check for back/forward navigation using Navigation Timing API
+        if (!isBackForward && window.performance) {
+          const navEntries = performance.getEntriesByType('navigation');
+          if (navEntries.length > 0 && navEntries[0].type === 'back_forward') {
+            isBackForward = true;
+          }
+        }
+        
+        if (isBackForward) {
+          // Page was restored from cache - force redraw
+          bodyEl.classList.remove('page-exiting');
+          bodyEl.classList.add('page-loaded');
+        }
+      };
+      
+      // Add the listener only once
+      window.addEventListener('pageshow', pageShowHandler);
+    }
 
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
     if (prefersReducedMotion.matches) {
