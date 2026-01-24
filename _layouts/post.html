@@ -34,14 +34,6 @@ layout: default
       <div class="row">
         <div class="col-12 col-lg-10">
           <div class="post-heading">
-            <!-- Positional Authority: Metadata in top-right (traditional document position) -->
-            <div class="meta">
-              <div>{{ page.date | date: '%Y-%m-%d' }}</div>
-              <div>작성: {% if page.author %}{{ page.author }}{% else %}{{ site.author }}{% endif %}</div>
-              <div>{% include read_time.html content=page.content %}</div>
-              <div><span id="busuanzi_container_page_pv"><span id="busuanzi_value_page_pv"></span> 조회</span></div>
-            </div>
-            
             <h1>
                   {{ page.title | render_title_tags }}
                   {{ page.title | clean_title_tags }}
