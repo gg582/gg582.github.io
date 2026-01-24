@@ -191,11 +191,10 @@ $(function () {
           bodyEl.classList.add('page-loaded');
         }
       };
+      
+      // Add the listener only once
+      window.addEventListener('pageshow', pageShowHandler);
     }
-    
-    // Remove any existing listener before adding to prevent duplicates
-    window.removeEventListener('pageshow', pageShowHandler);
-    window.addEventListener('pageshow', pageShowHandler);
 
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
     if (prefersReducedMotion.matches) {
