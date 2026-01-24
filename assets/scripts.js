@@ -168,6 +168,15 @@ $(function () {
 
     requestAnimationFrame(() => bodyEl.classList.add('page-loaded'));
 
+    // Handle back/forward navigation - force redraw when page is restored from cache
+    window.addEventListener('pageshow', function(event) {
+      if (event.persisted || (window.performance && window.performance.navigation.type === 2)) {
+        // Page was restored from cache (back/forward navigation)
+        bodyEl.classList.remove('page-exiting');
+        bodyEl.classList.add('page-loaded');
+      }
+    });
+
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
     if (prefersReducedMotion.matches) {
       return;
