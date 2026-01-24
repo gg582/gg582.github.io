@@ -30,6 +30,12 @@
     const resetBtn = document.getElementById('translate-reset-btn');
     const dropdown = document.getElementById('translate-dropdown');
     
+    // Configuration constants
+    const MAX_TEXT_LENGTH = 500;
+    const MAX_ELEMENTS_TO_TRANSLATE = 100;
+    const BATCH_SIZE = 10;
+    const BATCH_DELAY_MS = 1000;
+    
     // Language configuration
     const languages = {
       'en': { name: '🇬🇧 English', code: 'en-GB' },
@@ -135,6 +141,12 @@
     }
 
     async function translatePage(targetLang) {
+      // Validate language code to prevent injection attacks
+      if (!languages[targetLang]) {
+        console.error('Invalid language code:', targetLang);
+        return;
+      }
+      
       // Save preference
       localStorage.setItem('selectedLanguage', targetLang);
       
@@ -157,7 +169,7 @@
             if (el.children.length === 0 || Array.from(el.children).every(child => 
               !['DIV', 'P', 'H1', 'H2', 'H3', 'H4', 'H5', 'H6', 'UL', 'OL', 'TABLE'].includes(child.tagName))) {
               const text = el.textContent.trim();
-              if (text && text.length > 0 && text.length < 500) { // Limit text length
+              if (text && text.length > 0 && text.length < MAX_TEXT_LENGTH) {
                 elementsToTranslate.push({ element: el, text: text });
               }
             }
@@ -165,11 +177,8 @@
         });
         
         // Translate in smaller batches with delay to avoid rate limiting
-        const batchSize = 10;
-        const delay = 1000; // 1 second delay between batches
-        
-        for (let i = 0; i < Math.min(elementsToTranslate.length, 100); i += batchSize) { // Limit to first 100 elements
-          const batch = elementsToTranslate.slice(i, i + batchSize);
+        for (let i = 0; i < Math.min(elementsToTranslate.length, MAX_ELEMENTS_TO_TRANSLATE); i += BATCH_SIZE) {
+          const batch = elementsToTranslate.slice(i, i + BATCH_SIZE);
           
           await Promise.all(batch.map(async (item) => {
             const translatedText = await translateText(item.text, targetLang);
@@ -183,11 +192,11 @@
           }));
           
           // Update loading indicator
-          loadingDiv.textContent = `Translating... ${Math.min(i + batchSize, elementsToTranslate.length)}/${Math.min(elementsToTranslate.length, 100)}`;
+          loadingDiv.textContent = `Translating... ${Math.min(i + BATCH_SIZE, elementsToTranslate.length)}/${Math.min(elementsToTranslate.length, MAX_ELEMENTS_TO_TRANSLATE)}`;
           
           // Delay between batches
-          if (i + batchSize < Math.min(elementsToTranslate.length, 100)) {
-            await new Promise(resolve => setTimeout(resolve, delay));
+          if (i + BATCH_SIZE < Math.min(elementsToTranslate.length, MAX_ELEMENTS_TO_TRANSLATE)) {
+            await new Promise(resolve => setTimeout(resolve, BATCH_DELAY_MS));
           }
         }
         
@@ -210,9 +219,15 @@
     }
 
     async function translateText(text, targetLang) {
+      // Validate language code to prevent injection attacks
+      if (!languages[targetLang]) {
+        console.error('Invalid language code:', targetLang);
+        return text;
+      }
+      
       // Use MyMemory Translation API (free, no API key required)
       const sourceLang = 'ko';
-      const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=${sourceLang}|${targetLang}`;
+      const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=${sourceLang}|${encodeURIComponent(targetLang)}`;
       
       try {
         const response = await fetch(url);
