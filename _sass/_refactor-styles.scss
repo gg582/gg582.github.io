@@ -957,11 +957,11 @@ p, ul, ol, blockquote {
 // Dark mode navbar styles for mobile (max-width: 991px)
 @media (max-width: 991px) {
   body.dark-mode #mainNav {
-    background-color: #232328 !important;
+    background-color: #2B2624 !important;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
 
     .navbar-collapse {
-      background-color: #232328 !important;
+      background-color: #2B2624 !important;
     }
 
     .navbar-nav {
@@ -997,7 +997,7 @@ p, ul, ol, blockquote {
   }
 
   body.dark-mode #mainNav.navbar-sticky {
-    background: #232328 !important;
+    background: #2B2624 !important;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
     
     .navbar-brand {
