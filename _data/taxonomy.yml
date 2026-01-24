@@ -90,22 +90,26 @@ categories:
         name: 다익스트라
         description: 다익스트라 알고리즘
         weight: 7
+      - id: algorhthm-bellman-ford
+        name: 벨만 포드
+        description: 벨만 포드 알고리즘
+        weight: 8
       - id: algorithm-floyd-warshall
         name: 플로이드 워셜
         description: Floyd-Warshall Algorithm
-        weight: 8
+        weight: 9
       - id: algorithm-sorting
         name: 정렬
         description: 힙 정렬, 퀵 정렬 등등
-        weight: 9
+        weight: 10
       - id: algorithm-greedy
         name: 그리디 알고리즘
         description: 탐욕법, 최적화 문제
-        weight: 10
+        weight: 11
       - id: algorithm-bitmask
         name: 비트마스크
         description: 비트마스크
-        weight: 11
+        weight: 12
 
   - id: general
     name: 종합 기술
