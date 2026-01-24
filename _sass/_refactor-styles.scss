@@ -847,11 +847,23 @@ p, ul, ol, blockquote {
     .navbar-collapse {
       flex-basis: 100%;
       width: 100%;
-      background-color: #fff;
+      background-color: #fff !important;
     }
 
     .navbar-nav {
       width: 100%;
+      
+      .nav-link {
+        color: #000 !important;
+      }
+    }
+    
+    .navbar-brand {
+      color: #000 !important;
+    }
+    
+    .navbar-toggler {
+      color: #000 !important;
     }
   }
 
@@ -878,14 +890,17 @@ p, ul, ol, blockquote {
   }
 }
 
-body.dark-mode #mainNav.navbar-sticky {
-  background: rgba(16, 16, 22, 1);
-  border-bottom-color: rgba(255, 255, 255, 0.1);
-  box-shadow: 0 18px 36px rgba(0, 0, 0, 0.45);
+// Dark mode navbar styles - only applied on desktop (min-width: 992px)
+@media (min-width: 992px) {
+  body.dark-mode #mainNav.navbar-sticky {
+    background: rgba(16, 16, 22, 1);
+    border-bottom-color: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 18px 36px rgba(0, 0, 0, 0.45);
 
-  .navbar-brand,
-  .navbar-nav .nav-link {
-    color: #f8fafc !important;
+    .navbar-brand,
+    .navbar-nav .nav-link {
+      color: #f8fafc !important;
+    }
   }
 }
 
@@ -970,8 +985,8 @@ body.dark-mode #mainNav.navbar-sticky {
 }
 
 // Adaptive search bar colors: white text/icon for dark backgrounds (auto-detected or manual toggle)
-#mainNav.dark-bg .navbar-search,
-body.dark-mode .navbar-search {
+// Only apply dark mode search bar styles on desktop (min-width: 992px)
+#mainNav.dark-bg .navbar-search {
   border-bottom-color: #fff;
 
   &:focus-within {
@@ -984,6 +999,25 @@ body.dark-mode .navbar-search {
 
     &::placeholder {
       color: #aaa;
+    }
+  }
+}
+
+@media (min-width: 992px) {
+  body.dark-mode .navbar-search {
+    border-bottom-color: #fff;
+
+    &:focus-within {
+      border-bottom-color: #ccc;
+    }
+
+    .navbar-search__input {
+      color: #fff;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cline x1='16.5' y1='16.5' x2='21' y2='21'/%3E%3C/svg%3E");
+
+      &::placeholder {
+        color: #aaa;
+      }
     }
   }
 }
