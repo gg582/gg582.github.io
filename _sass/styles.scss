@@ -332,3 +332,182 @@ input:checked + .slider:before {
 input:checked + .slider:after {
   transform: translateX(46px);
 }
+
+/* =========================================
+   Code Copy Button
+   ========================================= */
+
+/* Ensure the parent is relative for absolute positioning of the button */
+div.highlight, pre.highlight {
+  position: relative;
+}
+
+/* 
+ * The copy button is hidden by default and shown on hover.
+ * It sits in the top-right corner of the code block.
+ */
+.copy-code-btn {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  z-index: 10;
+  display: block;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.75rem;
+  font-family: $ui-font-stack;
+  font-weight: 600;
+  color: #fff;
+  background-color: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.2s ease-in-out, background-color 0.2s, color 0.2s;
+}
+
+/* Show button on hover */
+div.highlight:hover .copy-code-btn,
+pre.highlight:hover .copy-code-btn {
+  opacity: 1;
+}
+
+/* Button hover state */
+.copy-code-btn:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  color: #fff;
+  text-decoration: none;
+}
+
+/* Feedback state (when clicked) */
+.copy-code-btn.copied {
+  background-color: #28a745; /* Green */
+  border-color: #28a745;
+  color: #fff;
+}
+
+
+/* =========================================
+   Adwaita Style Lightbox (GNOME Mutter)
+   ========================================= */
+
+.adwaita-lightbox {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.adwaita-lightbox.is-active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.adwaita-lightbox__backdrop {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6); /* Darkened backdrop */
+  backdrop-filter: blur(5px); /* Modern blur effect */
+}
+
+.adwaita-lightbox__window {
+  position: relative;
+  background-color: #353535; /* Adwaita Dark Header Color */
+  border-radius: 12px; /* Adwaita rounded corners */
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+  max-width: 90vw;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid rgba(0,0,0,0.3);
+  transform: scale(0.95);
+  transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.adwaita-lightbox.is-active .adwaita-lightbox__window {
+  transform: scale(1);
+}
+
+.adwaita-lightbox__header {
+  height: 46px; /* Standard header bar height */
+  background: linear-gradient(to bottom, #3f3f3f, #353535);
+  border-bottom: 1px solid #1e1e1e;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 12px;
+  flex-shrink: 0;
+  user-select: none;
+}
+
+.adwaita-lightbox__title {
+  font-family: 'Cantarell', 'Inter', sans-serif; /* GNOME font preference */
+  font-weight: 700;
+  color: #eeeeee;
+  font-size: 14px;
+  margin-left: 8px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Close Button - GNOME Adwaita Style */
+.adwaita-lightbox__close {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: none;
+  background-color: #4a4a4a; /* Button background */
+  color: #eeeeee;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 16px;
+  line-height: 1;
+  padding: 0;
+  transition: background-color 0.2s;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.05);
+}
+
+.adwaita-lightbox__close:hover {
+  background-color: #5a5a5a;
+}
+
+.adwaita-lightbox__close:active {
+  background-color: #2a2a2a;
+}
+
+/* Red close button variant (optional, strictly Adwaita usually uses gray for neutral close unless it's a destructive action, but window controls are often red on hover) */
+.adwaita-lightbox__close:hover {
+  background-color: #e01b24; /* Adwaita destructive red */
+  color: #ffffff;
+}
+
+.adwaita-lightbox__content {
+  flex: 1;
+  overflow: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #1e1e1e; /* Dark content background */
+  padding: 0;
+}
+
+.adwaita-lightbox__content img {
+  max-width: 100%;
+  max-height: calc(90vh - 46px); /* Subtract header height */
+  display: block;
+  object-fit: contain;
+}

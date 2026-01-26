@@ -622,6 +622,8 @@ $(function () {
   });
 
   // LightGallery Initialization with download support
+  // DISABLED: Using custom Adwaita-styled lightbox instead as per user request.
+  /*
   if (typeof lightGallery === 'function') {
     const targetContainers = document.querySelectorAll('.post-content, .page-content');
     const plugins = [];
@@ -684,6 +686,91 @@ $(function () {
       container.dataset.lightgallery = 'initialized';
     });
   }
+  */
+  
+  // Custom Adwaita-styled Lightbox (GNOME Mutter Style)
+  initAdwaitaLightbox();
+
+  function initAdwaitaLightbox() {
+    // 1. Create Lightbox DOM if it doesn't exist
+    let lightbox = document.getElementById('adwaitaLightbox');
+    if (!lightbox) {
+      const lightboxHTML = `
+        <div id="adwaitaLightbox" class="adwaita-lightbox" role="dialog" aria-modal="true" aria-hidden="true">
+          <div class="adwaita-lightbox__backdrop"></div>
+          <div class="adwaita-lightbox__window">
+            <div class="adwaita-lightbox__header">
+              <span class="adwaita-lightbox__title">Image View</span>
+              <button class="adwaita-lightbox__close" aria-label="Close">×</button>
+            </div>
+            <div class="adwaita-lightbox__content">
+              <img src="" alt="" class="adwaita-lightbox__image">
+            </div>
+          </div>
+        </div>
+      `;
+      document.body.insertAdjacentHTML('beforeend', lightboxHTML);
+      lightbox = document.getElementById('adwaitaLightbox');
+    }
+
+    const imageEl = lightbox.querySelector('.adwaita-lightbox__image');
+    const titleEl = lightbox.querySelector('.adwaita-lightbox__title');
+    const closeBtn = lightbox.querySelector('.adwaita-lightbox__close');
+    const backdrop = lightbox.querySelector('.adwaita-lightbox__backdrop');
+
+    // 2. Select Images
+    // Target images in post content that are not already inside links
+    const contentImages = document.querySelectorAll('.post-content img, .page-content img');
+
+    contentImages.forEach(img => {
+      // Skip if already wrapped in a link (unless specifically marked for lightbox, but standard behavior is usually link overrides)
+      if (img.closest('a')) {
+        return;
+      }
+      
+      // Make image clickable
+      img.style.cursor = 'zoom-in';
+      img.addEventListener('click', () => {
+        openLightbox(img);
+      });
+    });
+
+    // 3. Open/Close Logic
+    function openLightbox(sourceImg) {
+      const src = sourceImg.dataset.fullsize || sourceImg.currentSrc || sourceImg.src;
+      const alt = sourceImg.alt || 'Image View';
+
+      imageEl.src = src;
+      imageEl.alt = alt;
+      titleEl.textContent = alt;
+
+      lightbox.classList.add('is-active');
+      lightbox.setAttribute('aria-hidden', 'false');
+      document.body.classList.add('lightbox-open'); // Prevent scrolling if needed, or just for state
+    }
+
+    function closeLightbox() {
+      lightbox.classList.remove('is-active');
+      lightbox.setAttribute('aria-hidden', 'true');
+      document.body.classList.remove('lightbox-open');
+      
+      // Clear src after animation to prevent flicker or ghosting on next open
+      setTimeout(() => {
+        imageEl.src = '';
+      }, 300);
+    }
+
+    // Event Listeners for Closing
+    closeBtn.addEventListener('click', closeLightbox);
+    backdrop.addEventListener('click', closeLightbox);
+    
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && lightbox.classList.contains('is-active')) {
+        closeLightbox();
+      }
+    });
+  }
+
 
   // Reading Progress Bar Logic
   const progressBar = document.getElementById('progress-bar');
