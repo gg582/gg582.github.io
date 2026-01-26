@@ -35,6 +35,9 @@ collections:
   network:
     output: true
     permalink: /network/:path
+  devnote:
+    output: true
+    permalink: /devnote/:path/
 
 # Build settings
 markdown:           kramdown

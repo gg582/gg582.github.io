@@ -1,0 +1,39 @@
+---
+layout: page
+title: Devnote
+background: '/img/bg-index.jpg'
+posting_chart_collection: devnote
+---
+
+<div class="post-search-status" id="collectionSearchStatus" aria-live="polite">
+  총 {{ site.devnote | size }}개의 게시물이 있습니다.
+</div>
+
+<div class="list-container" data-collection-search="true">
+{% for post in site.devnote %}
+{% capture search_text -%}
+{{ post.title | strip_html }}
+{{ post.subtitle | default: '' | strip_html }}
+{% if post.tags %}{{ post.tags | join: ' ' }}{% endif %}
+{% if post.categories %}{{ post.categories | join: ' ' }}{% endif %}
+{%- endcapture %}
+<div class="list-item" data-search-text="{{ search_text | strip | replace: '"', '' }}">
+  <div class="item-meta">
+    <span>{{ post.date | date: '%Y-%m-%d' }}</span>
+  </div>
+  <div class="item-content">
+    <a href="{{ post.url | prepend: site.baseurl | replace: '//', '/' }}">
+      <h2 class="post-title">
+        {{ post.title | render_title_tags }}
+        {{ post.title | clean_title_tags }}
+      </h2>
+      {% if post.subtitle %}
+      <h3 class="post-subtitle">
+        {{ post.subtitle }}
+      </h3>
+      {% endif %}
+    </a>
+  </div>
+</div>
+{% endfor %}
+</div>
