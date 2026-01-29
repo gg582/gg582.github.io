@@ -3,6 +3,21 @@
 # Based on East Asian scholarly classification principles
 
 categories:
+  - id: cloud
+    name: 클라우드 컴퓨팅
+    name_ko: 클라우드 컴퓨팅
+    name_en: Cloud Computing
+    description: 쿠버네티스, 가상화, 컨테이너 오케스트레이션
+    subcategories:
+      - id: kubernetes
+        name: 쿠버네티스
+        description: K8s 아키텍처, 디플로이먼트, 오케스트레이션
+        weight: 1
+      - id: virtualization
+        name: 가상화 기술
+        description: LXC/LXD, Incus, VM 관리
+        weight: 2
+
   - id: network
     name: 네트워크 기술
     name_ko: 네트워크 기술
@@ -22,21 +37,6 @@ categories:
         description: SOCKMAP, 스플라이싱, eBPF
         weight: 3
 
-  - id: cloud
-    name: 클라우드 컴퓨팅
-    name_ko: 클라우드 컴퓨팅
-    name_en: Cloud Computing
-    description: 쿠버네티스, 가상화, 컨테이너 오케스트레이션
-    subcategories:
-      - id: kubernetes
-        name: 쿠버네티스
-        description: K8s 아키텍처, 디플로이먼트, 오케스트레이션
-        weight: 1
-      - id: virtualization
-        name: 가상화 기술
-        description: LXC/LXD, Incus, VM 관리
-        weight: 2
-
   - id: embedded
     name: 임베디드 시스템
     name_ko: 임베디드 시스템
@@ -54,6 +54,25 @@ categories:
       - id: embedded-linux
         name: 임베디드 리눅스
         description: 커널 모듈, 디바이스 드라이버
+        weight: 3
+
+  - id: general
+    name: 종합 기술
+    name_ko: 종합 기술
+    name_en: General Technology
+    description: 일반 프로그래밍, 시스템 설계, 개발 도구
+    subcategories:
+      - id: general-programming
+        name: 프로그래밍 기법
+        description: 병렬처리, 컴파일 최적화
+        weight: 1
+      - id: general-tools
+        name: 개발 도구
+        description: 빌드 시스템, 버전 관리
+        weight: 2
+      - id: general-system
+        name: 시스템 설계
+        description: 아키텍처, 성능 분석
         weight: 3
 
   - id: codingtest
@@ -106,48 +125,33 @@ categories:
         name: 그리디 알고리즘
         description: 탐욕법, 최적화 문제
         weight: 11
+      - id: algorithm-binary-search
+        name: 이분 탐색
+        description: 이분 탐색, 매개 변수 탐색 등등
+        weight: 12
       - id: algorithm-bitmask
         name: 비트마스크
         description: 비트마스크
-        weight: 12
-
-  - id: general
-    name: 종합 기술
-    name_ko: 종합 기술
-    name_en: General Technology
-    description: 일반 프로그래밍, 시스템 설계, 개발 도구
-    subcategories:
-      - id: general-programming
-        name: 프로그래밍 기법
-        description: 병렬처리, 컴파일 최적화
-        weight: 1
-      - id: general-tools
-        name: 개발 도구
-        description: 빌드 시스템, 버전 관리
-        weight: 2
-      - id: general-system
-        name: 시스템 설계
-        description: 아키텍처, 성능 분석
-        weight: 3
+        weight: 13
 
 # Document Relationship Types
 relationship_types:
   - id: prerequisite
     name: 선수 지식
     description: 이 문서를 이해하기 위해 먼저 읽어야 할 문서
-  
+
   - id: related
     name: 관련 문서
     description: 같은 주제나 개념을 다루는 문서
-  
+
   - id: extends
     name: 확장 개념
     description: 이 문서의 개념을 확장하거나 심화하는 문서
-  
+
   - id: references
     name: 참조
     description: 이 문서에서 인용하거나 참조하는 문서
-  
+
   - id: comparison
     name: 비교 대상
     description: 비교 분석을 위한 대조 문서
@@ -158,17 +162,17 @@ difficulty_levels:
     name: 초급
     name_ko: 초급
     color: "#28a745"
-  
+
   - id: intermediate
     name: 중급
     name_ko: 중급
     color: "#ffc107"
-  
+
   - id: advanced
     name:  고급
     name_ko: 고급
     color: "#dc3545"
-  
+
   - id: expert
     name: 전문가
     name_ko: 전문가

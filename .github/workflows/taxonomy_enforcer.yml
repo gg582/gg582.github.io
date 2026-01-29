@@ -1,0 +1,49 @@
+name: Enforce Taxonomy Order
+
+on:
+  push:
+    branches: [ "master", "main" ]
+  pull_request:
+    branches: [ "master", "main" ]
+  workflow_dispatch:
+
+jobs:
+  enforce-taxonomy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pyyaml
+
+      - name: Run Taxonomy Sync Script
+        run: |
+          # List of directories to enforce taxonomy on
+          for dir in _posts _cloud _codingtest _devnote _embedded _network; do
+            if [ -d "$dir" ]; then
+              echo "Processing $dir..."
+              python3 .github/scripts/sync_taxonomy_order.py "$dir"
+            else
+              echo "Directory $dir not found, skipping."
+            fi
+          done
+
+      - name: Commit and Push changes
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "chore: enforce taxonomy order in front matter"
+          branch: ${{ github.head_ref }}
+          file_pattern: "*.md *.markdown"
