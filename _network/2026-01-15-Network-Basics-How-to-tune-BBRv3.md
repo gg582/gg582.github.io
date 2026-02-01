@@ -93,7 +93,7 @@ As a result, we can build a plan based on this metaphor.
 
 1. Reduce CWND (Congestion Window) when metrics get too bad.
 2. Make a custom metric with previous bandwidth records.
-  2-1. Use this metric to reduce pacing.
+3. Use this metric to reduce pacing.
 
 ## How can I implement this?
 
