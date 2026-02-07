@@ -9,6 +9,36 @@ layout: default
 <div class="subcategory-page-container">
   
   <!-- Header -->
+  {% if page.background %}
+  <header class="masthead" style="background-image: url('{{ page.background | prepend: site.baseurl | replace: '//', '/' }}')">
+    <div class="overlay"></div>
+    <div class="container-fluid px-lg-5">
+      <div class="row">
+        <div class="col-lg-10 col-md-11">
+          <div class="page-heading">
+            <div class="breadcrumb-nav mb-3">
+              <a href="{{ '/' | relative_url }}" style="color: rgba(255,255,255,0.8)">Knowledge Base</a>
+              <span class="separator" style="color: rgba(255,255,255,0.6)">›</span>
+              <a href="{{ site.baseurl }}/분류/{{ page.category_id }}.html" style="color: rgba(255,255,255,0.8)">{{ page.category_name }}</a>
+              <span class="separator" style="color: rgba(255,255,255,0.6)">›</span>
+              <span class="current" style="color: white">{{ page.subcategory_name }}</span>
+            </div>
+            <h1>
+              {{ page.subcategory_name }}
+            </h1>
+            {% if page.subcategory_description %}
+            <span class="subheading">{{ page.subcategory_description }}</span>
+            {% endif %}
+            
+            <div class="subcategory-stats-masthead mt-3" style="color: rgba(255,255,255,0.8); font-size: 1.1rem;">
+              <span class="stat-item">{{ subcat_docs.size }} documents</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+  {% else %}
   <header class="subcategory-header">
     <div class="breadcrumb-nav">
       <a href="{{ '/' | relative_url }}">Knowledge Base</a>
@@ -34,9 +64,17 @@ layout: default
       {% include posting_stats_widget.html subcategory_id=page.subcategory_id %}
     </div>
   </header>
+  {% endif %}
 
   <!-- Main Content -->
   <div class="subcategory-content">
+    
+    <!-- Show chart below masthead if masthead is used -->
+    {% if page.background %}
+    <div class="subcategory-chart mb-5" style="max-width: 600px; margin: 0 auto;">
+      {% include posting_stats_widget.html subcategory_id=page.subcategory_id %}
+    </div>
+    {% endif %}
     
     <!-- All Documents in Subcategory -->
     <section class="documents-section">

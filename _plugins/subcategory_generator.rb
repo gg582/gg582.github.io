@@ -28,7 +28,8 @@ module Jekyll
               site.source, 
               category_id, 
               subcat, 
-              category_page.data['category_name']
+              category_page.data['category_name'],
+              category_page.data['background']
             )
           end
         end
@@ -37,7 +38,7 @@ module Jekyll
   end
 
   class SubcategoryPage < Page
-    def initialize(site, base, category_id, subcat, category_name)
+    def initialize(site, base, category_id, subcat, category_name, background = nil)
       @site = site
       @base = base
       @dir = File.join('분류', category_id, subcat['id'])
@@ -52,6 +53,7 @@ module Jekyll
       self.data['subcategory_name'] = subcat['name']
       self.data['subcategory_description'] = subcat['description']
       self.data['title'] = "#{subcat['name']} - #{category_name}"
+      self.data['background'] = background if background
     end
   end
 end
