@@ -1,7 +1,7 @@
 ---
 layout: knowledge-base
 title: "[블루스][포크] 누구나 한 번쯤 겪는 아픈 이별, 블라인드 윌리 맥텔의 팔 오브 마인(Pal of Mine)"
-subtitle: "블라인드 윌리 맥텔의 절절한 감성이 담긴 Pal of Mine"
+subtitle: "음악하는 아저씨의 멜랑꼴리"
 date: 2026-02-07 13:20:00 +0900
 categories: [hobbies]
 taxonomy:
