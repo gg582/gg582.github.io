@@ -38,6 +38,9 @@ collections:
   devnote:
     output: true
     permalink: /devnote/:path/
+  hobbies:
+    output: true
+    permalink: /hobbies/:path/
 
 # Build settings
 markdown:           kramdown

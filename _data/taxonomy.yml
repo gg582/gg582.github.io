@@ -134,6 +134,33 @@ categories:
         description: 비트마스크
         weight: 13
 
+  - id: hobbies
+    name: 취미 생활
+    name_ko: 취미 생활
+    name_en: Hobbies
+    description: 일상 속의 즐거움과 취미 기록
+    subcategories:
+      - id: hobby-coffee
+        name: COFFEE
+        description: 주관적으로 원두에 대해 설명합니다.
+        weight: 1
+      - id: hobby-camera
+        name: CAMERA
+        description: 렌즈와 카메라 바디에 대해 짧게 다룹니다.
+        weight: 2
+      - id: hobby-music
+        name: MUSIC
+        description: 좋아하는 장르들을 다룹니다.
+        weight: 3
+      - id: hobby-stationary
+        name: STATIONARY
+        description: 실용과 감성 사이를 다룹니다.
+        weight: 4
+      - id: hobby-book
+        name: BOOK
+        description: 조금은 편향된 독서에 대한 제 감각을 다룹니다.
+        weight: 5
+
 # Document Relationship Types
 relationship_types:
   - id: prerequisite
