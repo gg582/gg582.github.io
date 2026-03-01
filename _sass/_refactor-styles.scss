@@ -1169,7 +1169,7 @@ p, ul, ol, blockquote {
 }
 
 @media (min-width: 992px) {
-  body.dark-mode .navbar-search {
+  body.dark-mode #mainNav.navbar-sticky .navbar-search {
     border-bottom-color: #fff;
 
     &:focus-within {
