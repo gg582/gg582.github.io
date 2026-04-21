@@ -1,0 +1,76 @@
+// Page Transition Overlay Base
+#page-transition-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 999999;
+  pointer-events: none;
+  background-color: #ffffff;
+  visibility: hidden;
+}
+
+body.dark-mode #page-transition-overlay {
+  background-color: #1a1a1a;
+}
+
+// 1. Radial Transition (Expanding Circle)
+.transition-radial-out #page-transition-overlay {
+  visibility: visible;
+  -webkit-clip-path: circle(0% at var(--click-x, 50%) var(--click-y, 50%));
+  clip-path: circle(0% at var(--click-x, 50%) var(--click-y, 50%));
+  animation: radial-expand 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.transition-radial-in #page-transition-overlay {
+  visibility: visible;
+  -webkit-clip-path: circle(150% at var(--click-x, 50%) var(--click-y, 50%));
+  clip-path: circle(150% at var(--click-x, 50%) var(--click-y, 50%)); // Start fully covering
+  animation: radial-shrink 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes radial-expand {
+  0% { 
+    -webkit-clip-path: circle(0% at var(--click-x, 50%) var(--click-y, 50%));
+    clip-path: circle(0% at var(--click-x, 50%) var(--click-y, 50%)); 
+  }
+  100% { 
+    -webkit-clip-path: circle(150% at var(--click-x, 50%) var(--click-y, 50%));
+    clip-path: circle(150% at var(--click-x, 50%) var(--click-y, 50%)); 
+  }
+}
+
+@keyframes radial-shrink {
+  0% { 
+    -webkit-clip-path: circle(150% at var(--click-x, 50%) var(--click-y, 50%));
+    clip-path: circle(150% at var(--click-x, 50%) var(--click-y, 50%)); 
+  }
+  100% { 
+    -webkit-clip-path: circle(0% at var(--click-x, 50%) var(--click-y, 50%));
+    clip-path: circle(0% at var(--click-x, 50%) var(--click-y, 50%)); 
+  }
+}
+
+// 2. Slide Transition (Tile Push)
+.transition-slide-out #page-transition-overlay {
+  visibility: visible;
+  transform: translateX(100%);
+  animation: slide-in-left 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.transition-slide-in #page-transition-overlay {
+  visibility: visible;
+  transform: translateX(0%);
+  animation: slide-out-right 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes slide-in-left {
+  0% { transform: translateX(100%); }
+  100% { transform: translateX(0%); }
+}
+
+@keyframes slide-out-right {
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(-100%); }
+}

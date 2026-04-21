@@ -1,0 +1,83 @@
+<div id="page-transition-overlay"></div>
+<script>
+(function() {
+  var transitionType = sessionStorage.getItem('pageTransition');
+  if (transitionType) {
+    if (transitionType === 'radial') {
+      var x = sessionStorage.getItem('pageTransitionX');
+      var y = sessionStorage.getItem('pageTransitionY');
+      if (x && y) {
+        document.documentElement.style.setProperty('--click-x', x);
+        document.documentElement.style.setProperty('--click-y', y);
+      }
+    }
+
+    document.body.classList.add('transition-' + transitionType + '-in');
+    sessionStorage.removeItem('pageTransition');
+    sessionStorage.removeItem('pageTransitionX');
+    sessionStorage.removeItem('pageTransitionY');
+    
+    // Clean up classes after animation
+    setTimeout(function() {
+      document.body.classList.remove('transition-' + transitionType + '-in');
+    }, 600);
+  }
+
+  document.addEventListener('click', function(e) {
+    // Only intercept plain left clicks
+    if (e.button !== 0 || e.ctrlKey || e.metaKey || e.shiftKey || e.altKey) return;
+    
+    var link = e.target.closest('a');
+    if (!link || !link.href) return;
+    
+    // Must be same origin
+    if (link.origin !== window.location.origin) return;
+    
+    // Exclude anchor links on the same page
+    if (link.hash && link.pathname === window.location.pathname) return;
+
+    // Exclude download links, target blank, etc
+    if (link.hasAttribute('download') || link.getAttribute('target') === '_blank') return;
+
+    // Determine transition type
+    var type = null;
+    
+    // Menu bar links -> slide
+    if (link.closest('#mainNav')) {
+      type = 'slide';
+    } 
+    // Post links -> radial
+    else if (link.closest('.post-preview') || link.closest('.kb-card') || link.closest('.related-post-card') || link.closest('.card') || link.closest('.item-card')) {
+      type = 'radial';
+    }
+
+    if (type) {
+      e.preventDefault();
+      
+      // Determine click coordinates for radial effect origin
+      if (type === 'radial') {
+        var x = e.clientX;
+        var y = e.clientY;
+        document.documentElement.style.setProperty('--click-x', x + 'px');
+        document.documentElement.style.setProperty('--click-y', y + 'px');
+        sessionStorage.setItem('pageTransitionX', x + 'px');
+        sessionStorage.setItem('pageTransitionY', y + 'px');
+      }
+
+      sessionStorage.setItem('pageTransition', type);
+      document.body.classList.add('transition-' + type + '-out');
+      
+      // Navigate after animation (matching CSS duration)
+      setTimeout(function() {
+        window.location.href = link.href;
+      }, 500);
+    }
+  });
+
+  window.addEventListener('pageshow', function(e) {
+    if (e.persisted) {
+      document.body.classList.remove('transition-slide-out', 'transition-radial-out');
+    }
+  });
+})();
+</script>
