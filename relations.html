@@ -96,12 +96,6 @@ background: '/img/bg-devnote.jpg'
       });
     }
   });
-  const connectedNodes = new Array(nodes.length).fill(false);
-  edges.forEach(edge => {
-    connectedNodes[edge.source] = true;
-    connectedNodes[edge.target] = true;
-  });
-
   const edges = [];
   posts.forEach(post => {
     const sourceIdx = nodeMap[post.id];
@@ -120,6 +114,11 @@ background: '/img/bg-devnote.jpg'
       addEdges(post.references);
       addEdges(post.prerequisite);
     }
+  });
+  const connectedNodes = new Array(nodes.length).fill(false);
+  edges.forEach(edge => {
+    connectedNodes[edge.source] = true;
+    connectedNodes[edge.target] = true;
   });
 
   const canvas = document.getElementById('relationCanvas');
