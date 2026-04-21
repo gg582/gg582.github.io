@@ -1,0 +1,258 @@
+---
+layout: page
+title: Relations
+background: '/img/bg-devnote.jpg'
+---
+
+<style>
+  #canvas-container {
+    width: 100%;
+    height: 600px;
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+    margin-top: 20px;
+  }
+  canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+  #tooltip {
+    position: absolute;
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 4px;
+    pointer-events: none;
+    font-size: 14px;
+    display: none;
+    z-index: 10;
+  }
+</style>
+
+<div class="container">
+  <div class="row">
+    <div class="col-lg-10 col-md-10 mx-auto">
+      <h2>Document Relations Mesh</h2>
+      <p>This graph shows the relationships between posts. Calculated with WebAssembly (Emscripten).</p>
+      <div id="canvas-container">
+        <div id="tooltip"></div>
+        <canvas id="relationCanvas"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="{{ '/assets/relations_engine.js' | relative_url }}"></script>
+<script>
+  const posts = [
+    {% for post in site.documents %}
+      {% if post.title and post.url %}
+      {
+        id: "{{ post.path | escape }}",
+        title: "{{ post.title | escape }}",
+        url: "{{ post.url | relative_url }}",
+        related: [
+          {% if post.relationships.related %}
+            {% for r in post.relationships.related %}
+              "{{ r | escape }}",
+            {% endfor %}
+          {% endif %}
+        ],
+        references: [
+          {% if post.relationships.references %}
+            {% for r in post.relationships.references %}
+              "{{ r | escape }}",
+            {% endfor %}
+          {% endif %}
+        ],
+        prerequisite: [
+          {% if post.relationships.prerequisite %}
+            {% for r in post.relationships.prerequisite %}
+              "{{ r | escape }}",
+            {% endfor %}
+          {% endif %}
+        ]
+      },
+      {% endif %}
+    {% endfor %}
+  ];
+
+  const nodes = [];
+  const nodeMap = {};
+  
+  posts.forEach(post => {
+    if (post.id && !nodeMap[post.id]) {
+      nodeMap[post.id] = nodes.length;
+      nodes.push({
+        ...post,
+        x: 0,
+        y: 0,
+        vx: 0,
+        vy: 0
+      });
+    }
+  });
+
+  const edges = [];
+  posts.forEach(post => {
+    const sourceIdx = nodeMap[post.id];
+    if (sourceIdx !== undefined) {
+      const addEdges = (relArray) => {
+        relArray.forEach(targetId => {
+          const targetIdx = nodeMap[targetId];
+          if (targetIdx !== undefined) {
+            if (!edges.some(e => (e.source === sourceIdx && e.target === targetIdx) || (e.source === targetIdx && e.target === sourceIdx))) {
+                edges.push({ source: sourceIdx, target: targetIdx });
+            }
+          }
+        });
+      };
+      addEdges(post.related);
+      addEdges(post.references);
+      addEdges(post.prerequisite);
+    }
+  });
+
+  const canvas = document.getElementById('relationCanvas');
+  const ctx = canvas.getContext('2d');
+  const tooltip = document.getElementById('tooltip');
+  
+  let width = canvas.width = canvas.parentElement.clientWidth;
+  let height = canvas.height = canvas.parentElement.clientHeight;
+
+  window.addEventListener('resize', () => {
+    width = canvas.width = canvas.parentElement.clientWidth;
+    height = canvas.height = canvas.parentElement.clientHeight;
+  });
+
+  Module.onRuntimeInitialized = () => {
+    const numNodes = nodes.length;
+    const numEdges = edges.length;
+
+    if (numNodes === 0) return;
+
+    const pxPtr = Module._malloc(numNodes * 4);
+    const pyPtr = Module._malloc(numNodes * 4);
+    const vxPtr = Module._malloc(numNodes * 4);
+    const vyPtr = Module._malloc(numNodes * 4);
+    const edgeSrcPtr = Module._malloc(numEdges * 4);
+    const edgeDstPtr = Module._malloc(numEdges * 4);
+
+    const pxArray = new Float32Array(Module.HEAPF32.buffer, pxPtr, numNodes);
+    const pyArray = new Float32Array(Module.HEAPF32.buffer, pyPtr, numNodes);
+    const vxArray = new Float32Array(Module.HEAPF32.buffer, vxPtr, numNodes);
+    const vyArray = new Float32Array(Module.HEAPF32.buffer, vyPtr, numNodes);
+    const edgeSrcArray = new Int32Array(Module.HEAP32.buffer, edgeSrcPtr, numEdges);
+    const edgeDstArray = new Int32Array(Module.HEAP32.buffer, edgeDstPtr, numEdges);
+
+    for (let i = 0; i < numNodes; i++) {
+      pxArray[i] = Math.random() * width;
+      pyArray[i] = Math.random() * height;
+      vxArray[i] = 0;
+      vyArray[i] = 0;
+    }
+
+    for (let i = 0; i < numEdges; i++) {
+      edgeSrcArray[i] = edges[i].source;
+      edgeDstArray[i] = edges[i].target;
+    }
+
+    function animate() {
+      Module._compute_layout(pxPtr, pyPtr, vxPtr, vyPtr, numNodes, edgeSrcPtr, edgeDstPtr, numEdges, width, height);
+
+      for (let i = 0; i < numNodes; i++) {
+        nodes[i].x = pxArray[i];
+        nodes[i].y = pyArray[i];
+      }
+
+      ctx.clearRect(0, 0, width, height);
+      
+      ctx.strokeStyle = 'rgba(150, 150, 150, 0.5)';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      edges.forEach(edge => {
+        const src = nodes[edge.source];
+        const dst = nodes[edge.target];
+        ctx.moveTo(src.x, src.y);
+        ctx.lineTo(dst.x, dst.y);
+      });
+      ctx.stroke();
+
+      nodes.forEach((node, i) => {
+        const hasEdges = edges.some(e => e.source === i || e.target === i);
+        if (!hasEdges) return;
+
+        ctx.beginPath();
+        ctx.arc(node.x, node.y, 6, 0, Math.PI * 2);
+        ctx.fillStyle = '#007bff';
+        ctx.fill();
+        ctx.strokeStyle = '#fff';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+
+        ctx.fillStyle = '#333';
+        ctx.font = '12px sans-serif';
+        ctx.fillText(node.title, node.x + 10, node.y + 4);
+      });
+
+      requestAnimationFrame(animate);
+    }
+
+    animate();
+  };
+
+  canvas.addEventListener('mousemove', (e) => {
+    const rect = canvas.getBoundingClientRect();
+    const mx = e.clientX - rect.left;
+    const my = e.clientY - rect.top;
+    
+    let hovered = null;
+    for (let i = 0; i < nodes.length; i++) {
+      const hasEdges = edges.some(ed => ed.source === i || ed.target === i);
+      if (!hasEdges) continue;
+
+      const node = nodes[i];
+      const dx = mx - node.x;
+      const dy = my - node.y;
+      if (dx*dx + dy*dy < 100) { 
+        hovered = node;
+        break;
+      }
+    }
+
+    if (hovered) {
+      canvas.style.cursor = 'pointer';
+      tooltip.style.display = 'block';
+      tooltip.style.left = (e.clientX + 10) + 'px';
+      tooltip.style.top = (e.clientY + 10) + 'px';
+      tooltip.textContent = hovered.title;
+    } else {
+      canvas.style.cursor = 'default';
+      tooltip.style.display = 'none';
+    }
+  });
+
+  canvas.addEventListener('click', (e) => {
+    const rect = canvas.getBoundingClientRect();
+    const mx = e.clientX - rect.left;
+    const my = e.clientY - rect.top;
+    
+    for (let i = 0; i < nodes.length; i++) {
+      const hasEdges = edges.some(ed => ed.source === i || ed.target === i);
+      if (!hasEdges) continue;
+
+      const node = nodes[i];
+      const dx = mx - node.x;
+      const dy = my - node.y;
+      if (dx*dx + dy*dy < 100) {
+        window.location.href = node.url;
+        break;
+      }
+    }
+  });
+
+</script>
