@@ -61,4 +61,10 @@
       </form>
     </div>
   </div>
+  {% if page.layout == 'post' or page.layout == 'knowledge-base' %}
+  <!-- Reading Progress Bar -->
+  <div id="progress-bar-container" aria-hidden="true">
+    <div id="progress-bar" role="presentation"></div>
+  </div>
+  {% endif %}
 </nav>
