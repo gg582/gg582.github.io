@@ -96,6 +96,11 @@ background: '/img/bg-devnote.jpg'
       });
     }
   });
+  const connectedNodes = new Array(nodes.length).fill(false);
+  edges.forEach(edge => {
+    connectedNodes[edge.source] = true;
+    connectedNodes[edge.target] = true;
+  });
 
   const edges = [];
   posts.forEach(post => {
@@ -123,6 +128,43 @@ background: '/img/bg-devnote.jpg'
   
   let width = canvas.width = canvas.parentElement.clientWidth;
   let height = canvas.height = canvas.parentElement.clientHeight;
+  let viewScale = 1;
+  let viewOffsetX = 0;
+  let viewOffsetY = 0;
+  const MIN_SCALE = 0.35;
+  const MAX_SCALE = 4;
+  const ZOOM_SENSITIVITY = 0.0015;
+
+  function clamp(v, min, max) {
+    return Math.max(min, Math.min(max, v));
+  }
+
+  function worldToScreenX(x) {
+    return x * viewScale + viewOffsetX;
+  }
+
+  function worldToScreenY(y) {
+    return y * viewScale + viewOffsetY;
+  }
+
+  function getHitNode(mx, my) {
+    for (let i = nodes.length - 1; i >= 0; i--) {
+      const node = nodes[i];
+      if (!node.visible) continue;
+
+      const dx = mx - node.screenX;
+      const dy = my - node.screenY;
+      if (dx * dx + dy * dy < 100) {
+        return node;
+      }
+
+      const b = node.labelBounds;
+      if (b && mx >= b.left && mx <= b.right && my >= b.top && my <= b.bottom) {
+        return node;
+      }
+    }
+    return null;
+  }
 
   window.addEventListener('resize', () => {
     width = canvas.width = canvas.parentElement.clientWidth;
@@ -167,6 +209,13 @@ background: '/img/bg-devnote.jpg'
       for (let i = 0; i < numNodes; i++) {
         nodes[i].x = pxArray[i];
         nodes[i].y = pyArray[i];
+        nodes[i].visible = connectedNodes[i];
+        if (nodes[i].visible) {
+          nodes[i].screenX = worldToScreenX(nodes[i].x);
+          nodes[i].screenY = worldToScreenY(nodes[i].y);
+        } else {
+          nodes[i].labelBounds = null;
+        }
       }
 
       ctx.clearRect(0, 0, width, height);
@@ -177,17 +226,24 @@ background: '/img/bg-devnote.jpg'
       edges.forEach(edge => {
         const src = nodes[edge.source];
         const dst = nodes[edge.target];
-        ctx.moveTo(src.x, src.y);
-        ctx.lineTo(dst.x, dst.y);
+        if (!src.visible || !dst.visible) return;
+        ctx.moveTo(src.screenX, src.screenY);
+        ctx.lineTo(dst.screenX, dst.screenY);
       });
       ctx.stroke();
 
+      ctx.fillStyle = '#333';
+      ctx.font = '12px sans-serif';
+      ctx.textBaseline = 'middle';
       nodes.forEach((node, i) => {
-        const hasEdges = edges.some(e => e.source === i || e.target === i);
-        if (!hasEdges) return;
+        if (!connectedNodes[i]) {
+          return;
+        }
+        const sx = node.screenX;
+        const sy = node.screenY;
 
         ctx.beginPath();
-        ctx.arc(node.x, node.y, 6, 0, Math.PI * 2);
+        ctx.arc(sx, sy, 6, 0, Math.PI * 2);
         ctx.fillStyle = '#007bff';
         ctx.fill();
         ctx.strokeStyle = '#fff';
@@ -195,8 +251,16 @@ background: '/img/bg-devnote.jpg'
         ctx.stroke();
 
         ctx.fillStyle = '#333';
-        ctx.font = '12px sans-serif';
-        ctx.fillText(node.title, node.x + 10, node.y + 4);
+        const labelX = sx + 10;
+        const labelY = sy;
+        ctx.fillText(node.title, labelX, labelY);
+        const labelWidth = ctx.measureText(node.title).width;
+        node.labelBounds = {
+          left: labelX,
+          right: labelX + labelWidth,
+          top: labelY - 8,
+          bottom: labelY + 8
+        };
       });
 
       requestAnimationFrame(animate);
@@ -209,26 +273,13 @@ background: '/img/bg-devnote.jpg'
     const rect = canvas.getBoundingClientRect();
     const mx = e.clientX - rect.left;
     const my = e.clientY - rect.top;
-    
-    let hovered = null;
-    for (let i = 0; i < nodes.length; i++) {
-      const hasEdges = edges.some(ed => ed.source === i || ed.target === i);
-      if (!hasEdges) continue;
-
-      const node = nodes[i];
-      const dx = mx - node.x;
-      const dy = my - node.y;
-      if (dx*dx + dy*dy < 100) { 
-        hovered = node;
-        break;
-      }
-    }
+    const hovered = getHitNode(mx, my);
 
     if (hovered) {
       canvas.style.cursor = 'pointer';
       tooltip.style.display = 'block';
-      tooltip.style.left = (e.clientX + 10) + 'px';
-      tooltip.style.top = (e.clientY + 10) + 'px';
+      tooltip.style.left = (mx + 10) + 'px';
+      tooltip.style.top = (my + 10) + 'px';
       tooltip.textContent = hovered.title;
     } else {
       canvas.style.cursor = 'default';
@@ -236,22 +287,29 @@ background: '/img/bg-devnote.jpg'
     }
   });
 
+  canvas.addEventListener('wheel', (e) => {
+    e.preventDefault();
+    const rect = canvas.getBoundingClientRect();
+    const mx = e.clientX - rect.left;
+    const my = e.clientY - rect.top;
+
+    const worldX = (mx - viewOffsetX) / viewScale;
+    const worldY = (my - viewOffsetY) / viewScale;
+    const zoomFactor = Math.exp(-e.deltaY * ZOOM_SENSITIVITY);
+    const nextScale = clamp(viewScale * zoomFactor, MIN_SCALE, MAX_SCALE);
+
+    viewOffsetX = mx - worldX * nextScale;
+    viewOffsetY = my - worldY * nextScale;
+    viewScale = nextScale;
+  }, { passive: false });
+
   canvas.addEventListener('click', (e) => {
     const rect = canvas.getBoundingClientRect();
     const mx = e.clientX - rect.left;
     const my = e.clientY - rect.top;
-    
-    for (let i = 0; i < nodes.length; i++) {
-      const hasEdges = edges.some(ed => ed.source === i || ed.target === i);
-      if (!hasEdges) continue;
-
-      const node = nodes[i];
-      const dx = mx - node.x;
-      const dy = my - node.y;
-      if (dx*dx + dy*dy < 100) {
-        window.location.href = node.url;
-        break;
-      }
+    const clicked = getHitNode(mx, my);
+    if (clicked) {
+      window.location.href = clicked.url;
     }
   });
 
