@@ -4,26 +4,26 @@ title: Easy Learning Series-SOCKMAP and Splicing
 subtitle: Kernel-level Network Optimization Techniques
 date: 2025-12-31 11:00:00 +0900
 categories:
-  - network
+- network
 taxonomy:
   category: network
   subcategory: network-kernel
   order: 2
 difficulty: intermediate
 keywords:
-  - SOCKMAP
-  - Splicing
-  - TCP
-  - Kernel Networking
-  - Zero-copy
+- SOCKMAP
+- Splicing
+- TCP
+- Kernel Networking
+- Zero-copy
 relationships:
   related:
-    - _network/2025-12-26-굴비와-예제로-공부해보는-SOCKMAP과-스플라이싱.md
-    - _network/2026-01-15-Network-Basics-How-to-tune-BBRv3.md
-    - _devnote/2026-01-26-Personal-Software-From-AI-Sketch-to-Usable-Software.md
-    - _codingtest/2026-01-19-[스택][문자열]-Simplify-Path-LeetCode.md
-    - _hobbies/2026-02-09-[록][데스메탈]-음악으로-얻어가는-삶의-용기.md
-    - _codingtest/2026-01-20-[다익스트라]-Network-Delay-Time-LeetCode.md
+  - _network/2025-12-26-굴비와-예제로-공부해보는-SOCKMAP과-스플라이싱.md
+  - _network/2026-01-15-Network-Basics-How-to-tune-BBRv3.md
+  - _devnote/2026-01-26-Personal-Software-From-AI-Sketch-to-Usable-Software.md
+  - _codingtest/2026-01-19-[스택][문자열]-Simplify-Path-LeetCode.md
+  - _hobbies/2026-02-09-[록][데스메탈]-음악으로-얻어가는-삶의-용기.md
+  - _codingtest/2026-01-20-[다익스트라]-Network-Delay-Time-LeetCode.md
   references: []
   prerequisite: []
   extends: []
