@@ -16,7 +16,8 @@ keywords:
 relationships:
   related: []
   references: []
-  prerequisite: []
+  prerequisite:
+    - _posts/2026-01-19-Vim은-정말-외골수들의-편집기일-뿐일까.md
   extends: []
   comparison: []
 ---

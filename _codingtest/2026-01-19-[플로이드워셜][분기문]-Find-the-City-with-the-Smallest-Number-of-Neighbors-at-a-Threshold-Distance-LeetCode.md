@@ -1,6 +1,7 @@
 ---
 layout: knowledge-base
-title: "[플로이드워셜][분기문] Find the City with the Smallest Number of Neighbors at a Threshold Distance-LeetCode"
+title: "[플로이드워셜][분기문] Find the City with the Smallest Number of Neighbors at a Threshold
+  Distance-LeetCode"
 subtitle: "플로이드-워셜 알고리즘과 조건 분기를 활용한 최단 경로 문제"
 date: 2026-01-19 12:53 +0900
 categories: [codingtest]
@@ -15,9 +16,14 @@ keywords:
   - LeetCode
   - 분기문
 relationships:
-  related: []
+  related:
+    - _codingtest/2026-01-20-[다익스트라]-Network-Delay-Time-LeetCode.md
+    - _codingtest/2026-01-19-[스택][문자열]-Simplify-Path-LeetCode.md
   references: []
-  prerequisite: []
+  prerequisite:
+    - _codingtest/2026-01-18-[그래프]-가장-먼-노드-레벨3.md
+    - _codingtest/2026-01-17-[그래프]-도넛과-막대-그래프-프로그래머스-레벨2.md
+    - _codingtest/2026-01-18-[단조스택]-Remove-K-Digits-LeetCode.md
   extends: []
   comparison: []
 ---

@@ -3,16 +3,24 @@ layout: knowledge-base
 title: Personal Software From AI Sketch to Usable Software
 date: 2026-01-26 12:00:00 +0900
 categories:
-- devnote
+  - devnote
 taxonomy:
   category: devnote
   subcategory: general
   order: 1
 difficulty: easy
 keywords:
-- AI Coding
-- Software Development
-- Personal Project
+  - AI Coding
+  - Software Development
+  - Personal Project
+relationships:
+  related:
+    - _hobbies/2026-02-09-[록][데스메탈]-음악으로-얻어가는-삶의-용기.md
+  references:
+    - _network/2025-12-31-Easy-Learning-Series-SOCKMAP-and-Splicing.md
+    - _network/2026-01-15-Network-Basics-How-to-tune-BBRv3.md
+    - _codingtest/2026-01-19-[스택][문자열]-Simplify-Path-LeetCode.md
+  prerequisite: []
 ---
 
 ## Is AI Coding bad for you?

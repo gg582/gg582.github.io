@@ -16,8 +16,13 @@ keywords:
   - 알고리즘
   - 그리디
 relationships:
-  related: []
-  references: []
+  related:
+    - _codingtest/2026-01-19-[스택][문자열]-Simplify-Path-LeetCode.md
+    - _codingtest/2026-01-19-[플로이드워셜][분기문]-Find-the-City-with-the-Smallest-Number-of-Neighbors-at-a-Threshold-Distance-LeetCode.md
+    - _codingtest/2026-01-25-[다이내믹]-정수-삼각형-백준-1932번.md
+    - _codingtest/2026-01-20-[다익스트라]-Network-Delay-Time-LeetCode.md
+  references:
+    - _network/2026-01-15-Network-Basics-How-to-tune-BBRv3.md
   prerequisite: []
   extends: []
   comparison: []

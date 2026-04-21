@@ -13,6 +13,12 @@ keywords:
   - StatefulSet
   - Deployment
   - K8s Concepts
+relationships:
+  related:
+    - _posts/2025-07-13-Incuspeed-Init레벨-가상화-컨테이너를-손쉽게.md
+  references: []
+  prerequisite:
+    - _cloud/2025-05-28-동적-프로비저닝을-구성해-보자-쿠버네티스(kubeADM).md
 ---
 # StatefulSet이란?
 

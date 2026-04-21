@@ -14,9 +14,14 @@ keywords:
   - 알고리즘
   - 스택
 relationships:
-  related: []
-  references: []
-  prerequisite: []
+  related:
+    - _codingtest/2026-01-19-[플로이드워셜][분기문]-Find-the-City-with-the-Smallest-Number-of-Neighbors-at-a-Threshold-Distance-LeetCode.md
+    - _devnote/2026-01-26-Personal-Software-From-AI-Sketch-to-Usable-Software.md
+  references:
+    - _network/2026-01-15-Network-Basics-How-to-tune-BBRv3.md
+    - _network/2025-12-31-Easy-Learning-Series-SOCKMAP-and-Splicing.md
+  prerequisite:
+    - _codingtest/2026-01-18-[단조스택]-Remove-K-Digits-LeetCode.md
   extends: []
   comparison: []
 

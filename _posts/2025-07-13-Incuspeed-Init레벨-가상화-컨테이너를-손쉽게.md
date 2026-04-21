@@ -14,6 +14,12 @@ keywords:
   - Incus
   - Python
   - Go
+relationships:
+  related: []
+  references:
+    - _posts/2025-03-28-gg582의 프로필.md
+  prerequisite:
+    - _cloud/2025-06-05-StatefulSet과-Deployment의-차이.md
 ---
 
 ---

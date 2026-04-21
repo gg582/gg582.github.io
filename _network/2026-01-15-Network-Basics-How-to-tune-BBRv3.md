@@ -4,30 +4,35 @@ title: Network Basics - How to Tune BBRv3
 subtitle: TCP BBRv3 Congestion Control Tuning Guide
 date: 2026-01-15 12:30:00 +0900
 categories:
-- network
+  - network
 taxonomy:
   category: network
   subcategory: network-protocol
   order: 2
 difficulty: advanced
 keywords:
-- BBRv3
-- TCP Congestion Control
-- Algorithm Tuning
-- Network Optimization
-- BBR
-- Kernel
-- Performance
-- Linux
-- Latency
-- Optimization
+  - BBRv3
+  - TCP Congestion Control
+  - Algorithm Tuning
+  - Network Optimization
+  - BBR
+  - Kernel
+  - Performance
+  - Linux
+  - Latency
+  - Optimization
 relationships:
   related:
-  - _network/2025-12-23-BBRv1을-튜닝해서-지터를-더-줄여보자.md
+    - _network/2025-12-23-BBRv1을-튜닝해서-지터를-더-줄여보자.md
+    - _devnote/2026-01-26-Personal-Software-From-AI-Sketch-to-Usable-Software.md
+    - _codingtest/2026-01-19-[스택][문자열]-Simplify-Path-LeetCode.md
+    - _hobbies/2026-02-09-[록][데스메탈]-음악으로-얻어가는-삶의-용기.md
+    - _codingtest/2026-01-18-[단조스택]-Remove-K-Digits-LeetCode.md
   references: []
-  prerequisite: []
+  prerequisite:
+    - _network/2025-12-31-Easy-Learning-Series-SOCKMAP-and-Splicing.md
   extends:
-  - _network/2025-12-23-BBRv1을-튜닝해서-지터를-더-줄여보자.md
+    - _network/2025-12-23-BBRv1을-튜닝해서-지터를-더-줄여보자.md
   comparison: []
 ---
 

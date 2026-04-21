@@ -17,8 +17,12 @@ keywords:
   - Linux
   - Benchmark
 relationships:
-  related: []
-  references: []
+  related:
+    - _posts/2026-01-19-Vim은-정말-외골수들의-편집기일-뿐일까.md
+  references:
+    - _codingtest/2026-01-15-[다이내믹]-내려가기-백준-2096번.md
+    - _embedded/2025-05-10-리눅스-I2C-슬레이브-디바이스.md
+    - _embedded/2025-05-10-라즈봇-디바이스-드라이버-작성-모터편-1.md
   prerequisite: []
   extends: []
   comparison: []

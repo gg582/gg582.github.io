@@ -14,6 +14,11 @@ keywords:
   - 포크
   - 블라인드 윌리 맥텔
   - 음악추천
+relationships:
+  related:
+    - _hobbies/2026-02-09-[록][포스트펑크]-록스타로-알아보는-왜-살아야-하는가.md
+  references: []
+  prerequisite: []
 ---
 
 ## 블라인드 윌리 맥텔, 그는 누구인가?

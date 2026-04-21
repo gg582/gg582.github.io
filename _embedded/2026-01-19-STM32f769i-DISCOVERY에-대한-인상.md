@@ -14,9 +14,12 @@ keywords:
   - BusyBox
   - 임베디드 입문
 relationships:
-  related: []
-  references: []
-  prerequisite: []
+  related:
+    - _devnote/2026-03-04-다양한-개발론과-안목-차이.md
+  references:
+    - _network/2025-12-08-비전공자도-쉽게-따라하는-리눅스-커널-해킹-지터를-잡아보자.md
+  prerequisite:
+    - _embedded/2025-05-09-라즈베리파이-라즈봇.md
   extends: []
   comparison: []
 ---

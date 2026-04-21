@@ -15,8 +15,13 @@ keywords:
   - 그래프
 relationships:
   related: []
-  references: []
-  prerequisite: []
+  references:
+    - _network/2025-12-31-Easy-Learning-Series-SOCKMAP-and-Splicing.md
+  prerequisite:
+    - _codingtest/2026-01-19-[플로이드워셜][분기문]-Find-the-City-with-the-Smallest-Number-of-Neighbors-at-a-Threshold-Distance-LeetCode.md
+    - _codingtest/2026-01-18-[그래프]-가장-먼-노드-레벨3.md
+    - _codingtest/2026-01-17-[그래프]-도넛과-막대-그래프-프로그래머스-레벨2.md
+    - _codingtest/2026-01-19-[스택][문자열]-Simplify-Path-LeetCode.md
   extends: []
   comparison: []
 
