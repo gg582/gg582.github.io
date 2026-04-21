@@ -1,6 +1,6 @@
 ---
 layout: knowledge-base
-title: "[레거시][MyBatis]-레거시-유지보수-MyBatis에서-위험한-구문들"
+title: "[레거시][MyBatis]-레거시 유지보수 MyBatis에서 위험한 구문들"
 subtitle: "레거시는 여전히 흔하고, 안전은 중요하다"
 date: 2026-03-12 14:00:00 +0900
 categories: [blog]
