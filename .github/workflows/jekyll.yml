@@ -46,14 +46,21 @@ jobs:
       - name: Generate Global Search Index
         run: python3 .github/scripts/generate_search_index.py
 
+      - name: Setup Emscripten
+        uses: mymindstorm/setup-emsdk@v14
+
+      - name: Build WebAssembly Relations Engine
+        run: |
+          emcc relations_engine.c -o assets/relations_engine.js -O3 -s EXPORTED_FUNCTIONS="['_compute_layout', '_malloc', '_free']" -s ALLOW_MEMORY_GROWTH=1 -s EXPORTED_RUNTIME_METHODS="[]"
+
       # Sync metadata changes back to repository
-      - name: Commit Updated Metadata
+      - name: Commit Updated Metadata and WASM
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           if [ -n "$(git status --porcelain)" ]; then
             git add .
-            git commit -m "chore: auto-classify metadata [skip ci]"
+            git commit -m "chore: auto-classify metadata and build wasm [skip ci]"
             git push origin master
           else
             echo "No changes detected."
