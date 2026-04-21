@@ -133,6 +133,10 @@ background: '/img/bg-devnote.jpg'
   const MIN_SCALE = 0.35;
   const MAX_SCALE = 4;
   const ZOOM_SENSITIVITY = 0.0015;
+  const NODE_RADIUS = 6;
+  const HIT_RADIUS = 10;
+  const HIT_RADIUS_SQ = HIT_RADIUS * HIT_RADIUS;
+  const LABEL_VERTICAL_PADDING = 8;
 
   function clamp(v, min, max) {
     return Math.max(min, Math.min(max, v));
@@ -153,7 +157,7 @@ background: '/img/bg-devnote.jpg'
 
       const dx = mx - node.screenX;
       const dy = my - node.screenY;
-      if (dx * dx + dy * dy < 100) {
+      if (dx * dx + dy * dy < HIT_RADIUS_SQ) {
         return node;
       }
 
@@ -242,7 +246,7 @@ background: '/img/bg-devnote.jpg'
         const sy = node.screenY;
 
         ctx.beginPath();
-        ctx.arc(sx, sy, 6, 0, Math.PI * 2);
+        ctx.arc(sx, sy, NODE_RADIUS, 0, Math.PI * 2);
         ctx.fillStyle = '#007bff';
         ctx.fill();
         ctx.strokeStyle = '#fff';
@@ -257,8 +261,8 @@ background: '/img/bg-devnote.jpg'
         node.labelBounds = {
           left: labelX,
           right: labelX + labelWidth,
-          top: labelY - 8,
-          bottom: labelY + 8
+          top: labelY - LABEL_VERTICAL_PADDING,
+          bottom: labelY + LABEL_VERTICAL_PADDING
         };
       });
 
