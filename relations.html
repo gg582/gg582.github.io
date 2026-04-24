@@ -155,7 +155,9 @@ background: '/img/bg-relations.jpg'
   const LABEL_OFFSET_X = isMobile ? 7 : 10;
   const LABEL_FONT = isMobile ? '10px sans-serif' : '12px sans-serif';
   const EDGE_LINE_WIDTH = isMobile ? 0.8 : 1;
-  const SIMULATION_STEP_INTERVAL = isMobile ? 2 : 1;
+  const SIMULATION_STEP_INTERVAL = isMobile ? 4 : 1;
+  const MOBILE_SETTLE_FRAMES = 220;
+  const SHOW_ALL_LABELS = !isMobile;
 
   function clamp(v, min, max) {
     return Math.max(min, Math.min(max, v));
@@ -168,6 +170,8 @@ background: '/img/bg-relations.jpg'
   function worldToScreenY(y) {
     return y * viewScale + viewOffsetY;
   }
+
+  let focusedNode = null;
 
   function getHitNode(mx, my) {
     for (let i = 0; i < nodes.length; i++) {
@@ -237,7 +241,8 @@ background: '/img/bg-relations.jpg'
 
     function animate() {
       frameCount += 1;
-      if (frameCount % SIMULATION_STEP_INTERVAL === 0) {
+      const mobileSettled = isMobile && frameCount > MOBILE_SETTLE_FRAMES;
+      if (!mobileSettled && frameCount % SIMULATION_STEP_INTERVAL === 0) {
         Module._compute_layout(pxPtr, pyPtr, vxPtr, vyPtr, numNodes, edgeSrcPtr, edgeDstPtr, numEdges, width, height);
       }
 
@@ -284,16 +289,20 @@ background: '/img/bg-relations.jpg'
         ctx.lineWidth = 2;
         ctx.stroke();
 
-        const labelX = sx + LABEL_OFFSET_X;
-        const labelY = sy;
-        ctx.fillText(node.title, labelX, labelY);
-        const labelWidth = ctx.measureText(node.title).width;
-        node.labelBounds = {
-          left: labelX,
-          right: labelX + labelWidth,
-          top: labelY - LABEL_VERTICAL_PADDING,
-          bottom: labelY + LABEL_VERTICAL_PADDING
-        };
+        if (SHOW_ALL_LABELS || node === focusedNode) {
+          const labelX = sx + LABEL_OFFSET_X;
+          const labelY = sy;
+          ctx.fillText(node.title, labelX, labelY);
+          const labelWidth = ctx.measureText(node.title).width;
+          node.labelBounds = {
+            left: labelX,
+            right: labelX + labelWidth,
+            top: labelY - LABEL_VERTICAL_PADDING,
+            bottom: labelY + LABEL_VERTICAL_PADDING
+          };
+        } else {
+          node.labelBounds = null;
+        }
       });
 
       requestAnimationFrame(animate);
@@ -307,6 +316,8 @@ background: '/img/bg-relations.jpg'
     const mx = e.clientX - rect.left;
     const my = e.clientY - rect.top;
     const hovered = getHitNode(mx, my);
+
+    focusedNode = hovered;
 
     if (hovered) {
       canvas.style.cursor = 'pointer';
