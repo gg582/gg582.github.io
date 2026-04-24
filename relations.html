@@ -31,6 +31,17 @@ background: '/img/bg-relations.jpg'
     display: none;
     z-index: 10;
   }
+
+  @media (max-width: 768px) {
+    #canvas-container {
+      height: 420px;
+    }
+
+    #tooltip {
+      font-size: 12px;
+      padding: 4px 8px;
+    }
+  }
 </style>
 
 <div class="container">
@@ -130,16 +141,21 @@ background: '/img/bg-relations.jpg'
   
   let width = canvas.width = canvas.parentElement.clientWidth;
   let height = canvas.height = canvas.parentElement.clientHeight;
-  let viewScale = 1;
+  const isMobile = window.matchMedia('(max-width: 768px)').matches;
+  let viewScale = isMobile ? 0.88 : 1;
   let viewOffsetX = 0;
   let viewOffsetY = 0;
-  const MIN_SCALE = 0.35;
-  const MAX_SCALE = 4;
-  const ZOOM_SENSITIVITY = 0.0015;
-  const NODE_RADIUS = 6;
-  const HIT_RADIUS = 10;
+  const MIN_SCALE = isMobile ? 0.3 : 0.35;
+  const MAX_SCALE = isMobile ? 3 : 4;
+  const ZOOM_SENSITIVITY = isMobile ? 0.001 : 0.0015;
+  const NODE_RADIUS = isMobile ? 4 : 6;
+  const HIT_RADIUS = isMobile ? 8 : 10;
   const HIT_RADIUS_SQ = HIT_RADIUS * HIT_RADIUS;
-  const LABEL_VERTICAL_PADDING = 8;
+  const LABEL_VERTICAL_PADDING = isMobile ? 6 : 8;
+  const LABEL_OFFSET_X = isMobile ? 7 : 10;
+  const LABEL_FONT = isMobile ? '10px sans-serif' : '12px sans-serif';
+  const EDGE_LINE_WIDTH = isMobile ? 0.8 : 1;
+  const SIMULATION_STEP_INTERVAL = isMobile ? 2 : 1;
 
   function clamp(v, min, max) {
     return Math.max(min, Math.min(max, v));
@@ -172,9 +188,17 @@ background: '/img/bg-relations.jpg'
     return null;
   }
 
+  function resetViewOffset() {
+    viewOffsetX = (width * (1 - viewScale)) * 0.5;
+    viewOffsetY = (height * (1 - viewScale)) * 0.5;
+  }
+
+  resetViewOffset();
+
   window.addEventListener('resize', () => {
     width = canvas.width = canvas.parentElement.clientWidth;
     height = canvas.height = canvas.parentElement.clientHeight;
+    resetViewOffset();
   });
 
   Module.onRuntimeInitialized = () => {
@@ -209,8 +233,13 @@ background: '/img/bg-relations.jpg'
       edgeDstArray[i] = edges[i].target;
     }
 
+    let frameCount = 0;
+
     function animate() {
-      Module._compute_layout(pxPtr, pyPtr, vxPtr, vyPtr, numNodes, edgeSrcPtr, edgeDstPtr, numEdges, width, height);
+      frameCount += 1;
+      if (frameCount % SIMULATION_STEP_INTERVAL === 0) {
+        Module._compute_layout(pxPtr, pyPtr, vxPtr, vyPtr, numNodes, edgeSrcPtr, edgeDstPtr, numEdges, width, height);
+      }
 
       for (let i = 0; i < numNodes; i++) {
         nodes[i].x = pxArray[i];
@@ -226,7 +255,7 @@ background: '/img/bg-relations.jpg'
       ctx.clearRect(0, 0, width, height);
       
       ctx.strokeStyle = 'rgba(150, 150, 150, 0.5)';
-      ctx.lineWidth = 1;
+      ctx.lineWidth = EDGE_LINE_WIDTH;
       ctx.beginPath();
       edges.forEach(edge => {
         const src = nodes[edge.source];
@@ -238,7 +267,7 @@ background: '/img/bg-relations.jpg'
       ctx.stroke();
 
       ctx.fillStyle = '#333';
-      ctx.font = '12px sans-serif';
+      ctx.font = LABEL_FONT;
       ctx.textBaseline = 'middle';
       nodes.forEach((node, i) => {
         if (!connectedNodes[i]) {
@@ -255,7 +284,7 @@ background: '/img/bg-relations.jpg'
         ctx.lineWidth = 2;
         ctx.stroke();
 
-        const labelX = sx + 10;
+        const labelX = sx + LABEL_OFFSET_X;
         const labelY = sy;
         ctx.fillText(node.title, labelX, labelY);
         const labelWidth = ctx.measureText(node.title).width;
