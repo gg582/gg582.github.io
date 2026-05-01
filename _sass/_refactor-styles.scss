@@ -1269,6 +1269,72 @@ body.dark-mode .ripple {
 }
 
 // 5. Reading Progress Bar
+:root {
+  --wasm-accent-rgb: 24, 91, 154;
+  --wasm-depth: 0;
+  --wasm-motion: 0;
+  --wasm-progress: 0;
+  --wasm-focus-alpha: 0.1;
+}
+
+body.wasm-dynamic-style {
+  accent-color: rgb(var(--wasm-accent-rgb));
+}
+
+body.wasm-dynamic-style .masthead {
+  overflow: hidden;
+}
+
+body.wasm-dynamic-style .masthead::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(var(--wasm-accent-rgb), calc(0.08 + var(--wasm-depth) * 0.14)),
+      transparent 58%
+    ),
+    radial-gradient(
+      circle at 18% 28%,
+      rgba(var(--wasm-accent-rgb), calc(0.18 + var(--wasm-motion) * 0.18)),
+      transparent 36%
+    );
+  opacity: calc(0.62 + var(--wasm-depth) * 0.24);
+  transform: translate3d(0, calc(var(--wasm-depth) * 10px), 0);
+  transition: opacity 0.16s linear, transform 0.16s linear;
+}
+
+body.wasm-dynamic-style .masthead > .container,
+body.wasm-dynamic-style .masthead > .container-fluid {
+  position: relative;
+  z-index: 1;
+}
+
+body.wasm-dynamic-style .page-content a,
+body.wasm-dynamic-style .post-content a {
+  text-decoration-color: rgba(var(--wasm-accent-rgb), 0.45);
+}
+
+body.wasm-dynamic-style .list-item,
+body.wasm-dynamic-style .featured-card,
+body.wasm-dynamic-style .timeline-item {
+  position: relative;
+}
+
+body.wasm-dynamic-style .list-item:hover,
+body.wasm-dynamic-style .featured-card:hover,
+body.wasm-dynamic-style .timeline-item:hover {
+  border-color: rgba(var(--wasm-accent-rgb), 0.45);
+  box-shadow: inset 3px 0 0 rgba(var(--wasm-accent-rgb), 0.5);
+}
+
+body.wasm-dynamic-style .ripple {
+  background: rgba(var(--wasm-accent-rgb), calc(0.14 + var(--wasm-motion) * 0.12));
+}
+
 #progress-bar-container {
   position: absolute;
   bottom: 0;
@@ -1286,9 +1352,10 @@ body.dark-mode .ripple {
   --progress: 0;
   transform-origin: left center;
   transform: scaleX(var(--progress));
-  background: #000000;
+  background: rgb(var(--wasm-accent-rgb));
+  box-shadow: 0 0 calc(6px + var(--wasm-motion) * 16px) rgba(var(--wasm-accent-rgb), var(--wasm-focus-alpha));
   will-change: transform;
-  transition: transform 0.1s linear;
+  transition: transform 0.1s linear, box-shadow 0.16s linear, background-color 0.16s linear;
 }
 
 // Interactive featured lightbox

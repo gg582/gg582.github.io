@@ -49,12 +49,15 @@ jobs:
       - name: Setup Emscripten
         uses: mymindstorm/setup-emsdk@v14
 
-      - name: Build WebAssembly Relations Engine
+      - name: Build WebAssembly Engines
         run: |
           emcc relations_engine.c -o assets/relations_engine.js -O3 -s EXPORTED_FUNCTIONS="['_compute_layout', '_malloc', '_free']" -s ALLOW_MEMORY_GROWTH=1 -s EXPORTED_RUNTIME_METHODS="[]"
+          emcc dynamic_style_engine.c -o assets/dynamic_style_engine.js -O3 -s MODULARIZE=1 -s EXPORT_NAME=createDynamicStyleEngine -s ENVIRONMENT=web -s EXPORTED_FUNCTIONS="['_ui_accent_rgb', '_ui_progress', '_ui_masthead_depth', '_ui_motion_intensity', '_ui_focus_alpha']" -s EXPORTED_RUNTIME_METHODS="[]"
+          test -s assets/relations_engine.wasm
+          test -s assets/dynamic_style_engine.wasm
 
       # Sync metadata changes back to repository
-      - name: Commit Updated Metadata and WASM
+      - name: Commit Updated Metadata and WASM Assets
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
