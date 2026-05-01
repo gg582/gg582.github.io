@@ -1330,13 +1330,6 @@ body.wasm-dynamic-style .timeline-item:hover {
   border-color: rgba(var(--wasm-accent-rgb), 0.45);
 }
 
-body.wasm-dynamic-style .featured-card:hover {
-  box-shadow: inset 3px 0 0 rgba(var(--wasm-accent-rgb), 0.5);
-}
-
-body.wasm-dynamic-style .timeline-item:hover .timeline-content {
-  box-shadow: inset 3px 0 0 rgba(var(--wasm-accent-rgb), 0.5);
-}
 
 body.wasm-dynamic-style .list-item::after {
   height: 2px;
