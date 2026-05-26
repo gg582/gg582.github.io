@@ -1,7 +1,7 @@
 ---
 layout: knowledge-base
-title: Error Logs From TFHost Nigeria
-subtitle: DNS delegation failure and VPS reachability incident notes
+title: "Error Logs From TFHost Nigeria"
+subtitle: "DNS delegation failure and VPS reachability incident notes"
 date: 2026-05-26 19:38:42 +0900
 categories:
 - network
@@ -28,6 +28,8 @@ relationships:
   prerequisite: []
   extends: []
   comparison: []
+---
+
 ---
 
 # TFHost Incident Recovery Analysis
