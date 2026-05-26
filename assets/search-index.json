@@ -1,7 +1,39 @@
 {
-  "generated_at": "2026-05-16T01:38:44.677527+00:00",
-  "document_count": 70,
+  "generated_at": "2026-05-26T12:55:11.591207+00:00",
+  "document_count": 71,
   "documents": [
+    {
+      "title": "Error Logs From TFHost Nigeria",
+      "subtitle": "DNS delegation failure and VPS reachability incident notes",
+      "description": null,
+      "url": "/network/2026-05-26-Error-Logs-From-TFHost-Nigeria",
+      "collection": "network",
+      "relative_path": "2026-05-26-Error-Logs-From-TFHost-Nigeria",
+      "date": "2026-05-26T19:38:42+09:00",
+      "updated": null,
+      "keywords": [
+        "DNS",
+        "SERVFAIL",
+        "EDE 22",
+        "Authoritative DNS",
+        "VPS",
+        "Network Incident",
+        "Transit Routing",
+        "TFHost Nigeria",
+        "Njalla"
+      ],
+      "categories": [
+        "network"
+      ],
+      "taxonomy": {
+        "category": "network",
+        "subcategory": "network-protocol",
+        "order": 4
+      },
+      "difficulty": "intermediate",
+      "excerpt": "TFHost Incident Recovery Analysis Date: 2026-05-26 Timezone: KST (UTC+9) Observer Location: South Korea (KT ISP) Resolver Used: Cloudflare DNS ( ) --- Executive Summary A provider-level outage affected TFHost’s DNS authority ( ) and customer VPS network reachability. Real-time te…",
+      "search_text": "error logs from tfhost nigeria dns delegation failure and vps reachability incident notes dns servfail ede 22 authoritative dns vps network incident transit routing tfhost nigeria njalla network network network-protocol tfhost incident recovery analysis date: 2026-05-26 timezone: kst (utc+9) observer location: south korea (kt isp) resolver used: cloudflare dns ( ) --- executive summary a provider-level outage affected tfhost’s dns authority ( ) and customer vps network reachability. real-time te… \n\n# tfhost incident recovery analysis\ndate: 2026-05-26\ntimezone: kst (utc+9)\nobserver location: south korea (kt isp)\nresolver used: cloudflare dns (`1.1.1.1`)\n\n---\n\n# executive summary\n\na provider-level outage affected tfhost’s dns authority (`tfhost.ng`) and customer vps network reachability.\n\nreal-time telemetry logs show:\n\n- dns authority failure (`servfail`)\n- temporary resolver communication timeouts\n- ssh port (`22/tcp`) persistently unreachable\n- sudden simultaneous dns and ssh recovery\n- stable recovery confirmed afterward\n\nthis evidence suggests that the outage was not caused by a single vps daemon failure, but by a broader provider-side infrastructure incident involving the tfhost control plane and associated network path.\n\n---\n\n# observed systems\n\n## tfhost control plane\n\nhost:\n\n```text\ntfhost.ng\n```\n\nobserved normal a record after recovery:\n\n```text\n160.119.196.25\n```\n\n---\n\n## customer vps\n\nhost:\n\n```text\noborona.zip\n```\n\nresolved a record:\n\n```text\n160.119.197.71\n```\n\nobserved service:\n\n```text\nssh (22/tcp)\n```\n\n---\n\n# recovery monitoring method\n\nautomated monitoring script executed every 30 seconds:\n\nchecks:\n\n1. dns resolution of `tfhost.ng` through cloudflare (`1.1.1.1`)\n2. tcp connection to vps (`160.119.197.71:22`)\n\nstate logging:\n\n- dns state\n- ssh state\n- event changes\n- full recovery detection\n\n---\n\n# real-time recovery timeline\n\n## initial failure\n\nat monitoring start:\n\n```text\n2026-05-26 19:38:42 kst\ndns=servfail\nssh=down\n```\n\nmeaning:\n\n- public resolver (`1.1.1.1`) reachable\n- tfhost authoritative dns not functioning\n- vps ssh unavailable\n\n---\n\n## dns communication flapping\n\nobserved intermittently:\n\n```text\ndns=;; communications error to 1.1.1.1#53: timed out\n;; no servers could be reached\n```\n\nimportant correction:\n\nthis **does not mean tfhost returned that response**.\n\nit means:\n\n- the monitoring probe itself temporarily failed to receive a dns response from cloudflare (`1.1.1.1`)\n- possible transient path instability, packet loss, or timeout during incident conditions\n\nthis is distinct from:\n\n```text\ndns=servfail\n```\n\nwhich means:\n\n- cloudflare resolver answered\n- tfhost authoritative delegation still failed\n\ntherefore:\n\ntwo different dns failure states were observed:\n\n| state | meaning |\n|---|---|\n| `servfail` | resolver alive, tfhost authority unreachable |\n| `communications error ... timed out` | resolver query path itself unstable |\n\n---\n\n## persistent ssh failure\n\nthroughout the flap:\n\n```text\nssh=down\n```\n\nobserved continuously from:\n\n```text\n19:38:42\n→\n19:45:14\n```\n\nmeaning:\n\n- vps host (`160.119.197.71`) remained unreachable\n- control plane instability had not yet translated into compute recovery\n\n---\n\n## simultaneous recovery event\n\nat:\n\n```text\n2026-05-26 19:45:49 kst\n```\n\nmonitoring log:\n\n```text\ndns=160.119.196.25 ssh=open\nevent dns_changed old=servfail new=160.119.196.25\nevent ssh_changed old=down new=open\nevent full_recovery\n```\n\nmeaning:\n\n- tfhost control plane dns returned a valid a record\n- vps ssh (`160.119.197.71:22`) became reachable\n- both control plane and customer network path recovered simultaneously\n\n---\n\n## recovery persistence\n\nsubsequent checks:\n\n```text\n2026-05-26 19:46:21 kst\ndns=160.119.196.25 ssh=open\nevent full_recovery\n```\n\n```text\n2026-05-26 19:46:52 kst\ndns=160.119.196.25 ssh=open\nevent full_recovery\n```\n\nmanual validation:\n\n```text\n$ dig @1.1.1.1 tfhost.ng\n```\n\nreturned:\n\n```text\nstatus: noerror\ntfhost.ng. in a 160.119.196.25\nquery time: 4 msec\n```\n\nat:\n\n```text\n2026-05-26 19:47:10 kst\n```\n\n---\n\n# technical interpretation\n\n## actual logical relationship\n\n### dns resolution path\n\n```text\nlocal pc\n→ kt isp\n→ cloudflare (1.1.1.1)\n→ tfhost authoritative nameservers\n→ tfhost.ng resolves to 160.119.196.25\n```\n\n---\n\n### vps service path\n\n```text\nlocal pc\n→ kt isp\n→ global transit network\n→ tfhost routed prefix\n→ vps 160.119.197.71\n→ ssh 22/tcp\n```\n\n---\n\n## why simultaneous recovery matters\n\nthe recovery event showed:\n\n```text\ndns restored\nand\nssh restored\nat the same timestamp\n```\n\nthis strongly suggests:\n\n- provider-side control plane stabilization\n- network/routing plane stabilization\n- not merely a dns daemon restart\n\nbecause if only dns recovered:\n\n```text\ndns ok\nssh down\n```\n\nwould have occurred.\n\nthat was not observed.\n\n---\n\n# recovery window\n\nmonitoring start:\n\n```text\n19:38:42 kst\n```\n\nfull recovery detected:\n\n```text\n19:45:49 kst\n```\n\ntotal monitored outage window:\n\n```text\n7 minutes 7 seconds\n```\n\n---\n\n# incident pattern summary\n\nobserved progression:\n\n1. dns authority failure (`servfail`)\n2. dns query-path timeouts\n3. persistent vps ssh failure\n4. continued dns flap\n5. sudden simultaneous dns + ssh recovery\n6. stable recovery validation\n\n---\n\n# final assessment\n\nthis incident is consistent with:\n\n```text\nprovider-level infrastructure flap\n```\n\nmost likely involving one or more of:\n\n- authoritative dns instability\n- control plane outage\n- routing/prefix instability\n- network recovery synchronization\n\n---\n\n# key evidence\n\n## outage start\n\n```text\n2026-05-26 19:38:42 kst\ndns=servfail\nssh=down\n```\n\n---\n\n## recovery event\n\n```text\n2026-05-26 19:45:49 kst\ndns=160.119.196.25\nssh=open\nevent full_recovery\n```\n\n---\n\n## manual validation\n\n```text\n2026-05-26 19:47:10 kst\nstatus: noerror\ntfhost.ng in a 160.119.196.25\nquery time: 4 msec\n```\n\n---\n\n# conclusion\n\ntfhost experienced a provider-side outage affecting both:\n\n- dns authority\n- customer vps network reachability\n\nrecovery was observed as a simultaneous restoration of:\n\n- public dns resolution\n- vps ssh connectivity\n\nthis strongly indicates infrastructure-level recovery rather than isolated application recovery.\n"
+    },
     {
       "title": "[록][데스메탈] 음악으로 얻어가는 삶의 용기",
       "subtitle": "나에 갇혀 착각하지 않기",
@@ -9,7 +41,7 @@
       "url": "/hobbies/2026-02-09-[록][데스메탈]-음악으로-얻어가는-삶의-용기/",
       "collection": "hobbies",
       "relative_path": "2026-02-09-[록][데스메탈]-음악으로-얻어가는-삶의-용기",
-      "date": "2026-05-16T01:38:42.379317",
+      "date": "2026-05-26T12:55:06.874682",
       "updated": null,
       "keywords": [
         "록",
