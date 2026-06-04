@@ -1,9 +1,10 @@
 ---
 layout: knowledge-base
-title: "Error Logs From TFHost Nigeria"
-subtitle: "DNS delegation failure and VPS reachability incident notes"
+title: Error Logs From TFHost Nigeria
+subtitle: DNS delegation failure and VPS reachability incident notes
 date: 2026-05-26 19:38:42 +0900
-categories: [network]
+categories:
+- network
 taxonomy:
   category: network
   subcategory: network-protocol
@@ -21,8 +22,8 @@ keywords:
 - Njalla
 relationships:
   related:
-    - _network/2026-01-15-Network-Basics-How-to-tune-BBRv3.md
-    - _network/2025-12-23-BBRv1을-튜닝해서-지터를-더-줄여보자.md
+  - _network/2026-01-15-Network-Basics-How-to-tune-BBRv3.md
+  - _network/2025-12-23-BBRv1을-튜닝해서-지터를-더-줄여보자.md
   references: []
   prerequisite: []
   extends: []

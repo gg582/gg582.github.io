@@ -1,27 +1,28 @@
 ---
 layout: knowledge-base
-title: "Refactoring Summary: Linux Kernel Jitter Patch"
-subtitle: "From dst_entry bloat to struct dst_power abstraction"
+title: 'Refactoring Summary: Linux Kernel Jitter Patch'
+subtitle: From dst_entry bloat to struct dst_power abstraction
 date: 2025-12-08 21:00:00 +0900
-categories: [network]
+categories:
+- network
 taxonomy:
   category: network
   subcategory: network-performance
   order: 3
   difficulty: intermediate
 keywords:
-  - Linux kernel
-  - Network tuning
-  - Jitter
-  - ECMP
-  - dst_entry
-  - Refactoring
+- Linux kernel
+- Network tuning
+- Jitter
+- ECMP
+- dst_entry
+- Refactoring
 relationships:
   related:
-    - _network/2025-12-08-비전공자도-쉽게-따라하는-리눅스-커널-해킹-지터를-잡아보자.md
-    - _network/2025-12-23-BBRv1을-튜닝해서-지터를-더-줄여보자.md
-    - _network/2026-01-15-Network-Basics-How-to-tune-BBRv3.md
-    - _network/2026-02-25-고부하-환경에서의-네트워크-분산-최석정의-구수략-증명-기반-직교라틴방진-적용.md
+  - _network/2025-12-08-비전공자도-쉽게-따라하는-리눅스-커널-해킹-지터를-잡아보자.md
+  - _network/2025-12-23-BBRv1을-튜닝해서-지터를-더-줄여보자.md
+  - _network/2026-01-15-Network-Basics-How-to-tune-BBRv3.md
+  - _network/2026-02-25-고부하-환경에서의-네트워크-분산-최석정의-구수략-증명-기반-직교라틴방진-적용.md
   references: []
   prerequisite: []
   extends: []
