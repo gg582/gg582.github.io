@@ -21,15 +21,11 @@ keywords:
 - TFHost Nigeria
 - Njalla
 relationships:
-  related:
-  - _network/2026-01-15-Network-Basics-How-to-tune-BBRv3.md
-  - _network/2025-12-23-BBRv1을-튜닝해서-지터를-더-줄여보자.md
+  related: []
   references: []
   prerequisite: []
   extends: []
   comparison: []
----
-
 ---
 
 # TFHost Incident Recovery Analysis
