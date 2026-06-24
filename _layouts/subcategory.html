@@ -17,11 +17,11 @@ layout: default
         <div class="col-lg-10 col-md-11">
           <div class="page-heading">
             <div class="breadcrumb-nav mb-3">
-              <a href="{{ '/' | relative_url }}" style="color: rgba(255,255,255,0.8)">Knowledge Base</a>
-              <span class="separator" style="color: rgba(255,255,255,0.6)">›</span>
-              <a href="{{ site.baseurl }}/분류/{{ page.category_id }}.html" style="color: rgba(255,255,255,0.8)">{{ page.category_name }}</a>
-              <span class="separator" style="color: rgba(255,255,255,0.6)">›</span>
-              <span class="current" style="color: white">{{ page.subcategory_name }}</span>
+              <a href="{{ '/' | relative_url }}">Knowledge Base</a>
+              <span class="separator">›</span>
+              <a href="{{ site.baseurl }}/분류/{{ page.category_id }}.html">{{ page.category_name }}</a>
+              <span class="separator">›</span>
+              <span class="current">{{ page.subcategory_name }}</span>
             </div>
             <h1>
               {{ page.subcategory_name }}
@@ -29,8 +29,8 @@ layout: default
             {% if page.subcategory_description %}
             <span class="subheading">{{ page.subcategory_description }}</span>
             {% endif %}
-            
-            <div class="subcategory-stats-masthead mt-3" style="color: rgba(255,255,255,0.8); font-size: 1.1rem;">
+
+            <div class="subcategory-stats-masthead mt-3" style="font-size: 1.1rem;">
               <span class="stat-item">{{ subcat_docs.size }} documents</span>
             </div>
           </div>

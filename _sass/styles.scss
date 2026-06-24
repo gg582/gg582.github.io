@@ -110,16 +110,38 @@ pre code, .highlight code, .highlight .w {
 .masthead.light-bg .page-heading h1,
 .masthead.light-bg .post-heading h1,
 .masthead.light-bg .subheading,
-.masthead.light-bg .meta {
+.masthead.light-bg .meta,
+.masthead.light-bg .breadcrumb-nav a,
+.masthead.light-bg .breadcrumb-nav .separator,
+.masthead.light-bg .breadcrumb-nav .current,
+.masthead.light-bg .category-stats-masthead,
+.masthead.light-bg .subcategory-stats-masthead,
+.masthead.light-bg .stat-item {
   color: #1A1A1A; /* Dark text for light backgrounds */
+}
+
+.masthead.light-bg .breadcrumb-nav a:hover,
+.masthead.light-bg .breadcrumb-nav a:focus {
+  color: #000;
 }
 
 .masthead.dark-bg .site-heading h1,
 .masthead.dark-bg .page-heading h1,
 .masthead.dark-bg .post-heading h1,
 .masthead.dark-bg .subheading,
-.masthead.dark-bg .meta {
+.masthead.dark-bg .meta,
+.masthead.dark-bg .breadcrumb-nav a,
+.masthead.dark-bg .breadcrumb-nav .separator,
+.masthead.dark-bg .breadcrumb-nav .current,
+.masthead.dark-bg .category-stats-masthead,
+.masthead.dark-bg .subcategory-stats-masthead,
+.masthead.dark-bg .stat-item {
   color: #fff; /* White text for dark backgrounds */
+}
+
+.masthead.dark-bg .breadcrumb-nav a:hover,
+.masthead.dark-bg .breadcrumb-nav a:focus {
+  color: rgba(255, 255, 255, 0.7);
 }
 
 
