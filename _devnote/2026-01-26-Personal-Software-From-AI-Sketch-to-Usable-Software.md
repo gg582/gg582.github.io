@@ -5,8 +5,8 @@ date: 2026-01-26 12:00:00 +0900
 categories:
 - devnote
 taxonomy:
-  category: devnote
-  subcategory: general
+  category: general
+  subcategory: general-programming
   order: 1
 difficulty: easy
 keywords:

@@ -1,11 +1,12 @@
+---
 layout: knowledge-base
 title: "[시리즈][SW프로세스] DevOps와 SRE 그리고 플랫폼 엔지니어링"
 date: 2026-04-21 16:41:00 +0900
 categories:
   - devnote
 taxonomy:
-  category: devnote
-  subcategory: sw-process
+  category: general
+  subcategory: general-system
   order: 1
 difficulty: medium
 keywords:
