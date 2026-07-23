@@ -161,6 +161,17 @@ categories:
         description: 조금은 편향된 독서에 대한 제 감각을 다룹니다.
         weight: 5
 
+  - id: mathematics
+    name: 계산수학과 이산구조
+    name_ko: 계산수학과 이산구조
+    name_en: Computational Mathematics and Discrete Structures
+    description: 선형대수, 조합론, 격자와 알고리즘적 증명
+    subcategories:
+      - id: magic-structures
+        name: 마방진과 격자 구조
+        description: 마방진, 육각 격자, 제약 충족과 시각화
+        weight: 1
+
 # Document Relationship Types
 relationship_types:
   - id: prerequisite

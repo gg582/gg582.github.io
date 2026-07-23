@@ -41,6 +41,9 @@ collections:
   hobbies:
     output: true
     permalink: /hobbies/:path/
+  mathematics:
+    output: true
+    permalink: /mathematics/:path/
 
 # Build settings
 markdown:           kramdown
