@@ -513,6 +513,78 @@
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   }
 
+  // Markdown can emit plain images while long-form documents can use semantic
+  // HTML media. Keep both forms inside the reading column on every viewport.
+  figure,
+  .kb-media {
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 100%;
+    margin: 2rem 0;
+  }
+
+  figure > img,
+  figure > video,
+  figure > iframe,
+  .kb-media > img,
+  .kb-media > video,
+  .kb-media > iframe {
+    margin: 0;
+  }
+
+  figcaption,
+  .kb-media__caption {
+    margin-top: 0.65rem;
+    color: #5a6472;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    text-align: center;
+  }
+
+  video,
+  iframe,
+  embed,
+  object {
+    box-sizing: border-box;
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    margin: 2rem 0;
+    border: 0;
+    border-radius: 6px;
+    background: #111116;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.14);
+  }
+
+  video {
+    height: auto;
+  }
+
+  iframe {
+    aspect-ratio: 16 / 9;
+  }
+
+  // MathJax output must scroll horizontally instead of widening the three
+  // column knowledge-base layout. Inline math remains inline.
+  mjx-container {
+    max-width: 100%;
+  }
+
+  mjx-container[display="true"] {
+    box-sizing: border-box;
+    display: block;
+    max-width: 100%;
+    margin: 1.75rem 0;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 0.25rem 0;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  mjx-container[display="true"] > mjx-math {
+    min-width: max-content;
+  }
+
   table {
     width: 100%;
     max-width: 100%;
