@@ -138,9 +138,11 @@ background: '/img/bg-relations.jpg'
   const canvas = document.getElementById('relationCanvas');
   const ctx = canvas.getContext('2d');
   const tooltip = document.getElementById('tooltip');
+  let wakeGraph = () => {};
   
-  let width = canvas.width = canvas.parentElement.clientWidth;
-  let height = canvas.height = canvas.parentElement.clientHeight;
+  let width = 0;
+  let height = 0;
+  let pixelRatio = 1;
   const isMobile = window.matchMedia('(max-width: 768px)').matches;
   let viewScale = isMobile ? 0.88 : 1;
   let viewOffsetX = 0;
@@ -155,8 +157,10 @@ background: '/img/bg-relations.jpg'
   const LABEL_OFFSET_X = isMobile ? 7 : 10;
   const LABEL_FONT = isMobile ? '10px sans-serif' : '12px sans-serif';
   const EDGE_LINE_WIDTH = isMobile ? 0.8 : 1;
-  const SIMULATION_STEP_INTERVAL = isMobile ? 4 : 1;
+  const SIMULATION_STEP_INTERVAL = isMobile ? 4 : (nodes.length > 80 ? 2 : 1);
   const MOBILE_SETTLE_FRAMES = 220;
+  const SETTLE_ENERGY = isMobile ? 0.012 : 0.006;
+  const SETTLE_FRAME_COUNT = isMobile ? 18 : 30;
   const SHOW_ALL_LABELS = true;
 
   function clamp(v, min, max) {
@@ -197,13 +201,19 @@ background: '/img/bg-relations.jpg'
     viewOffsetY = (height * (1 - viewScale)) * 0.5;
   }
 
-  resetViewOffset();
-
-  window.addEventListener('resize', () => {
-    width = canvas.width = canvas.parentElement.clientWidth;
-    height = canvas.height = canvas.parentElement.clientHeight;
+  function resizeCanvas() {
+    width = canvas.parentElement.clientWidth;
+    height = canvas.parentElement.clientHeight;
+    pixelRatio = Math.min(window.devicePixelRatio || 1, 2);
+    canvas.width = Math.round(width * pixelRatio);
+    canvas.height = Math.round(height * pixelRatio);
+    canvas.style.width = `${width}px`;
+    canvas.style.height = `${height}px`;
+    ctx.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
     resetViewOffset();
-  });
+  }
+
+  resizeCanvas();
 
   Module.onRuntimeInitialized = () => {
     const numNodes = nodes.length;
@@ -238,17 +248,46 @@ background: '/img/bg-relations.jpg'
     }
 
     let frameCount = 0;
+    let settledFrames = 0;
+    let simulationRunning = true;
+    let animationFrame = null;
+
+    const wakeSimulation = (restartLayout = false) => {
+      if (restartLayout) {
+        frameCount = 0;
+      }
+      simulationRunning = true;
+      settledFrames = 0;
+      if (animationFrame === null && !document.hidden) {
+        animationFrame = requestAnimationFrame(animate);
+      }
+    };
+    wakeGraph = wakeSimulation;
+
+    window.addEventListener('resize', () => {
+      resizeCanvas();
+      wakeSimulation(true);
+    }, { passive: true });
+
+    document.addEventListener('visibilitychange', () => {
+      if (!document.hidden) {
+        wakeSimulation();
+      }
+    });
 
     function animate() {
+      animationFrame = null;
       frameCount += 1;
       const mobileSettled = isMobile && frameCount > MOBILE_SETTLE_FRAMES;
       if (!mobileSettled && frameCount % SIMULATION_STEP_INTERVAL === 0) {
         Module._compute_layout(pxPtr, pyPtr, vxPtr, vyPtr, numNodes, edgeSrcPtr, edgeDstPtr, numEdges, width, height);
       }
 
+      let energy = 0;
       for (let i = 0; i < numNodes; i++) {
         nodes[i].x = pxArray[i];
         nodes[i].y = pyArray[i];
+        energy += vxArray[i] * vxArray[i] + vyArray[i] * vyArray[i];
         if (nodes[i].visible) {
           nodes[i].screenX = worldToScreenX(nodes[i].x);
           nodes[i].screenY = worldToScreenY(nodes[i].y);
@@ -305,10 +344,20 @@ background: '/img/bg-relations.jpg'
         }
       });
 
-      requestAnimationFrame(animate);
+      if (mobileSettled || energy < SETTLE_ENERGY) {
+        settledFrames += 1;
+      } else {
+        settledFrames = 0;
+      }
+
+      if (settledFrames < SETTLE_FRAME_COUNT) {
+        animationFrame = requestAnimationFrame(animate);
+      } else {
+        simulationRunning = false;
+      }
     }
 
-    animate();
+    wakeSimulation(true);
   };
 
   canvas.addEventListener('mousemove', (e) => {
@@ -345,6 +394,7 @@ background: '/img/bg-relations.jpg'
     viewOffsetX = mx - worldX * nextScale;
     viewOffsetY = my - worldY * nextScale;
     viewScale = nextScale;
+    wakeGraph();
   }, { passive: false });
 
   canvas.addEventListener('click', (e) => {

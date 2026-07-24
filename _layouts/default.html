@@ -46,8 +46,9 @@
       var theme = localStorage.getItem('theme');
       var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
       if (theme === 'dark' || (!theme && prefersDark)) {
-        var checkbox = document.getElementById('checkbox');
-        if (checkbox) checkbox.checked = true;
+        document.querySelectorAll('#checkbox, #checkbox-mobile').forEach(function(checkbox) {
+          checkbox.checked = true;
+        });
       }
     })();
   </script>
