@@ -1,7 +1,7 @@
 $(function () {
   $('[data-toggle="tooltip"]').tooltip();
 
-  const themeToggleCheckbox = document.getElementById('checkbox'); // Changed ID
+  const themeToggleCheckboxes = Array.from(document.querySelectorAll('#checkbox, #checkbox-mobile'));
   const body = document.body;
   const storageKey = 'theme';
   const colorSchemeQuery = typeof window.matchMedia === 'function'
@@ -24,9 +24,9 @@ $(function () {
     } else {
       body.classList.remove('dark-mode');
     }
-    if (themeToggleCheckbox) {
-      themeToggleCheckbox.checked = theme === 'dark';
-    }
+    themeToggleCheckboxes.forEach((checkbox) => {
+      checkbox.checked = theme === 'dark';
+    });
   }
 
   const getStoredTheme = () => localStorage.getItem(storageKey);
@@ -36,13 +36,13 @@ $(function () {
 
   setTheme(initialTheme);
 
-  if (themeToggleCheckbox) {
-    themeToggleCheckbox.addEventListener('change', () => {
-      const newTheme = themeToggleCheckbox.checked ? 'dark' : 'light'; // Determine new theme based on checked state
+  themeToggleCheckboxes.forEach((checkbox) => {
+    checkbox.addEventListener('change', () => {
+      const newTheme = checkbox.checked ? 'dark' : 'light';
       setTheme(newTheme);
       localStorage.setItem(storageKey, newTheme);
     });
-  }
+  });
 
   addMqListener(colorSchemeQuery, (e) => {
     if (!getStoredTheme()) {

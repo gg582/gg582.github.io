@@ -1060,6 +1060,73 @@ p, ul, ol, blockquote {
   }
 }
 
+// Desktop navigation groups: compact controls with menus that remain easy to scan.
+@media (min-width: 992px) {
+  #mainNav .navbar-nav--desktop {
+    align-items: center;
+
+    .nav-item.dropdown {
+      margin-left: 0.35rem;
+    }
+
+    .dropdown-toggle {
+      border: 0;
+      background: transparent;
+      font: inherit;
+      cursor: pointer;
+      padding-right: 0.7rem;
+
+      &::after {
+        margin-left: 0.35rem;
+        vertical-align: 0.15em;
+      }
+
+      &:focus-visible {
+        outline: 2px solid currentColor;
+        outline-offset: 3px;
+      }
+    }
+
+    .dropdown-menu {
+      min-width: 11rem;
+      margin-top: 0.4rem;
+      padding: 0.4rem;
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      border-radius: 0.35rem;
+      box-shadow: 0 14px 30px rgba(15, 15, 15, 0.14);
+    }
+
+    .dropdown-item {
+      padding: 0.5rem 0.7rem;
+      border-radius: 0.2rem;
+      color: #1f2933;
+      font-size: 0.88rem;
+
+      &:hover,
+      &:focus {
+        background: rgba(31, 41, 51, 0.08);
+        color: #1f2933;
+      }
+    }
+  }
+
+  #mainNav.dark-bg .navbar-nav--desktop .dropdown-menu,
+  body.dark-mode #mainNav.navbar-sticky .navbar-nav--desktop .dropdown-menu {
+    background: #20202a;
+    border-color: rgba(255, 255, 255, 0.15);
+
+    .dropdown-item {
+      color: #f8fafc;
+
+      &:hover,
+      &:focus {
+        background: rgba(255, 255, 255, 0.12);
+        color: #fff;
+      }
+    }
+  }
+}
+
 .navbar-search {
   width: 100%;
   max-width: 240px;

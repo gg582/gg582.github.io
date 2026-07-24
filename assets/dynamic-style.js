@@ -51,14 +51,27 @@
       pointerX: 0.5,
       pointerY: 0.5,
       ticking: false,
-      reduced: reduceMotionQuery.matches
+      reduced: reduceMotionQuery.matches,
+      viewport: 1,
+      documentHeight: 1,
+      styles: Object.create(null)
+    };
+
+    const refreshMetrics = () => {
+      const doc = document.documentElement;
+      state.viewport = window.innerHeight || 1;
+      state.documentHeight = Math.max(doc.scrollHeight, body.scrollHeight, state.viewport);
+    };
+
+    const setStyle = (name, value) => {
+      if (state.styles[name] !== value) {
+        root.style.setProperty(name, value);
+        state.styles[name] = value;
+      }
     };
 
     const update = () => {
-      const doc = document.documentElement;
-      const viewport = window.innerHeight || 1;
-      const documentHeight = Math.max(doc.scrollHeight, body.scrollHeight, viewport);
-      const progress = module._ui_progress(state.scrollY, viewport, documentHeight);
+      const progress = module._ui_progress(state.scrollY, state.viewport, state.documentHeight);
       const velocity = state.scrollY - state.lastScrollY;
       const darkMode = body.classList.contains('dark-mode') ? 1 : 0;
       const reduced = state.reduced ? 1 : 0;
@@ -67,17 +80,20 @@
       const motion = module._ui_motion_intensity(velocity, reduced);
       const focus = module._ui_focus_alpha(progress);
 
-      root.style.setProperty('--wasm-accent-rgb', rgb(accent));
-      root.style.setProperty('--wasm-progress', progress.toFixed(4));
-      root.style.setProperty('--wasm-depth', depth.toFixed(4));
-      root.style.setProperty('--wasm-motion', motion.toFixed(4));
-      root.style.setProperty('--wasm-focus-alpha', focus.toFixed(4));
+      setStyle('--wasm-accent-rgb', rgb(accent));
+      setStyle('--wasm-progress', progress.toFixed(4));
+      setStyle('--wasm-depth', depth.toFixed(4));
+      setStyle('--wasm-motion', motion.toFixed(4));
+      setStyle('--wasm-focus-alpha', focus.toFixed(4));
 
       state.lastScrollY = state.scrollY;
       state.ticking = false;
     };
 
     const requestUpdate = () => {
+      if (document.hidden) {
+        return;
+      }
       state.scrollY = window.scrollY || docScrollTop();
       if (!state.ticking) {
         state.ticking = true;
@@ -87,11 +103,23 @@
 
     const docScrollTop = () => document.documentElement.scrollTop || document.body.scrollTop || 0;
 
+    const refreshAndUpdate = () => {
+      refreshMetrics();
+      requestUpdate();
+    };
+
+    refreshMetrics();
     window.addEventListener('scroll', requestUpdate, { passive: true });
-    window.addEventListener('resize', requestUpdate);
+    window.addEventListener('resize', refreshAndUpdate, { passive: true });
     window.addEventListener('pointermove', (event) => {
-      state.pointerX = Math.max(0, Math.min(1, event.clientX / Math.max(1, window.innerWidth)));
-      state.pointerY = Math.max(0, Math.min(1, event.clientY / Math.max(1, window.innerHeight)));
+      const pointerX = Math.max(0, Math.min(1, event.clientX / Math.max(1, window.innerWidth)));
+      const pointerY = Math.max(0, Math.min(1, event.clientY / Math.max(1, window.innerHeight)));
+      // Tiny cursor movements do not create a visually meaningful frame.
+      if (Math.abs(pointerX - state.pointerX) < 0.004 && Math.abs(pointerY - state.pointerY) < 0.004) {
+        return;
+      }
+      state.pointerX = pointerX;
+      state.pointerY = pointerY;
       requestUpdate();
     }, { passive: true });
 
@@ -102,6 +130,16 @@
 
     const themeObserver = new MutationObserver(requestUpdate);
     themeObserver.observe(body, { attributes: true, attributeFilter: ['class'] });
+
+    if (typeof ResizeObserver === 'function') {
+      new ResizeObserver(refreshAndUpdate).observe(document.documentElement);
+    }
+
+    document.addEventListener('visibilitychange', () => {
+      if (!document.hidden) {
+        refreshAndUpdate();
+      }
+    });
 
     requestUpdate();
   }).catch(() => {
