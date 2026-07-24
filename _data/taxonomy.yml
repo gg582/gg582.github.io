@@ -171,6 +171,10 @@ categories:
         name: 마방진과 격자 구조
         description: 마방진, 육각 격자, 제약 충족과 시각화
         weight: 1
+      - id: computer-graphics
+        name: 컴퓨터 그래픽스와 기하 처리
+        description: 곡면 표현, 메시 처리, 소프트웨어 렌더링, 조명 모델
+        weight: 2
 
 # Document Relationship Types
 relationship_types:
